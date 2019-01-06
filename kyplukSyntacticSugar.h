@@ -8,7 +8,7 @@
 	#define loop while(true)
 	
 	//const
-	#define readonly const
-	#define final const
+	//#define readonly const
+	//#define final const
 	
 #endif

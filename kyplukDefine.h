@@ -14,9 +14,9 @@
 	#endif
 	
 	namespace kypluk {
-		char Space[] = " ",
-		Endl[] = "\n",
-		Separator[] = " | ";
+		char space[] = " ",
+		endl[] = "\n",
+		separator[] = " | ";
 	}
 
 #endif
