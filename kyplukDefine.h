@@ -9,8 +9,16 @@
 	#define USE(chtoto) using namespace chtoto;
 	#define WATCH(x) cout << (#x) << " is " << (x) << endl
 	
+	
 	#ifndef NULL
 		#define NULL nullptr
+		#define kNULL
+	#else
+		#ifndef kNULL
+			#undef NULL
+			#define NULL nullptr
+			#define kNULL
+		#endif
 	#endif
 	
 	namespace kypluk {

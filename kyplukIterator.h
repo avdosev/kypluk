@@ -10,9 +10,8 @@ class Iterator {
 		virtual const Iterator & operator = (const Iterator&);
 		virtual bool operator != (const Iterator&);
 		virtual bool operator == (const Iterator&);
-		virtual type & operator * () = 0;
+		virtual type & operator * ();
 		virtual const type& operator * () const;
-		const type& at() const { return *(*this); } ;
 };
 
 template <class type>
@@ -29,9 +28,12 @@ class RIterator : BIterator<type> {
 	public:
 		virtual RIterator & operator += (const RIterator&);
 		virtual RIterator & operator -= (const RIterator&);
+		virtual type& operator [] (int);
 		
+		/*
 		virtual bool operator <= (const Iterator&);
 		virtual bool operator >= (const Iterator&);
+		*/
 };
 
 #endif
