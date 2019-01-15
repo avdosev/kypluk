@@ -2,7 +2,6 @@
 #define _kyplukAlgorithm_H_
 
 #include <kyplukDefine.h>
-#include <kyplukIterator.h>
 
 template <class type>
 void swap (type& raz, type& dva) {
@@ -20,6 +19,13 @@ int compare (const type& raz, const type& dva)
 		return -1;
 	else
 		return 0;
+}
+
+template <class Iterator, class UnaryFunction>
+void for_each(Iterator begin, Iterator end, UnaryFunction func) {
+    for (auto it = begin; it != end; ++it) {
+	func(*it);
+    }
 }
 
 #endif
