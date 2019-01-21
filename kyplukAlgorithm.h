@@ -28,4 +28,12 @@ void for_each(Iterator begin, Iterator end, UnaryFunction func) {
     }
 }
 
+template <class InputIterator, class OutputIterator>
+OutputIterator copy(InputIterator begin, InputIterator end, OutputIterator c_begin) {
+    while (begin != end) {
+	*c_begin++ = *begin++;
+    }
+    return c_begin;
+}
+
 #endif
