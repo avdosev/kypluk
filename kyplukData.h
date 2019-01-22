@@ -7,7 +7,7 @@
 
 //типы данных
 //#include <kyplukArray.h>
-//#include <kyplukList.h>
+#include <kyplukList.h>
 #include <kyplukBigList.h>
 #include <kyplukStack.h>
 #include <kyplukQueue.h>

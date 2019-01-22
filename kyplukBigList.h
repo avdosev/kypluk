@@ -2,7 +2,6 @@
 #define _kypluk_BigList_h_
 
 #include <kyplukDefine.h>
-#include <kyplukIterator.h>
 
 template <class type>
 class BigList {
@@ -60,7 +59,7 @@ class BigList {
 		};
 		
 		//mega fix 
-		class BigListIterator : public Iterator<type> {
+		class BigListIterator {
 			private:
 				friend class BigList;
 				friend class Node;
