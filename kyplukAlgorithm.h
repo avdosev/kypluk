@@ -3,6 +3,8 @@
 
 #include <kyplukDefine.h>
 
+namespace kypluk {
+
 template <class type>
 void swap (type& raz, type& dva) {
 	type temp = raz;
@@ -28,6 +30,16 @@ void for_each(Iterator begin, Iterator end, UnaryFunction func) {
     }
 }
 
+template <class Iterator>
+uint distance(Iterator begin, Iterator end) {
+	uint res = 0;
+	while (begin != end) {
+		++begin;
+		res++;
+	}
+	return res;
+}
+
 template <class InputIterator, class OutputIterator>
 OutputIterator copy(InputIterator begin, InputIterator end, OutputIterator c_begin) {
     while (begin != end) {
@@ -36,4 +48,14 @@ OutputIterator copy(InputIterator begin, InputIterator end, OutputIterator c_beg
     return c_begin;
 }
 
+template <class type>
+type max (type raz, type dva) {
+	return raz > dva ? raz : dva;
+}
+template <class type>
+type min (type raz, type dva) {
+	return raz < dva ? raz : dva;
+}
+
+}
 #endif

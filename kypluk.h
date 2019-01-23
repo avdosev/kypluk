@@ -1,5 +1,4 @@
-#ifndef _kypluk_H_
-#define _kypluk_H_
+#pragma once
 
 //жги сердца(жопы) кодом
 
@@ -11,5 +10,3 @@
 //#include "kyplukOSfunction.h"
 //#include "kyplukFunction.h"
 
-
-#endif

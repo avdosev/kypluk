@@ -5,7 +5,7 @@
 ну че, пацаны, документация?
 */
 
-//типы данных
+//структуры данных
 //#include <kyplukArray.h>
 #include <kyplukList.h>
 #include <kyplukBigList.h>
@@ -13,7 +13,7 @@
 #include <kyplukQueue.h>
 #include <kyplukBits.h>
 
-//представление классов для работы
+//представление основных классов оберток
 //#include <kyplukString.h>
 
 #endif

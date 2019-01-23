@@ -1,6 +1,8 @@
 #ifndef _kyplukAlgorithm_H_
 #define _kyplukAlgorithm_H_
 
+namespace kypluk {
+
 template <class type>
 void xor_swap (type& raz, type& dva) {
 	if (&raz == &dva) return;
@@ -27,4 +29,5 @@ T reversBit(T number, int size) {
 	return y;
 }
 
+}
 #endif
