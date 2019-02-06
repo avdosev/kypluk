@@ -6,9 +6,18 @@
 template <class type>
 class UniquePtr {
 	private:
-		using pointer = *type;
+		using pointer = type*;
 		pointer ptr;
-	public
+		UniquePtr(const UniquePtr&) {};
+		void operator = (const UniquePtr&) {};
+	public:
+		UniquePtr(pointer ptr = NULL) {
+			ptr = NULL;
+		}
+		~UniquePtr() {
+			if (ptr) delete ptr;
+		}
+		
 		pointer release() {
 			pointer temp = ptr;
 			ptr = NULL;
@@ -19,14 +28,35 @@ class UniquePtr {
 			this->ptr = ptr;
 		}
 		
-		swap(UniquePtr &other)
+		void swap(UniquePtr &other) {
+			this->ptr = other.ptr;
+			other.ptr = NULL;
+		}
 		
 		pointer get() {
 			return ptr;
 		}
 		
+		UniquePtr& operator = (UniquePtr &other) {
+			this->swap(other);
+			return *this;
+		}
+		
+		UniquePtr& operator = (pointer other) {
+			this->reset(other);
+			return *this;
+		}
+		
 		operator bool () {
-			return prt != NULL;
+			return ptr != NULL;
+		}
+		
+		type& operator * () {
+			return *ptr;
+		}
+		
+		pointer operator -> () {
+			return get();
 		}
 };
 
