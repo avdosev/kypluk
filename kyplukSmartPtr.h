@@ -63,22 +63,82 @@ class UniquePtr {
 template <class type>
 class SharedPtr {
 	private:
+		using pointer = type*;
 		struct Node {
-			Size_t size;
+			mutable Size_t size;
 			type* value;
 			Node(type *value = NULL) {
 				this->value = value;
-				size = 0; 
+				size = 1; 
 			}
 		};
 		Node * node;
 	public:
-		SharedPtr(type *value) {
+		SharedPtr(type *value = NULL) {
 			node = new Node(value);
 		}
+		
 		SharedPtr(const SharedPtr & other) {
 			node = other.node;
 			other.node->size++;
+		}
+		
+		~SharedPtr() {
+			node->size--;
+			if (node->size == 0) {
+				if (node->value) delete node->value;
+				delete node;
+			}
+		}
+		 
+		void reset(pointer ptr = NULL) {	
+			if (node->size == 1) {
+				if (node->value) delete node->value;
+				node->value = ptr;
+			} else {
+				node->size--;
+				node = new Node(ptr);
+			}
+		}
+		
+		bool unique() {
+			return node->value;
+		}
+		
+		void swap(UniquePtr &other) {
+			swap(this->node, other->node);
+		}
+		
+		pointer get() {
+			return node->value;
+		}
+		
+		UniquePtr& operator = (const UniquePtr &other) {
+			node->size--;
+			if (node->size == 0) {
+				if (node->value) delete node->value;
+				delete node;
+			}
+			this->node = other->node;
+			this->node->size++;
+			return *this;
+		}
+		
+		UniquePtr& operator = (pointer other) {
+			this->reset(other);
+			return *this;
+		}
+		
+		operator bool () {
+			return node->value != NULL;
+		}
+		
+		type& operator * () {
+			return *get();
+		}
+		
+		pointer operator -> () {
+			return get();
 		}
 };
 
