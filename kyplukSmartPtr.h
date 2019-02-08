@@ -105,7 +105,7 @@ class SharedPtr {
 			return node->value;
 		}
 		
-		void swap(UniquePtr &other) {
+		void swap(SharedPtr &other) {
 			swap(this->node, other->node);
 		}
 		
@@ -113,7 +113,7 @@ class SharedPtr {
 			return node->value;
 		}
 		
-		UniquePtr& operator = (const UniquePtr &other) {
+		SharedPtr& operator = (const SharedPtr &other) {
 			node->size--;
 			if (node->size == 0) {
 				if (node->value) delete node->value;
@@ -124,7 +124,7 @@ class SharedPtr {
 			return *this;
 		}
 		
-		UniquePtr& operator = (pointer other) {
+		SharedPtr& operator = (pointer other) {
 			this->reset(other);
 			return *this;
 		}
