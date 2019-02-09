@@ -16,4 +16,8 @@
 //представление основных классов оберток
 //#include <kyplukString.h>
 
+
+//хз просто нужные вещи
+#include <kyplukSmartPtr.h>
+
 #endif
