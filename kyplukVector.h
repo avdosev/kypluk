@@ -5,6 +5,8 @@
 #include <kyplukAlgorithm.h>
 #include <kyplukSmartPtr.h>
 
+namespace kypluk {
+
 template <class type>
 class Vector {
 	private:
@@ -25,6 +27,8 @@ class Vector {
 			return (_size+add_size > real_size);	
 		}
 		
+		template <class swap_type>
+		friend void swap(Vector<swap_type>& raz, Vector<swap_type>& dva);
 	public:
 
         Vector(size_t size = 0, const type& value = type()) {
@@ -102,4 +106,12 @@ class Vector {
 		}
 };
 
+	template <class type>
+	void swap(Vector<type>& raz, Vector<type>& dva) {
+		swap(raz.arr, dva.arr);
+		swap(raz._size, dva._size);
+		swap(raz.real_size, dva.real_size);
+	}
+	
+}
 #endif
