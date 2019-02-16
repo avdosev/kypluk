@@ -47,6 +47,17 @@ namespace kypluk {
         }
         return c_begin;
     }
+    
+    template<class InputIt, class OutputIt, class UnaryFunc>
+	OutputIt copy_if(InputIt first, InputIt last, OutputIt d_first, UnaryPredicate pred)
+	{
+	    while (first != last) {
+	        if(pred(*first))
+	            *d_first++ = *first;
+	         first++;
+	    }
+	    return d_first;
+	}
 
     template <class type>
     type max (type raz, type dva) {

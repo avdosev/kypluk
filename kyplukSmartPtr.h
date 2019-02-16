@@ -11,6 +11,7 @@ class UniquePtr {
 		UniquePtr(const UniquePtr&) {};
 		void operator = (const UniquePtr&) {};
 	public:
+		template <
 		UniquePtr(pointer ptr = NULL) {
 			ptr = NULL;
 		}

@@ -6,12 +6,14 @@
 */
 
 //структуры данных
-//#include <kyplukArray.h>
+#include <kyplukArray.h>
+#include <kyplukVector.h>
 #include <kyplukList.h>
-#include <kyplukBigList.h>
+//#include <kyplukBigList.h>
 #include <kyplukStack.h>
 #include <kyplukQueue.h>
 #include <kyplukBits.h>
+
 
 //представление основных классов оберток
 //#include <kyplukString.h>

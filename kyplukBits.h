@@ -62,7 +62,7 @@ class Bits {
             byte = ~byte ;
         }
 
-        Size_t size() const {
+        static Size_t size() {
             return _size;
         }
 
