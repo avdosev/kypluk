@@ -102,16 +102,6 @@ class unlimInt {
 			*this = puk;
 		}
 		
-		static Vector<char> to_cstring(const unlimInt& number) {
-			Size_t j = number.length()-1;
-			Vector<char> buf(number.length()+1);
-			for (auto i = number.arr.begin(); j >= 0 and i != number.arr.end(); --j, ++i) {
-				buf[j] = *i+'0';
-			}
-			
-			buf[buf.size()-1]='\0';
-			return buf;
-		}
 		
 		Size_t length() const {
 			return arr.size();
@@ -194,29 +184,50 @@ class unlimInt {
 			return *this;
 		}
 		
-		int compare(const unlimInt& puk) {
-			if (this->length() != puk.length())
-				return this->length() > puk.length() ? 1 : -1;
-			/*//fix, me need dualBigList and bi iterator for this
-			for (auto i = arr.end(), j = puk.arr.end(); i >= arr.begin() and j >= puk.arr.begin(); --i, --j)
+		//---------
+		//static function
+		//---------
+		
+		static Vector<char> to_cstring(const unlimInt& number) {
+			Size_t j = number.length()-1;
+			Vector<char> buf(number.length()+1);
+			for (auto i = number.arr.begin(); j >= 0 and i != number.arr.end(); --j, ++i) {
+				buf[j] = *i+'0';
+			}
+			
+			buf[buf.size()-1]='\0';
+			return buf;
+		}
+		
+		static int compare(const unlimInt& raz, const unlimInt& dva) {
+			if (raz.length() != dva.length())
+				return raz.length() > dva.length() ? 1 : -1;
+			
+			for (auto i = --raz.arr.end(), j = --dva.arr.end(); i != raz.arr.end() and j != dva.arr.end(); --i, --j)
 			{
 				if (*i != *j)
-					return *i > *j ? 1 : -1;
-			}*/
+					return *i - *j;
+			}
 			
-			//xex, stack time
+			return 0;
+			
+			/*//xex, stack time
 			struct {
 				char one, two;
 			} comp = {0, 0
-			};
+			};*/
 			
-			for (auto j = puk.arr.begin(), i = arr.begin(); i != arr.end(); ++i, ++j) {
+			/*for (auto j = dva.arr.begin(), i = arr.begin(); i != arr.end(); ++i, ++j) {
 				if (*i != *j) comp = {*i, *j};
 		    }
 			if (comp.one == comp.two)
 				return 0;
-			return comp.one > comp.two ? 1 : -1;
+			return comp.one > comp.two ? 1 : -1;*/
 		}
+		
+		//---------
+		//operators
+		//---------
 		
 		unlimInt& operator ++ () {
 			if (++(*arr.begin()) > 9) {
@@ -237,45 +248,43 @@ class unlimInt {
 			return *this;
 		}
 		
-		
 		unlimInt& operator *= (const unlimInt& puk) {
 			return mult(puk);
 		}
 		
-		friend const unlimInt operator + (const unlimInt& raz, const unlimInt& dvas) {
+		friend unlimInt operator + (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.add(dvas);
 		}
 
-		friend const unlimInt operator * (const unlimInt& raz, const unlimInt& dvas) {
+		friend unlimInt operator * (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.mult(dvas);
 		}
 		
-		bool operator != (const unlimInt& puk) {
-			return !((*this) == puk);
+		bool operator != (const unlimInt& puk) const{
+			return compare(*this, puk) != 0;
 		}
 		
 		bool operator >= (const unlimInt& puk) {
-			return !((*this) < puk);
+			return compare(*this, puk) >= 0;
 		}
 		
 		bool operator <= (const unlimInt& puk) {
-			return !((*this) > puk);
+			return compare(*this, puk) <= 0;
 		}
 		
 		bool operator > (const unlimInt& puk) {
-			return compare(puk) == 1;
+			return compare(*this, puk) > 0;
 		}
 		
 		bool operator < (const unlimInt& puk) {
-			return compare(puk) == -1;
+			return compare(*this, puk) < 0;
 		}
 		
 		bool operator == (const unlimInt& puk) {
-			return compare(puk) == 0;
+			return compare(*this, puk) == 0;
 		}
-		
 };
 
 } // end namespace kypluk
