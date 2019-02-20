@@ -49,7 +49,7 @@ namespace kypluk {
     }
     
     template<class InputIt, class OutputIt, class UnaryFunc>
-	OutputIt copy_if(InputIt first, InputIt last, OutputIt d_first, UnaryPredicate pred)
+	OutputIt copy_if(InputIt first, InputIt last, OutputIt d_first, UnaryFunc pred)
 	{
 	    while (first != last) {
 	        if(pred(*first))

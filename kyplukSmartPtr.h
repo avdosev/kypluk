@@ -59,6 +59,10 @@ class UniquePtr {
 		pointer operator -> () {
 			return get();
 		}
+		
+		const pointer operator () {
+			return ptr;
+		}
 };
 
 template <class type>

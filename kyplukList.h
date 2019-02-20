@@ -3,7 +3,8 @@
 
 #include <kyplukAlgorithm.h>
 #include <kyplukDefine.h>
-
+namespace kypluk {
+	
 template <class type>
 class  List {
     private:
@@ -298,5 +299,7 @@ class List<type>::ListIterator {
         }
 
 };
+
+}
 
 #endif

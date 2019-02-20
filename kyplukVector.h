@@ -30,7 +30,7 @@ class Vector {
 		template <class swap_type>
 		friend void swap(Vector<swap_type>& raz, Vector<swap_type>& dva);
 	public:
-		using VectorIterator = VectorIterator;
+		using Iterator = VectorIterator;
         Vector(size_t size = 0, const type& value = type()) {
             _size = real_size = size;
             if (!real_size) real_size = 1;
@@ -106,7 +106,8 @@ class Vector {
 		
 		Iterator end() {
 			return Iterator(_size, this);
-		}		
+		}
+				
 };
 
 template <class type>
@@ -167,7 +168,7 @@ class Vector<type> :: VectorIterator {
 			return VectorIterator(index + shift, vc);
 		}
 		VectorIterator operator - (Size_t shift) {
-			return VectorIterator(index - shift, vc)
+			return VectorIterator(index - shift, vc);
 		}
 		
 		llint operator - (const VectorIterator& other) {
