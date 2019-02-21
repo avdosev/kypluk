@@ -40,6 +40,16 @@ class Vector {
 			}
         }
         
+        template <class ConstIterator>
+        Vector(ConstIterator begin, ConstIterator end) {
+            _size = real_size = distance(begin, end);
+            if (!real_size) real_size = 1;
+            arr = new type[real_size];
+            for (type& item : *this) {
+            	item = *begin++;
+			}
+        }
+        
         ~Vector() {
         	delete[] arr;
 		}
@@ -72,9 +82,9 @@ class Vector {
 	        return arr[pos];
 	    }
 	
-	    type& at(type pos) {
-	        if (pos >= this->_size) {
-	            throw 0;
+	    type& at(Size_t pos) {
+	        if (pos >= this -> _size) {
+				throw 0;
 	        }
 	        else {
 	            return arr[pos];
@@ -87,10 +97,10 @@ class Vector {
 	    map
 	    filter
 	    */
-	    
+	    /*
 	    Vector slice() {
 	    	
-		}
+		}*/
 	    
 	    type& front() {
 	        return *begin();
@@ -107,7 +117,10 @@ class Vector {
 		Iterator end() {
 			return Iterator(_size, this);
 		}
-				
+		
+		const type* data () const {
+			return arr;
+		}		
 };
 
 template <class type>

@@ -5,92 +5,19 @@
 #include <kyplukDefine.h>
 #include <kyplukVector.h>
 #include <kyplukList.h>
+#include <kyplukPair.h>
 
-/*class BigInteger {
-	private:
-		list<uint8_t> mas;
-	public:
-		BigInt(unsigned arr in = 0) {
-			mas.push_back(in % 10);
-			while ((in /= 10) > 0)
-				mas.push_back(in % 10);
-		}
-		
-		BigInt& mult10(unsigned arr puk = 1) {
-			for (short int i = 0; i < puk; i++)
-				mas.push_front(0);
-			return *this;
-		}
-		
-		BigInt& mult0to9(unsigned int puk) {
-			BigInt xraniliche(*this);
-			(*this) = 0;
-			for (int i = 0; i < puk; i++) {
-				(*this) += xraniliche;
-			}
-			return *this;
-		}
-		
-		BigInt& mult(const BigInt& puk) {
-			BigInt xraniliche;
-			xraniliche = *this;
-			(*this) = 0;
-			size_t j = 0;
-			for (auto i = puk.mas.begin(); i != puk.mas.end(); ++i, ++j) {
-				BigInt xraniliche1 = xraniliche;
-				(*this) += xraniliche1.mult0to9(*i).mult10(j);
-			}
-			return *this;
-		}
-		
-		static void print(const BigInt& p) {
-			for_each(p.mas.rbegin(), p.mas.rend(), [](int n) { cout << n; });
-		}
-		
-		BigInt& operator+=(const BigInt& puk) {
-			if (mas.size() < puk.mas.size()) {
-				size_t buf = puk.mas.size() - mas.size(); //xmm
-				for (size_t i = 0; i < buf; i++)
-					mas.push_back(0);
-			}
-			int desyatok = 0;
-			auto i = mas.begin();
-			for (auto j = puk.mas.begin(); i != mas.end() and j != puk.mas.end();
-					 ++i, ++j) {
-				*i = *i + *j + desyatok;
-				desyatok = 0;
-				if (*i > 9) {
-					desyatok = 1; // i / 10
-					*i -= 10;     // i % 10
-				}
-			}
-			if (i != mas.end()) {
-				for (; i != mas.end(); ++i) {
-					if (desyatok != 0) {
-						*i = *i + desyatok;
-						desyatok = 0;
-						if (*i > 9) {
-							desyatok = 1; // i / 10
-							*i -= 10;     // i % 10
-						}
-					}
-				}
-			}
-			if (desyatok)
-				mas.push_back(1);
-			return *this;
-		}
-};*/
 namespace kypluk {
 
 //ebanuy rot ska
 class unlimInt {
 	private:
-    	//char znak = '';//знак + или - //еще рановато
+    	//int8_t _sign = '';//знак + или - //еще рановато
     	using container_t = List<uint8_t>;
 		container_t arr;
 		
 	public:
+		
 		unlimInt(llint puk = 0) {
 			arr.push_back(puk%10);
 			while ((puk/=10) != 0) {
@@ -99,9 +26,17 @@ class unlimInt {
 		}
 		
 		unlimInt(const unlimInt & puk) {
-			*this = puk;
+			arr = puk.arr;
 		}
-		
+		/*
+		проблема с конвертацией типов
+		хз как е рашать
+		unlimInt(const char * value) {
+			while (*value) {
+				arr.push_back( *value - '0');
+				value++;
+			}
+		}*/
 		
 		Size_t length() const {
 			return arr.size();
@@ -144,7 +79,7 @@ class unlimInt {
 		}
 		
 		unlimInt& mult10(unsigned short int puk = 1) {
-			if ((*this)!=0)
+			if ((*this) != 0)
 				for (short int i = 0; i < puk; i++) 
 					arr.push_front(0);
 			return *this;
@@ -188,7 +123,7 @@ class unlimInt {
 		//static function
 		//---------
 		
-		static Vector<char> to_cstring(const unlimInt& number) {
+		static Vector<char> to_vstring(const unlimInt& number) {
 			Size_t j = number.length()-1;
 			Vector<char> buf(number.length()+1);
 			for (auto i = number.arr.begin(); j >= 0 and i != number.arr.end(); --j, ++i) {
@@ -197,6 +132,19 @@ class unlimInt {
 			
 			buf[buf.size()-1]='\0';
 			return buf;
+		}
+		
+		static unlimInt from_string(const char * value) {
+			unlimInt res;
+			if (*value) {
+				res = *value - '0';
+				value++;
+			}
+			while (*value) {
+				res.mult10(1).add(*value - '0');
+				value++;
+			}
+			return res;
 		}
 		
 		static int compare(const unlimInt& raz, const unlimInt& dva) {
@@ -286,6 +234,33 @@ class unlimInt {
 			return compare(*this, puk) == 0;
 		}
 };
+/*
+friend pair<bigint, bigint> divmod(const bigint &a1, const bigint &b1) {
+        int norm = base / (b1.a.back() + 1);
+        bigint a = a1.abs() * norm;
+        bigint b = b1.abs() * norm;
+        bigint q, r;
+        q.a.resize(a.a.size());
+
+        for (int i = a.a.size() - 1; i >= 0; i--) {
+            r *= base;
+            r += a.a[i];
+            int s1 = r.a.size() <= b.a.size() ? 0 : r.a[b.a.size()];
+            int s2 = r.a.size() <= b.a.size() - 1 ? 0 : r.a[b.a.size() - 1];
+            int d = ((long long) base * s1 + s2) / b.a.back();
+            r -= b * d;
+            while (r < 0)
+                r += b, --d;
+            q.a[i] = d;
+        }
+
+        q.sign = a1.sign * b1.sign;
+        r.sign = a1.sign;
+        q.trim();
+        r.trim();
+        return make_pair(q, r / norm);
+    }
+*/
 
 } // end namespace kypluk
 #endif
