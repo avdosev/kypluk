@@ -31,8 +31,8 @@ namespace kypluk {
     }
 
     template <class Iterator>
-    uint distance(Iterator begin, Iterator end) {
-        uint res = 0;
+    Size_t distance(Iterator begin, Iterator end) {
+        Size_t res = 0;
         while (begin != end) {
             ++begin;
             res++;

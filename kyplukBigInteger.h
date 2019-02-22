@@ -12,13 +12,17 @@ namespace kypluk {
 //ebanuy rot ska
 class unlimInt {
 	private:
-    	//int8_t _sign = '';//знак + или - //еще рановато
+    	//знак + или - 
+    	//true - is_negative
+    	//false - is_not_negative
+    	bool _is_negative;
     	using container_t = List<uint8_t>;
 		container_t arr;
 		
 	public:
 		
 		unlimInt(llint puk = 0) {
+			_is_negative = puk < 0;
 			arr.push_back(puk%10);
 			while ((puk/=10) != 0) {
 				arr.push_back(puk%10);
@@ -26,7 +30,8 @@ class unlimInt {
 		}
 		
 		unlimInt(const unlimInt & puk) {
-			arr = puk.arr;
+			*this = puk;
+			
 		}
 		/*
 		проблема с конвертацией типов
@@ -43,6 +48,14 @@ class unlimInt {
 		}
 		
 		unlimInt& add (const unlimInt& puk) {
+			// мы напишем лишь сложение двух положительных чисел
+        	// остальное мы выведем, используя смену знака и вычитание
+			if (left._is_negative) {
+                if (right._is_negative) return -(-left + (-right));
+                else return right - (-left);
+	        }
+	        else if (right._is_negative) return left - (-right);
+	        
 			if (arr.size() < puk.arr.size()) {
 				Size_t buf = puk.arr.size()-arr.size();
 				for (Size_t i = 0; i < buf; i++)
@@ -74,6 +87,12 @@ class unlimInt {
 		    }
 		    if (desyatok)
 				arr.push_back(1);
+			
+		    return *this;
+		}
+		
+		unlimInt& sub (const unlimInt& puk) {
+			
 			
 		    return *this;
 		}
@@ -112,11 +131,54 @@ class unlimInt {
 			return *this;
 		}
 		
-		unlimInt& fact() {
-			unlimInt neoPuk; neoPuk = (*this);
-			for (unlimInt i = 1; i < neoPuk; ++i )
-				(*this)*=i;
-			return *this;
+		
+		/*Pair<unlimInt, unlimInt> divmod(const unlimInt &a1, const unlimInt &b1) {
+	        int norm = base / (b1.a.back() + 1);
+	        unlimInt a = a1.abs() * norm;
+	        unlimInt b = b1.abs() * norm;
+	        unlimInt q, r;
+	        q.a.resize(a.a.size());
+	
+	        for (int i = a.a.size() - 1; i >= 0; i--) {
+	            r *= base;
+	            r += a.a[i];
+	            int s1 = r.a.size() <= b.a.size() ? 0 : r.a[b.a.size()];
+	            int s2 = r.a.size() <= b.a.size() - 1 ? 0 : r.a[b.a.size() - 1];
+	            int d = ((long long) base * s1 + s2) / b.a.back();
+	            r -= b * d;
+	            while (r < 0)
+	                r += b, --d;
+	            q.a[i] = d;
+	        }
+	
+	        q._sign = a1._sign * b1._sign;
+	        r._sign = a1._sign;
+	        q.trim();
+	        r.trim();
+	        return Pair({q, r / norm});
+	    }*/
+		
+		//--------
+		//dispensable methods
+		//--------
+		
+		int sign() const {
+			if ((*this) == 0) return 0; 
+			return this->_is_negative ? -1 : 1;
+		}
+		
+		unlimInt abs() const {
+			unlimInt puk(*this);
+			puk._is_negative = false;
+			return puk;
+		}
+		
+		bool odd() const {
+        	return this->arr.front() & 1;
+		}
+		
+		bool even() const {
+		    return !this->odd();
 		}
 		
 		//---------
@@ -125,8 +187,9 @@ class unlimInt {
 		
 		static Vector<char> to_vstring(const unlimInt& number) {
 			Size_t j = number.length()-1;
-			Vector<char> buf(number.length()+1);
-			for (auto i = number.arr.begin(); j >= 0 and i != number.arr.end(); --j, ++i) {
+			Vector<char> buf(number.length()+1+number._is_negative);
+			if (number._is_negative) buf.front() = '-';
+			for (auto i = number.arr.begin(); j >= 0+number._is_negative and i != number.arr.end(); --j, ++i) {
 				buf[j] = *i+'0';
 			}
 			
@@ -137,6 +200,10 @@ class unlimInt {
 		static unlimInt from_string(const char * value) {
 			unlimInt res;
 			if (*value) {
+				if (*value == '-') {
+					res._is_negative = true;
+					value++;
+				}
 				res = *value - '0';
 				value++;
 			}
@@ -148,29 +215,19 @@ class unlimInt {
 		}
 		
 		static int compare(const unlimInt& raz, const unlimInt& dva) {
+			if (raz._is_negative != dva._is_negative) 
+				return raz.sign()-dva.sign();
+			
 			if (raz.length() != dva.length())
 				return raz.length() > dva.length() ? 1 : -1;
 			
 			for (auto i = --raz.arr.end(), j = --dva.arr.end(); i != raz.arr.end() and j != dva.arr.end(); --i, --j)
 			{
 				if (*i != *j)
-					return *i - *j;
+					return (*i - *j) * (raz._is_negative ? -1 : 1);
 			}
 			
 			return 0;
-			
-			/*//xex, stack time
-			struct {
-				char one, two;
-			} comp = {0, 0
-			};*/
-			
-			/*for (auto j = dva.arr.begin(), i = arr.begin(); i != arr.end(); ++i, ++j) {
-				if (*i != *j) comp = {*i, *j};
-		    }
-			if (comp.one == comp.two)
-				return 0;
-			return comp.one > comp.two ? 1 : -1;*/
 		}
 		
 		//---------
@@ -186,14 +243,18 @@ class unlimInt {
 			return *this;
 		}
 		
+		unlimInt& operator = (const unlimInt& puk) {
+			arr = puk.arr;
+			_is_negative = puk._is_negative;
+			return *this;
+		}
+		
 		unlimInt& operator += (const unlimInt &puk) {
 			return add(puk);
 		}
 
-		
-		unlimInt& operator = (const unlimInt& puk) {
-			arr = puk.arr;
-			return *this;
+		unlimInt& operator += (const unlimInt &puk) {
+			return sub(puk);
 		}
 		
 		unlimInt& operator *= (const unlimInt& puk) {
@@ -204,63 +265,100 @@ class unlimInt {
 			unlimInt puk = raz;
 			return puk.add(dvas);
 		}
+		
+		friend unlimInt operator - (const unlimInt& raz, const unlimInt& dvas) {
+			unlimInt puk = raz;
+			return puk.sub(dvas);
+		}
 
 		friend unlimInt operator * (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.mult(dvas);
 		}
 		
+		unlimInt operator +() const {
+		    return unlimInt(*this);
+		}
+		 
+		unlimInt operator -() const {
+			unlimInt temp(*this);
+			temp._is_negative = !temp._is_negative;
+		    return temp;
+		}
+		
 		bool operator != (const unlimInt& puk) const{
 			return compare(*this, puk) != 0;
 		}
 		
-		bool operator >= (const unlimInt& puk) {
+		bool operator >= (const unlimInt& puk) const {
 			return compare(*this, puk) >= 0;
 		}
 		
-		bool operator <= (const unlimInt& puk) {
+		bool operator <= (const unlimInt& puk) const {
 			return compare(*this, puk) <= 0;
 		}
 		
-		bool operator > (const unlimInt& puk) {
+		bool operator > (const unlimInt& puk) const {
 			return compare(*this, puk) > 0;
 		}
 		
-		bool operator < (const unlimInt& puk) {
+		bool operator < (const unlimInt& puk) const {
 			return compare(*this, puk) < 0;
 		}
 		
-		bool operator == (const unlimInt& puk) {
+		bool operator == (const unlimInt& puk) const{
 			return compare(*this, puk) == 0;
 		}
 };
+
 /*
-friend pair<bigint, bigint> divmod(const bigint &a1, const bigint &b1) {
-        int norm = base / (b1.a.back() + 1);
-        bigint a = a1.abs() * norm;
-        bigint b = b1.abs() * norm;
-        bigint q, r;
-        q.a.resize(a.a.size());
 
-        for (int i = a.a.size() - 1; i >= 0; i--) {
-            r *= base;
-            r += a.a[i];
-            int s1 = r.a.size() <= b.a.size() ? 0 : r.a[b.a.size()];
-            int s2 = r.a.size() <= b.a.size() - 1 ? 0 : r.a[b.a.size() - 1];
-            int d = ((long long) base * s1 + s2) / b.a.back();
-            r -= b * d;
-            while (r < 0)
-                r += b, --d;
-            q.a[i] = d;
+const big_integer operator -(big_integer left, const big_integer& right) {
+        if (right._is_negative) return left + (-right);
+        else if (left._is_negative) return -(-left + right);
+        else if (left < right) return -(right - left);
+        int carry = 0;
+        for (size_t i = 0; i < right._digits.size() || carry != 0; ++i) {
+                left._digits[i] -= carry + (i < right._digits.size() ? right._digits[i] : 0);
+                carry = left._digits[i] < 0;
+                if (carry != 0) left._digits[i] += big_integer::BASE;
         }
+ 
+        left._remove_leading_zeros();
+        return left;
+}
 
-        q.sign = a1.sign * b1.sign;
-        r.sign = a1.sign;
-        q.trim();
-        r.trim();
-        return make_pair(q, r / norm);
-    }
+
+const big_integer operator /(const big_integer& left, const big_integer& right) {
+        // на ноль делить нельзя
+        if (right == 0) throw big_integer::divide_by_zero();
+        big_integer b = right;
+        b._is_negative = false;
+        big_integer result, current;
+        result._digits.resize(left._digits.size());
+        for (long long i = static_cast<long long>(left._digits.size()) - 1; i >= 0; --i) {
+                current._shift_right();
+                current._digits[0] = left._digits[i];
+                current._remove_leading_zeros();
+                int x = 0, l = 0, r = big_integer::BASE;
+                while (l <= r) {
+                        int m = (l + r) / 2;
+                        big_integer t = b * m;
+                        if (t <= current) {
+                                x = m;
+                                l = m + 1;
+                        }
+                        else r = m - 1;
+                }
+ 
+                result._digits[i] = x;
+                current = current - b * x;
+        }
+ 
+        result._is_negative = left._is_negative != right._is_negative;
+        result._remove_leading_zeros();
+        return result;
+}
 */
-
 } // end namespace kypluk
 #endif
