@@ -48,10 +48,18 @@ class  List {
         void push_back(type value) {
             insert(end(), value);
         }
+        
+        void pop_back() {
+        	erase(--end());	
+		}
 
         void push_front(type value) {
             insert(begin(), value);
         }
+        
+        void pop_front() {
+        	erase(begin());
+		}
 
         /**
          * @brief insert - 	Вставляет элементы
@@ -102,6 +110,24 @@ class  List {
         uint size() const {
             return _size;
         }
+        
+        bool is_empty() const {
+			return head->next == head || head->back == head;
+		}
+		
+		type& at(Size_t index) {
+			auto it = begin();
+			while (index--) 
+				++it;
+			return *it;
+		}
+		
+		const type& at(Size_t index) const {
+			auto it = begin();
+			while (index--) 
+				++it;
+			return *it;
+		}
 
         void clear() {
             while(_size) {

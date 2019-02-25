@@ -19,6 +19,15 @@ class unlimInt {
     	using container_t = List<uint8_t>;
 		container_t arr;
 		
+		void _remove_leading_zeros() {
+			while (!arr.is_empty() and arr.back() == 0)
+				arr.pop_back();
+			if (arr.is_empty()) {
+				arr.push_back(0);
+				_is_negative = false;
+			}
+		}
+		
 	public:
 		
 		unlimInt(llint puk = 0) {
@@ -31,7 +40,6 @@ class unlimInt {
 		
 		unlimInt(const unlimInt & puk) {
 			*this = puk;
-			
 		}
 		/*
 		проблема с конвертацией типов
@@ -51,10 +59,10 @@ class unlimInt {
 			// мы напишем лишь сложение двух положительных чисел
         	// остальное мы выведем, используя смену знака и вычитание
 			if (this->_is_negative) {
-                if (puk._is_negative) return -(-*this + (-puk));
-                else return puk - (-*this);
+                if (puk._is_negative) return *this = -((-*this) + (-puk));
+                else return *this = puk - (-*this);
 	        }
-	        else if (puk._is_negative) return *this - (-puk);
+	        else if (puk._is_negative) return this->sub(-puk);
 	        
 			if (arr.size() < puk.arr.size()) {
 				Size_t buf = puk.arr.size()-arr.size();
@@ -72,8 +80,7 @@ class unlimInt {
 		            *i -= 10;//i % 10
 		        }
 		    }
-		    if (i != arr.end())
-		    {
+		    if (i != arr.end()) {
 		    	for ( ; i != arr.end(); ++i) {
 		    		if (desyatok != 0) {
 				        *i = *i + desyatok;
@@ -93,18 +100,17 @@ class unlimInt {
 		
 		unlimInt& sub (const unlimInt& puk) {
 			
-			if (puk._is_negative) return *this + (-puk);
-	        else if (this->_is_negative) return -(-*this + puk);
-	        else if (*this < puk) return -(puk - *this);
+			if (puk._is_negative) return this->add(-puk);
+	        else if (this->_is_negative) return *this = -(-*this + puk);
+	        else if (*this < puk) return *this = -(puk - *this);
 	        int carry = 0;
-	        for (size_t i = 0; i < puk._digits.size() || carry != 0; ++i) {
-	                this->_digits[i] -= carry + (i < puk._digits.size() ? puk._digits[i] : 0);
-	                carry = this->_digits[i] < 0;
-	                if (carry != 0) this->_digits[i] += big_integer::BASE;
+	        for (Size_t i = 0; i < puk.arr.size() || carry != 0; ++i) {
+	                this->arr.at(i) -= carry + (i < puk.arr.size() ? puk.arr.at(i) : 0);
+	                carry = this->arr.at(i) < 0;
+	                if (carry != 0) this->arr.at(i) += 9;
 	        }
 	 
 	        this->_remove_leading_zeros();
-	        return *this;
 			
 		    return *this;
 		}
@@ -144,7 +150,7 @@ class unlimInt {
 		}
 		
 		
-		Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) {
+		/*Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) {
 	        int norm = base / (b1.a.back() + 1);
 	        unlimInt a = this->abs() * norm;
 	        unlimInt b = b1.abs() * norm;
@@ -160,14 +166,14 @@ class unlimInt {
 	            r -= b * d;
 	            while (r < 0)
 	                r += b, --d;
-	            q.a[i] = d;
+	            q.arr[i] = d;
 	        }
 	
-	        q._sign = this->_sign * b1._sign;
-	        r._sign = this->_sign;
+	        q._is_negative = this->_is_negative * b1._is_negative;
+	        r._is_negative = this->_is_negative;
 
 	        return Pair({q, r / norm});
-	    }
+	    }*/
 		
 		//--------
 		//dispensable methods
@@ -227,7 +233,7 @@ class unlimInt {
 		
 		static int compare(const unlimInt& raz, const unlimInt& dva) {
 			if (raz._is_negative != dva._is_negative) 
-				return raz.sign()-dva.sign();
+				return dva._is_negative - raz._is_negative;
 			
 			if (raz.length() != dva.length())
 				return raz.length() > dva.length() ? 1 : -1;
@@ -272,26 +278,26 @@ class unlimInt {
 			return mult(puk);
 		}
 		
-		friend unlimInt operator + (const unlimInt& raz, const unlimInt& dvas) {
+		friend const unlimInt operator + (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.add(dvas);
 		}
 		
-		friend unlimInt operator - (const unlimInt& raz, const unlimInt& dvas) {
+		friend const unlimInt operator - (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.sub(dvas);
 		}
 
-		friend unlimInt operator * (const unlimInt& raz, const unlimInt& dvas) {
+		friend const unlimInt operator * (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.mult(dvas);
 		}
 		
-		unlimInt operator +() const {
+		const unlimInt operator +() const {
 		    return unlimInt(*this);
 		}
 		 
-		unlimInt operator -() const {
+		const unlimInt operator -() const {
 			unlimInt temp(*this);
 			temp._is_negative = !temp._is_negative;
 		    return temp;
