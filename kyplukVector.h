@@ -90,17 +90,40 @@ class Vector {
 	            return arr[pos];
 	        }
 	    }
-	    
-	    /*
-	    slice
-	    subvector
-	    map
-	    filter
-	    */
-	    /*
-	    Vector slice() {
-	    	
-		}*/
+  
+	    Vector slice(Size_t first, Size_t last) {
+	    	return this->filter([&first, &last](const type& itm, Size_t current_index){
+	    		return first >= current_index and current_index < last;
+			});
+		}
+		
+		//callback(item, i)
+		template <class Func>
+		Vector filter(Func check) {
+			Vector res;
+			for (Size_t index = 0; index < size(); index++) {
+				if (check(*this[index], index)) res.push_back();
+			}
+			return res;
+		}
+		
+		//callback(item, i)
+		template <class Func>
+		Vector& map(Func query) {
+			Vector res;
+			for (Size_t index = 0; index < size(); index++) {
+				res.push_back(query(*this[index], index));
+			}
+			return res;
+		}
+		
+		//callback(item, i)
+		template <class Func>
+		void for_each(Func query) {
+			for (Size_t index = 0; index < size(); index++) {
+				query(*this[index], index);
+			}
+		}
 	    
 	    type& front() {
 	        return *begin();
@@ -120,7 +143,11 @@ class Vector {
 		
 		const type* data () const {
 			return arr;
-		}		
+		}
+		
+		void reverse() {
+			reverse(begin(), end());
+		}	
 };
 
 template <class type>

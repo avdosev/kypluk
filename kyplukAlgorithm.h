@@ -49,14 +49,20 @@ namespace kypluk {
     }
     
     template<class InputIt, class OutputIt, class UnaryFunc>
-	OutputIt copy_if(InputIt first, InputIt last, OutputIt d_first, UnaryFunc pred)
-	{
+	OutputIt copy_if(InputIt first, InputIt last, OutputIt d_first, UnaryFunc pred) {
 	    while (first != last) {
 	        if(pred(*first))
 	            *d_first++ = *first;
 	         first++;
 	    }
 	    return d_first;
+	}
+	
+	template<class BidirIt>
+	void reverse(BidirIt first, BidirIt last) {
+	    while ((first != last) && (first != --last)) {
+	        swap(*first++, *last);
+	    }
 	}
 
     template <class type>

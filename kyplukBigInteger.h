@@ -50,11 +50,11 @@ class unlimInt {
 		unlimInt& add (const unlimInt& puk) {
 			// мы напишем лишь сложение двух положительных чисел
         	// остальное мы выведем, используя смену знака и вычитание
-			if (left._is_negative) {
-                if (right._is_negative) return -(-left + (-right));
-                else return right - (-left);
+			if (this->_is_negative) {
+                if (puk._is_negative) return -(-*this + (-puk));
+                else return puk - (-*this);
 	        }
-	        else if (right._is_negative) return left - (-right);
+	        else if (puk._is_negative) return *this - (-puk);
 	        
 			if (arr.size() < puk.arr.size()) {
 				Size_t buf = puk.arr.size()-arr.size();
@@ -93,6 +93,18 @@ class unlimInt {
 		
 		unlimInt& sub (const unlimInt& puk) {
 			
+			if (puk._is_negative) return *this + (-puk);
+	        else if (this->_is_negative) return -(-*this + puk);
+	        else if (*this < puk) return -(puk - *this);
+	        int carry = 0;
+	        for (size_t i = 0; i < puk._digits.size() || carry != 0; ++i) {
+	                this->_digits[i] -= carry + (i < puk._digits.size() ? puk._digits[i] : 0);
+	                carry = this->_digits[i] < 0;
+	                if (carry != 0) this->_digits[i] += big_integer::BASE;
+	        }
+	 
+	        this->_remove_leading_zeros();
+	        return *this;
 			
 		    return *this;
 		}
@@ -132,9 +144,9 @@ class unlimInt {
 		}
 		
 		
-		/*Pair<unlimInt, unlimInt> divmod(const unlimInt &a1, const unlimInt &b1) {
+		Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) {
 	        int norm = base / (b1.a.back() + 1);
-	        unlimInt a = a1.abs() * norm;
+	        unlimInt a = this->abs() * norm;
 	        unlimInt b = b1.abs() * norm;
 	        unlimInt q, r;
 	        q.a.resize(a.a.size());
@@ -142,8 +154,8 @@ class unlimInt {
 	        for (int i = a.a.size() - 1; i >= 0; i--) {
 	            r *= base;
 	            r += a.a[i];
-	            int s1 = r.a.size() <= b.a.size() ? 0 : r.a[b.a.size()];
-	            int s2 = r.a.size() <= b.a.size() - 1 ? 0 : r.a[b.a.size() - 1];
+	            int s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr[b.arr.size()];
+	            int s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr[b.a.size() - 1];
 	            int d = ((long long) base * s1 + s2) / b.a.back();
 	            r -= b * d;
 	            while (r < 0)
@@ -151,12 +163,11 @@ class unlimInt {
 	            q.a[i] = d;
 	        }
 	
-	        q._sign = a1._sign * b1._sign;
-	        r._sign = a1._sign;
-	        q.trim();
-	        r.trim();
+	        q._sign = this->_sign * b1._sign;
+	        r._sign = this->_sign;
+
 	        return Pair({q, r / norm});
-	    }*/
+	    }
 		
 		//--------
 		//dispensable methods
@@ -253,7 +264,7 @@ class unlimInt {
 			return add(puk);
 		}
 
-		unlimInt& operator += (const unlimInt &puk) {
+		unlimInt& operator -= (const unlimInt &puk) {
 			return sub(puk);
 		}
 		
@@ -314,18 +325,7 @@ class unlimInt {
 /*
 
 const big_integer operator -(big_integer left, const big_integer& right) {
-        if (right._is_negative) return left + (-right);
-        else if (left._is_negative) return -(-left + right);
-        else if (left < right) return -(right - left);
-        int carry = 0;
-        for (size_t i = 0; i < right._digits.size() || carry != 0; ++i) {
-                left._digits[i] -= carry + (i < right._digits.size() ? right._digits[i] : 0);
-                carry = left._digits[i] < 0;
-                if (carry != 0) left._digits[i] += big_integer::BASE;
-        }
- 
-        left._remove_leading_zeros();
-        return left;
+        
 }
 
 
