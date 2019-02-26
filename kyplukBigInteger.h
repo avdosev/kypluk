@@ -203,22 +203,23 @@ class unlimInt {
 		//---------
 		
 		static Vector<char> to_vstring(const unlimInt& number) {
-			Size_t j = number.length()-1;
+			Size_t j = number.length()-1+number._is_negative;
 			Vector<char> buf(number.length()+1+number._is_negative);
 			if (number._is_negative) buf.front() = '-';
 			for (auto i = number.arr.begin(); j >= 0+number._is_negative and i != number.arr.end(); --j, ++i) {
 				buf[j] = *i+'0';
 			}
 			
-			buf[buf.size()-1]='\0';
+			buf.back() = '\0';
 			return buf;
 		}
 		
 		static unlimInt from_string(const char * value) {
 			unlimInt res;
+			bool is_ngt = false;
 			if (*value) {
 				if (*value == '-') {
-					res._is_negative = true;
+					is_ngt = true;
 					value++;
 				}
 				res = *value - '0';
@@ -228,6 +229,7 @@ class unlimInt {
 				res.mult10(1).add(*value - '0');
 				value++;
 			}
+			res._is_negative = is_ngt;
 			return res;
 		}
 		
