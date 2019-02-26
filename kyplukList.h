@@ -88,7 +88,6 @@ class  List {
             }
 
             return Iterator(next);
-
         }
 
         Iterator begin() const {
@@ -130,7 +129,7 @@ class  List {
 		}
 
         void clear() {
-            while(_size) {
+            while(!is_empty()) {
                 erase(begin());
             }
         }
@@ -236,7 +235,7 @@ class  List {
         }
 
         List & operator = (const List& copy) {
-            clear();
+            this->clear();
             for_each(copy.begin(), copy.end(), [this](const type& item){
                 this->push_back(item);
             });

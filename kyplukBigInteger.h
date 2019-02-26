@@ -7,6 +7,8 @@
 #include <kyplukList.h>
 #include <kyplukPair.h>
 
+#include <iostream>
+
 namespace kypluk {
 
 //ebanuy rot ska
@@ -42,15 +44,10 @@ class unlimInt {
 		unlimInt(const unlimInt & puk) {
 			*this = puk;
 		}
-		/*
-		проблема с конвертацией типов
-		хз как е рашать
-		unlimInt(const char * value) {
-			while (*value) {
-				arr.push_back( *value - '0');
-				value++;
-			}
-		}*/
+		
+		~unlimInt() {
+			arr.clear();
+		}
 		
 		Size_t length() const {
 			return arr.size();
@@ -104,11 +101,13 @@ class unlimInt {
 			if (puk._is_negative) return this->add(-puk);
 	        else if (this->_is_negative) return *this = -(-*this + puk);
 	        else if (*this < puk) return *this = -(puk - *this);
-	        int carry = 0;
-	        for (Size_t i = 0; i < puk.arr.size() || carry != 0; ++i) {
-	                this->arr.at(i) -= carry + (i < puk.arr.size() ? puk.arr.at(i) : 0);
-	                carry = this->arr.at(i) < 0;
-	                if (carry != 0) this->arr.at(i) += base;
+	        
+			bool carry = false;
+	        for (auto i = this->arr.begin(), j = puk.arr.begin(); j != puk.arr.end() || carry != 0; ++i) {
+                *i -= carry + (j != puk.arr.end() ? *j : 0);
+                carry = *i > base;
+                if (carry) *i += base;
+                if (j != puk.arr.end()) ++j;
 	        }
 	 
 	        this->_remove_leading_zeros();
@@ -116,9 +115,9 @@ class unlimInt {
 		    return *this;
 		}
 		
-		unlimInt& mult10(unsigned short int puk = 1) {
+		unlimInt& mult10(unlimInt puk = 1) {
 			if ((*this) != 0)
-				for (short int i = 0; i < puk; i++) 
+				for (unlimInt i = 0; i != puk; ++i) 
 					arr.push_front(0);
 			return *this;
 		}
@@ -157,20 +156,20 @@ class unlimInt {
 	        unlimInt b = b1.abs() * norm;
 	        unlimInt q, r;
 	        //q.arr.resize(arr.arr.size());
-	        q.arr = List<uint8_t>(a.arr.size());
+	        q.arr = container_t(a.arr.size());
 	
-	        for (int i = a.arr.size() - 1; i >= 0; i--) {
+	        for (auto i = --a.arr.end(), j = --q.arr.end(); i != a.arr.end(); --i, --j) {
 	            r *= base;
-	            r += a.arr.at(i);
-	            int s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
-	            int s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr.at(b.arr.size() - 1);
+	            r += *i;
+	            uint8_t s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
+	            uint8_t s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr.at(b.arr.size() - 1);
 	            int d = ((long long) base * s1 + s2) / b.arr.back();
 	            r -= b * d;
 	            while (r < 0) {
 	                r += b;
 					--d;
 				}
-	            q.arr.at(i) = d;
+	            *j = d;
 	        }
 	
 	        q._is_negative = this->_is_negative * b1._is_negative;
@@ -361,43 +360,5 @@ class unlimInt {
 		}
 };
 
-/*
-
-const big_integer operator -(big_integer left, const big_integer& right) {
-        
-}
-
-
-const big_integer operator /(const big_integer& left, const big_integer& right) {
-        // на ноль делить нельзя
-        if (right == 0) throw big_integer::divide_by_zero();
-        big_integer b = right;
-        b._is_negative = false;
-        big_integer result, current;
-        result._digits.resize(left._digits.size());
-        for (long long i = static_cast<long long>(left._digits.size()) - 1; i >= 0; --i) {
-                current._shift_right();
-                current._digits[0] = left._digits[i];
-                current._remove_leading_zeros();
-                int x = 0, l = 0, r = big_integer::BASE;
-                while (l <= r) {
-                        int m = (l + r) / 2;
-                        big_integer t = b * m;
-                        if (t <= current) {
-                                x = m;
-                                l = m + 1;
-                        }
-                        else r = m - 1;
-                }
- 
-                result._digits[i] = x;
-                current = current - b * x;
-        }
- 
-        result._is_negative = left._is_negative != right._is_negative;
-        result._remove_leading_zeros();
-        return result;
-}
-*/
 } // end namespace kypluk
 #endif
