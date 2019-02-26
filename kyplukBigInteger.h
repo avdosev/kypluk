@@ -12,6 +12,7 @@ namespace kypluk {
 //ebanuy rot ska
 class unlimInt {
 	private:
+		static const uint8_t base = 10;
     	//знак + или - 
     	//true - is_negative
     	//false - is_not_negative
@@ -107,7 +108,7 @@ class unlimInt {
 	        for (Size_t i = 0; i < puk.arr.size() || carry != 0; ++i) {
 	                this->arr.at(i) -= carry + (i < puk.arr.size() ? puk.arr.at(i) : 0);
 	                carry = this->arr.at(i) < 0;
-	                if (carry != 0) this->arr.at(i) += 9;
+	                if (carry != 0) this->arr.at(i) += base;
 	        }
 	 
 	        this->_remove_leading_zeros();
@@ -150,30 +151,52 @@ class unlimInt {
 		}
 		
 		
-		/*Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) {
-	        int norm = base / (b1.a.back() + 1);
+		Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) const {
+	        int8_t norm = base / (b1.arr.back() + 1);
 	        unlimInt a = this->abs() * norm;
 	        unlimInt b = b1.abs() * norm;
 	        unlimInt q, r;
-	        q.a.resize(a.a.size());
+	        //q.arr.resize(arr.arr.size());
+	        q.arr = List<uint8_t>(a.arr.size());
 	
-	        for (int i = a.a.size() - 1; i >= 0; i--) {
+	        for (int i = a.arr.size() - 1; i >= 0; i--) {
 	            r *= base;
-	            r += a.a[i];
-	            int s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr[b.arr.size()];
-	            int s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr[b.a.size() - 1];
-	            int d = ((long long) base * s1 + s2) / b.a.back();
+	            r += a.arr.at(i);
+	            int s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
+	            int s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr.at(b.arr.size() - 1);
+	            int d = ((long long) base * s1 + s2) / b.arr.back();
 	            r -= b * d;
-	            while (r < 0)
-	                r += b, --d;
-	            q.arr[i] = d;
+	            while (r < 0) {
+	                r += b;
+					--d;
+				}
+	            q.arr.at(i) = d;
 	        }
 	
 	        q._is_negative = this->_is_negative * b1._is_negative;
 	        r._is_negative = this->_is_negative;
+	        
+	        q._remove_leading_zeros();
+        	r._remove_leading_zeros();
 
-	        return Pair({q, r / norm});
-	    }*/
+	        return Pair<unlimInt, unlimInt>({q, r.divbase(norm)});
+	    }
+	    
+	    unlimInt divbase(int8_t v) const {
+	    	unlimInt copy = *this;
+	    	if (v < 0) {
+            	copy._is_negative = true;
+				v = -v;
+            }
+            int rem = 0;
+	        for (auto i = --copy.arr.end(); i != copy.arr.end(); --i) {
+	            uint8_t cur = *i + rem * base;
+	            *i = (int) (cur / v);
+	            rem = (int) (cur % v);
+	        }
+	        copy._remove_leading_zeros();
+	        return copy;
+		}
 		
 		//--------
 		//dispensable methods
@@ -293,6 +316,14 @@ class unlimInt {
 		friend const unlimInt operator * (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.mult(dvas);
+		}
+		
+		friend const unlimInt operator / (const unlimInt& raz, const unlimInt& dvas) {
+			return raz.divmod(dvas).first;
+		}
+		
+		friend const unlimInt operator % (const unlimInt& raz, const unlimInt& dvas) {
+			return raz.divmod(dvas).second;
 		}
 		
 		const unlimInt operator +() const {

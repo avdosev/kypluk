@@ -80,7 +80,7 @@ class  List {
             Node* node = delet.node;
             Node* next = this->end().node;
 
-            if (node->next != node && node != head) {//если осталось не одна нода то все норм
+            if (node->next != node || node != head) {//если осталось не одна нода то все норм
                 next = node->back->next = node->next;
                 node->next->back = node->back;
                 _size--;
