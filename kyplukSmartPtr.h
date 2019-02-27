@@ -11,9 +11,8 @@ class UniquePtr {
 		UniquePtr(const UniquePtr&) {};
 		void operator = (const UniquePtr&) {};
 	public:
-		template <
 		UniquePtr(pointer ptr = NULL) {
-			ptr = NULL;
+			this->ptr = ptr;
 		}
 		~UniquePtr() {
 			if (ptr) delete ptr;
@@ -56,11 +55,11 @@ class UniquePtr {
 			return *ptr;
 		}
 		
-		pointer operator -> () {
+		const pointer operator -> () {
 			return get();
 		}
 		
-		const pointer operator () {
+		operator const pointer () {
 			return ptr;
 		}
 };

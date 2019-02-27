@@ -172,7 +172,7 @@ class unlimInt {
 	            *j = d;
 	        }
 	
-	        q._is_negative = this->_is_negative * b1._is_negative;
+	        q._is_negative = this->_is_negative || b1._is_negative;
 	        r._is_negative = this->_is_negative;
 	        
 	        q._remove_leading_zeros();
