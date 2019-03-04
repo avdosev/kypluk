@@ -121,7 +121,7 @@ class Vector {
 		template <class Func>
 		void for_each(Func query) {
 			for (Size_t index = 0; index < size(); index++) {
-				query(*this[index], index);
+                query((*this)[index], index);
 			}
 		}
 	    
