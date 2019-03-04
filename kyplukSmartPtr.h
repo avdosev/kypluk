@@ -123,7 +123,7 @@ class SharedPtr {
 				if (node->value) delete node->value;
 				delete node;
 			}
-			this->node = other->node;
+			this->node = other.node;
 			this->node->size++;
 			return *this;
 		}
