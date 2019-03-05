@@ -35,6 +35,7 @@ class unlimInt {
 		
 		unlimInt(llint puk = 0) {
 			_is_negative = puk < 0;
+			if (_is_negative) puk = -puk;
 			arr.push_back(puk%10);
 			while ((puk/=10) != 0) {
 				arr.push_back(puk%10);
@@ -140,6 +141,8 @@ class unlimInt {
 		
 		unlimInt& mult (const unlimInt& puk) {
 			unlimInt xraniliche = *this;
+			bool thisNegative = this->_is_negative;
+			xraniliche._is_negative = false;
 			(*this) = 0;
 			Size_t j = 0;
 			for (auto i = puk.arr.begin(); i != puk.arr.end(); ++i, ++j)
@@ -149,7 +152,7 @@ class unlimInt {
 			}
 			
 			//boolean xor
-			this->_is_negative = (!puk._is_negative && this->_is_negative) || (puk._is_negative && !this->_is_negative);
+			this->_is_negative = (!puk._is_negative && thisNegative) || (puk._is_negative && !thisNegative);
 			
 			return *this;
 		}
