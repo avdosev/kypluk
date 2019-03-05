@@ -10,8 +10,8 @@ template <class type>
 class Vector {
 	private:
         type* arr;
-        size_t _size;
-        size_t real_size;
+        Size_t _size;
+        Size_t real_size;
         class VectorIterator;
         friend class VectorIterator;
         
@@ -31,13 +31,18 @@ class Vector {
 		friend void swap(Vector<swap_type>& raz, Vector<swap_type>& dva);
 	public:
 		using Iterator = VectorIterator;
-        Vector(size_t size = 0, const type& value = type()) {
+        Vector(Size_t size = 0, const type& value = type()) {
             _size = real_size = size;
             if (!real_size) real_size = 1;
             arr = new type[real_size];
             for (type& item : *this) {
             	item = value;
 			}
+        }
+
+        Vector(const Vector& other) {
+            arr = new type[1];
+            *this = other;
         }
         
         template <class ConstIterator>
@@ -147,7 +152,15 @@ class Vector {
 		
 		void reverse() {
 			reverse(begin(), end());
-		}	
+                }
+
+                Vector& operator = (const Vector& other) {
+                    delete[] arr;
+                    arr = new type[other.size()]();
+                    real_size = _size = other.size();
+                    copy(other.data(), other.data()+other.size(), this->begin());
+                    return *this;
+                }
 };
 
 template <class type>
