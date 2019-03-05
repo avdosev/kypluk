@@ -123,21 +123,23 @@ class unlimInt {
 		}
 		
 		//fix ускорь множеие
-		unlimInt& mult0to9 (unsigned short int puk) {
+		unlimInt& mult0to9 (uint8_t puk) {
 			unlimInt xraniliche(*this);
-			(*this) = 0;
-			
-			for (int i = 0; i < puk; i++)
-			{
-				(*this) += xraniliche;	
+			if (puk == 0) (*this) = 0;
+			else {
+				uint8_t carry = 0;
+				for (uint8_t& item : this->arr) {
+					item = item * puk + carry;
+					carry = item / base;
+					item %= base;
+				}
+				if (carry) this->arr.push_back(carry);	
 			}
-			
 			return *this;
 		}
 		
 		unlimInt& mult (const unlimInt& puk) {
-			unlimInt xraniliche;
-			xraniliche = *this;
+			unlimInt xraniliche = *this;
 			(*this) = 0;
 			Size_t j = 0;
 			for (auto i = puk.arr.begin(); i != puk.arr.end(); ++i, ++j)
@@ -145,6 +147,9 @@ class unlimInt {
 				unlimInt xraniliche1 = xraniliche; 
 				(*this) += xraniliche1.mult0to9(*i).mult10(j);
 			}
+			
+			//boolean xor
+			this->_is_negative = (!puk._is_negative && this->_is_negative) || (puk._is_negative && !this->_is_negative);
 			
 			return *this;
 		}

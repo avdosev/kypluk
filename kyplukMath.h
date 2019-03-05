@@ -40,7 +40,7 @@ f abs (f chislo) {
 }
 
 template <class f>
-short int sign(f chislo) {
+int sign(f chislo) {
 	if (chislo>0)
 		return 1;
 	elif (chislo<0)

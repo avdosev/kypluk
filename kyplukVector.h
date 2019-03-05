@@ -152,15 +152,15 @@ class Vector {
 		
 		void reverse() {
 			reverse(begin(), end());
-                }
+        }
 
-                Vector& operator = (const Vector& other) {
-                    delete[] arr;
-                    arr = new type[other.size()]();
-                    real_size = _size = other.size();
-                    copy(other.data(), other.data()+other.size(), this->begin());
-                    return *this;
-                }
+        Vector& operator = (const Vector& other) {
+            delete[] arr;
+            arr = new type[other.size()]();
+            real_size = _size = other.size();
+            copy(other.data(), other.data()+other.size(), this->begin());
+            return *this;
+        }
 };
 
 template <class type>
