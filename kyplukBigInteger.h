@@ -310,6 +310,10 @@ class unlimInt {
 			return mult(puk);
 		}
 		
+		unlimInt& operator /= (const unlimInt& puk) {
+			return *this = this->divmod(puk).first;
+		}
+		
 		friend const unlimInt operator + (const unlimInt& raz, const unlimInt& dvas) {
 			unlimInt puk = raz;
 			return puk.add(dvas);
@@ -367,6 +371,11 @@ class unlimInt {
 			return compare(*this, puk) == 0;
 		}
 };
+using BigInteger = unlimInt;
+/*
+fast factor
+http://www.luschny.de/math/factorial/binarysplitfact.html
+*/ 
 
 } // end namespace kypluk
 #endif

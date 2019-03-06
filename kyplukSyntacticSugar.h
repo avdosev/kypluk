@@ -7,10 +7,6 @@
 	//#define or ||
 	#define unless(bo) if (!(bo))
 	#define until(bo) while(!(bo))
-	#define loop while(true)
-	
-	//const
-	//#define readonly const
-	//#define final const
+    //#define loop while(true)
 	
 #endif
