@@ -84,24 +84,29 @@ class Decimal {
 		
 		Decimal& operator = (const Decimal& other) {
 			this->dec = other.dec;
+			return *this;
 		}
 		
 		Decimal& operator += (const Decimal& other) {
 			dec += other.dec;
+			return *this;
 		}
 		
 		Decimal& operator -= (const Decimal& other) {
 			dec -= other.dec;
+			return *this;
 		}
 		
 		Decimal& operator *= (const Decimal& other) {
 			dec *= other.dec;
 			dec /= base;
+			return *this;
 		}
 		
 		Decimal& operator /= (const Decimal& other) {
 			dec *= base;
 			dec /= other.dec;
+			return *this;
 		}
 		
 		friend const Decimal operator + (const Decimal& raz, const Decimal& dvas) {

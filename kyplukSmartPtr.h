@@ -8,8 +8,8 @@ class UniquePtr {
 	private:
 		using pointer = type*;
 		pointer ptr;
-		UniquePtr(const UniquePtr&) {};
-		void operator = (const UniquePtr&) {};
+        UniquePtr(const UniquePtr&) {}
+        void operator = (const UniquePtr&) {}
 	public:
 		UniquePtr(pointer ptr = NULL) {
 			this->ptr = ptr;
@@ -55,11 +55,11 @@ class UniquePtr {
 			return *ptr;
 		}
 		
-		const pointer operator -> () {
+        pointer operator -> () {
 			return get();
 		}
 		
-		operator const pointer () {
+        operator pointer () {
 			return ptr;
 		}
 };

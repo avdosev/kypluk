@@ -18,7 +18,7 @@
 	#endif
 
 	namespace kypluk {
-		static char space[] = " ",
+		const char space[] = " ",
 		endl[] = "\n",
 		separator[] = " | ";
 	}
