@@ -7,6 +7,6 @@
 	//#define or ||
 	#define unless(bo) if (!(bo))
 	#define until(bo) while(!(bo))
-    //#define loop while(true)
+    //#define loop(bo) while(true)
 	
 #endif
