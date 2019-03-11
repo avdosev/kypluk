@@ -57,11 +57,11 @@ class unlimInt {
 		unlimInt& add (const unlimInt& puk) {
 			// мы напишем лишь сложение двух положительных чисел
         	// остальное мы выведем, используя смену знака и вычитание
-			if (this->_is_negative) {
-                if (puk._is_negative) return *this = -((-*this) + (-puk));
-                else return *this = puk - (-*this);
+			if (this->negative()) {
+                if (puk.negative()) return this->neg().add(-puk).neg();
+                else return *this = puk - this->neg();
 	        }
-	        else if (puk._is_negative) return this->sub(-puk);
+	        else if (puk.negative()) return this->sub(-puk);
 	        
 			if (arr.size() < puk.arr.size()) {
 				Size_t buf = puk.arr.size()-arr.size();
@@ -99,8 +99,8 @@ class unlimInt {
 		
 		unlimInt& sub (const unlimInt& puk) {
 			
-			if (puk._is_negative) return this->add(-puk);
-	        else if (this->_is_negative) return *this = -(-*this + puk);
+			if (puk.negative()) return this->add(-puk);
+	        else if (this->negative()) return this->neg().add(puk).neg();
 	        else if (*this < puk) return *this = -(puk - *this);
 	        
 			bool carry = false;
@@ -210,8 +210,9 @@ class unlimInt {
 		//--------
 		
 		int sign() const {
-			if ((*this) == 0) return 0; 
-			return this->_is_negative ? -1 : 1;
+			if (this->negative())
+				return -1;
+			return (*this) == 0 ? 0 : 1; 
 		}
 		
 		unlimInt abs() const {
@@ -226,6 +227,15 @@ class unlimInt {
 		
 		bool even() const {
 		    return !this->odd();
+		}
+		
+		bool negative() const {
+			return this->_is_negative;
+		}
+		
+		unlimInt& neg() {
+			this->_is_negative = !(this->_is_negative);
+			return *this;
 		}
 		
 		//---------
