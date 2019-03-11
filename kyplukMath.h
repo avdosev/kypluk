@@ -19,7 +19,7 @@ puk fact(puk n) {
 }
 
 template<class puk>
-puk pow(puk base, puk power) {
+puk pow(const puk& base, const puk& power) {
     if (power == 0)
         return 1;
     else if (power.odd()) {
