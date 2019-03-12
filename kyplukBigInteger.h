@@ -5,21 +5,22 @@
 #include <kyplukDefine.h>
 #include <kyplukVector.h>
 #include <kyplukList.h>
-#include <kyplukPair.h>
 
-#include <iostream>
+#include <kyplukUtility.h>
 
 namespace kypluk {
 
 //ebanuy rot ska
 class unlimInt {
 	private:
-		static const uint8_t base = 10;
+    	using base_t = uint8_t;
+    	using container_t = List<base_t>;
+		
+		static const base_t base = 10;
     	//знак + или - 
     	//true - is_negative
     	//false - is_not_negative
     	bool _is_negative;
-    	using container_t = List<uint8_t>;
 		container_t arr;
 		
 		void _remove_leading_zeros() {
@@ -70,27 +71,16 @@ class unlimInt {
 			}
 			
 		    int desyatok = 0;
-		    auto i = arr.begin();
-			for (auto j = puk.arr.begin(); i != arr.end() and j != puk.arr.end(); ++i, ++j) {
-		        *i = *i + *j + desyatok;
+			for (auto i = this->arr.begin(), j = puk.arr.begin(); i != this->arr.end(); ++i) {
+		        *i = *i + desyatok + ( j == puk.arr.end() ? 0 : *j );
 		        desyatok = 0;
-		        if (*i > 9) {
+		        if (*i >= base) {
 		            desyatok = 1;//i / 10
 		            *i -= 10;//i % 10
 		        }
+		        if (j != puk.arr.end()) ++j;
 		    }
-		    if (i != arr.end()) {
-		    	for ( ; i != arr.end(); ++i) {
-		    		if (desyatok != 0) {
-				        *i = *i + desyatok;
-				        desyatok = 0;
-				        if (*i > 9) {
-				            desyatok = 1;//i / 10
-				            *i -= 10;//i % 10
-				        }
-				    }
-			    }
-		    }
+		    
 		    if (desyatok)
 				arr.push_back(1);
 			
@@ -124,12 +114,12 @@ class unlimInt {
 		}
 		
 		//fix ускорь множеие
-		unlimInt& mult0to9 (uint8_t puk) {
+		unlimInt& mult0to9 (base_t puk) {
 			unlimInt xraniliche(*this);
 			if (puk == 0) (*this) = 0;
 			else {
-				uint8_t carry = 0;
-				for (uint8_t& item : this->arr) {
+				base_t carry = 0;
+				for (base_t& item : this->arr) {
 					item = item * puk + carry;
 					carry = item / base;
 					item %= base;
@@ -159,6 +149,7 @@ class unlimInt {
 		
 		
 		Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) const {
+			
 	        int8_t norm = base / (b1.arr.back() + 1);
 	        unlimInt a = this->abs() * norm;
 	        unlimInt b = b1.abs() * norm;
@@ -169,8 +160,8 @@ class unlimInt {
 	        for (auto i = --a.arr.end(), j = --q.arr.end(); i != a.arr.end(); --i, --j) {
 	            r *= base;
 	            r += *i;
-	            uint8_t s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
-	            uint8_t s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr.at(b.arr.size() - 1);
+	            base_t s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
+	            base_t s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr.at(b.arr.size() - 1);
 	            int d = ((long long) base * s1 + s2) / b.arr.back();
 	            r -= b * d;
 	            while (r < 0) {
@@ -197,7 +188,7 @@ class unlimInt {
             }
             int rem = 0;
 	        for (auto i = --copy.arr.end(); i != copy.arr.end(); --i) {
-	            uint8_t cur = *i + rem * base;
+	            base_t cur = *i + rem * base;
 	            *i = (int) (cur / v);
 	            rem = (int) (cur % v);
 	        }
@@ -353,7 +344,7 @@ class unlimInt {
 		 
 		const unlimInt operator -() const {
 			unlimInt temp(*this);
-			temp._is_negative = !temp._is_negative;
+			temp.neg();
 		    return temp;
 		}
 		
