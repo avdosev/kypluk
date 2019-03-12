@@ -33,6 +33,7 @@ class unlimInt {
 		}
 		
 	public:
+		class division_by_zero : public logic_error {};
 		
 		unlimInt(llint puk = 0) {
 			_is_negative = puk < 0;
@@ -69,8 +70,8 @@ class unlimInt {
 				for (Size_t i = 0; i < buf; i++)
 					arr.push_back(0);
 			}
-			
-		    int desyatok = 0;
+		    
+            base_t desyatok = 0;
 			for (auto i = this->arr.begin(), j = puk.arr.begin(); i != this->arr.end(); ++i) {
 		        *i = *i + desyatok + ( j == puk.arr.end() ? 0 : *j );
 		        desyatok = 0;
@@ -149,8 +150,9 @@ class unlimInt {
 		
 		
 		Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) const {
-			
-	        int8_t norm = base / (b1.arr.back() + 1);
+            if (b1 == 0) throw division_by_zero();
+	        
+			base_t norm = base / (b1.arr.back() + 1);
 	        unlimInt a = this->abs() * norm;
 	        unlimInt b = b1.abs() * norm;
 	        unlimInt q, r;
@@ -162,7 +164,7 @@ class unlimInt {
 	            r += *i;
 	            base_t s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
 	            base_t s2 = r.arr.size() <= b.arr.size() - 1 ? 0 : r.arr.at(b.arr.size() - 1);
-	            int d = ((long long) base * s1 + s2) / b.arr.back();
+                int d = ( base * s1 + s2) / b.arr.back();
 	            r -= b * d;
 	            while (r < 0) {
 	                r += b;
@@ -180,17 +182,17 @@ class unlimInt {
 	        return Pair<unlimInt, unlimInt>({q, r.divbase(norm)});
 	    }
 	    
-	    unlimInt divbase(int8_t v) const {
+        unlimInt divbase(int8_t v) const {
 	    	unlimInt copy = *this;
 	    	if (v < 0) {
             	copy._is_negative = true;
 				v = -v;
             }
-            int rem = 0;
+            base_t rem = 0;
 	        for (auto i = --copy.arr.end(); i != copy.arr.end(); --i) {
 	            base_t cur = *i + rem * base;
-	            *i = (int) (cur / v);
-	            rem = (int) (cur % v);
+                *i = cur / v;
+                rem = cur % v;
 	        }
 	        copy._remove_leading_zeros();
 	        return copy;
@@ -220,7 +222,7 @@ class unlimInt {
 		    return !this->odd();
 		}
 		
-		bool negative() const {
+		inline bool negative() const {
 			return this->_is_negative;
 		}
 		
