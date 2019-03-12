@@ -55,26 +55,27 @@ class Decimal {
 					is_ngt = true;
 					value++;
 				}
-				res = *value - '0';
+                bf = *value - '0';
 				value++;
 			}
 			unsigned acc = accuracy;
 			bool point_cheked = false;
-			while (*value || acc) {
-				if (*value <= '9' && *value >= '0') 
-					res.mult10(1).add(*value - '0');
-				else if (*value == '.') {
-					
-				}
-				
-				if (value) value++;
+			
+			for (; *value; value++) {
 				if (point_cheked) {
-					acc--;
-					if (!value) res.mult10(1);
+					if (acc) acc--;
 				}
-				
+					
+				if (*value <= '9' && *value >= '0') 
+                    bf.mult10(1).add(*value - '0');
+				else if (*value == '.') {
+					point_cheked = true;
+				}
+					
 			}
-			if (is_ngt) 
+			if (acc) bf.mult10(acc);
+			if (is_ngt) bf.neg();
+			
 			return res;
 		}
 		
