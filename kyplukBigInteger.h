@@ -231,6 +231,10 @@ class unlimInt {
 			return *this;
 		}
 		
+		bool zero() {
+			return *this == 0;
+		}
+		
 		//---------
 		//static function
 		//---------

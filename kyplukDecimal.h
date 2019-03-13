@@ -68,7 +68,7 @@ class Decimal {
 					
 				if (*value <= '9' && *value >= '0') 
                     bf.mult10(1).add(*value - '0');
-				else if (*value == '.') {
+                else if (*value == '.' || *value == ',') {
 					point_cheked = true;
 				}
 					
