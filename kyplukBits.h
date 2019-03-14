@@ -3,6 +3,8 @@
 
 #include <kyplukTypedef.h>
 
+namespace kypluk {
+
 class Bits {
     private:
         Size_t byte;
@@ -70,5 +72,7 @@ class Bits {
             return Bit(index, this);
         }
 };
+
+}
 
 #endif

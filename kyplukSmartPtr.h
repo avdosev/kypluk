@@ -3,6 +3,8 @@
 
 #include <kyplukDefine.h>
 
+namespace kypluk {
+
 template <class type>
 class UniquePtr {
 	private:
@@ -145,5 +147,7 @@ class SharedPtr {
 			return get();
 		}
 };
+
+}
 
 #endif
