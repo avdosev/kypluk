@@ -74,11 +74,14 @@ class unlimInt {
             base_t desyatok = 0;
 			for (auto i = this->arr.begin(), j = puk.arr.begin(); i != this->arr.end(); ++i) {
 		        *i = *i + desyatok + ( j == puk.arr.end() ? 0 : *j );
-		        desyatok = 0;
+		        
 		        if (*i >= base) {
 		            desyatok = 1;//i / 10
-		            *i -= 10;//i % 10
-		        }
+		            *i -= base;//i % 10
+		        } else {
+		        	desyatok = 0;
+				}
+				
 		        if (j != puk.arr.end()) ++j;
 		    }
 		    
@@ -116,7 +119,6 @@ class unlimInt {
 		
 		//fix ускорь множеие
 		unlimInt& mult0to9 (base_t puk) {
-			unlimInt xraniliche(*this);
 			if (puk == 0) (*this) = 0;
 			else {
 				base_t carry = 0;
