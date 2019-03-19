@@ -15,7 +15,6 @@ class  List {
         friend class ListIterator;
 
         Node * head;
-        uint _size = 0;
 
     public:
         using Iterator = ListIterator;
@@ -71,7 +70,6 @@ class  List {
                 node->back->next = new Node(value, node->back ,node->back->next);
                 node->back = node->back->next;
             }
-            _size += size;
 
             return --input;
         }
@@ -83,7 +81,6 @@ class  List {
             if (node->next != node || node != head) {//если осталось не одна нода то все норм
                 next = node->back->next = node->next;
                 node->next->back = node->back;
-                _size--;
                 delete node;
             }
 
@@ -97,6 +94,17 @@ class  List {
         Iterator end() const {
             return Iterator(head);
         }
+        
+        Iterator mid() const {
+			auto start = this->begin(), finish = --this->end();
+			auto pred_start = start;
+			while (start != finish && pred_start != finish) {
+				pred_start = start;
+				start++;
+				finish--;
+			}
+			return finish;
+		}
 
         type& front() const {
             return *begin();
@@ -107,7 +115,7 @@ class  List {
         }
 
         uint size() const {
-            return _size;
+            return distance(begin(), end());
         }
         
         bool is_empty() const {
@@ -136,59 +144,32 @@ class  List {
 
         void splice(Iterator pos, List &other) {
             splice(pos, *this, other.begin(), other.end());
-            if (&other != this) {
-                this->_size += other.size();
-                other._size = 0;
-            }
         }
 
-        void splice(Iterator pos, List& other, Iterator it) {
+        void splice(Iterator pos, Iterator it) {
             //тупа хак
             splice(pos, *this, it, Iterator(it.node->next));
-            if (&other != this) {
-                other._size--;
-                this->_size++;//aaaaa, дебажил из за этого сортировку несколько дней
-            }
         }
 
-        void splice(Iterator pos, List& other, Iterator first, Iterator last) {
+        void splice(Iterator pos, Iterator first, Iterator last) {
             //если накосячить то образуется петля
             //но мы же все знаем топовые алгоритмы для того чтоб понять попали мы в неё иль нет
             //так шо я оставлю все на кодера который будет писать код
-            //и назову ето неопределенным поведением
-            if (this == &other) {
-                //сохраняем указатель для дальнейших действий
-                Node *node_start = first.node, *node_stop = (--last).node;
+            //и назову ето неопределенным поведением // Эту хуйню сказал пидор
+            
+            //сохраняем указатель для дальнейших действий
+            Node *node_start = first.node, *node_stop = (--last).node;
 
-                //выкидывание из листа
-                node_stop -> next -> back = node_start -> back;
-                node_start -> back -> next = node_stop -> next;
-                //вставка в лист
-                Node* pred_node_insert = pos.node;
-                node_stop->next = pred_node_insert;
-                node_start->back = pred_node_insert->back;
-                pred_node_insert->back->next = node_start;
-                pred_node_insert->back = node_stop;
-            }
-            else {//если списочек то другой
-                while (first != last) {//FIX ME
-                    //сохраняем указатель для дальнейших действий
-                    Node *node = first.node;
-                    first = Iterator(first.node->next);
-                    //выкидывание из листа
-                    node -> next -> back = node -> back;
-                    node -> back -> next = node -> next;
-                    other._size--;
-                    //вставка в лист
-                    Node *pred_node_insert = pos.node;
-                    node->next = pred_node_insert;
-                    node->back = pred_node_insert->back;
-                    //pos.node = node;//3 минуты дебажинга //спустя 10 минут подправок я понел что оно реверсится
-                    pred_node_insert->back->next = node;
-                    pred_node_insert->back = node;//спустя день
-                    _size++;
-                }
-            }
+            //выкидывание из листа
+            node_stop -> next -> back = node_start -> back;
+            node_start -> back -> next = node_stop -> next;
+            //вставка в лист
+            Node* pred_node_insert = pos.node;
+            node_stop->next = pred_node_insert;
+            node_start->back = pred_node_insert->back;
+            pred_node_insert->back->next = node_start;
+            pred_node_insert->back = node_stop;
+
         }
 
         void merge(List & other) {
@@ -201,8 +182,9 @@ class  List {
             }
         }
 
+		//FIX MEE PLEASE
         void sort() {
-            if (_size <= 1) return;
+            /*if (_size <= 1) return;
             elif (_size == 2) {
                 if (back() < front())
                     swap(back(), front());
@@ -220,7 +202,7 @@ class  List {
             puk.sort();
             this->sort();
 
-            this->merge(puk);
+            this->merge(puk);*/
         }
 
         void reverse() {
