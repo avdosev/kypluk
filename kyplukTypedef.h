@@ -3,8 +3,8 @@
 
 	#include <stdint.h>
 	
-	using Size_t = uint32_t;
-	using uint = uint32_t;
+	using Size_t = size_t;
+	using uint = unsigned;
     using llint = int64_t;
 	
 #endif

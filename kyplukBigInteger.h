@@ -23,7 +23,7 @@ class unlimInt {
     	bool _is_negative;
 		container_t arr;
 		
-		void _remove_leading_zeros() {
+		void remove_leading_zeros() {
 			while (!arr.is_empty() and arr.back() == 0)
 				arr.pop_back();
 			if (arr.is_empty()) {
@@ -105,7 +105,7 @@ class unlimInt {
                 if (j != puk.arr.end()) ++j;
 	        }
 	 
-	        this->_remove_leading_zeros();
+	        this->remove_leading_zeros();
 			
 		    return *this;
 		}
@@ -140,8 +140,8 @@ class unlimInt {
 			Size_t j = 0;
 			for (auto i = puk.arr.begin(); i != puk.arr.end(); ++i, ++j)
 			{
-				unlimInt xraniliche1 = xraniliche; 
-				(*this) += xraniliche1.mult0to9(*i).mult10(j);
+				unlimInt xraniliche_tmp = xraniliche; 
+				(*this) += xraniliche_tmp.mult0to9(*i).mult10(j);
 			}
 			
 			//boolean xor
@@ -178,8 +178,8 @@ class unlimInt {
 	        q._is_negative = this->_is_negative || b1._is_negative;
 	        r._is_negative = this->_is_negative;
 	        
-	        q._remove_leading_zeros();
-        	r._remove_leading_zeros();
+	        q.remove_leading_zeros();
+        	r.remove_leading_zeros();
 
 	        return Pair<unlimInt, unlimInt>({q, r.divbase(norm)});
 	    }
@@ -196,7 +196,7 @@ class unlimInt {
                 *i = cur / v;
                 rem = cur % v;
 	        }
-	        copy._remove_leading_zeros();
+	        copy.remove_leading_zeros();
 	        return copy;
 		}
 		

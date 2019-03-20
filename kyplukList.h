@@ -8,16 +8,19 @@ namespace kypluk {
 template <class type>
 class  List {
     private:
-        struct Node;
+		struct Node;
         class ListIterator;
 
         friend struct Node;
         friend class ListIterator;
-
-        Node * head;
-
+        
+		Node * head;
+        
+		template <class swap_type>
+		friend void swap(List<swap_type>& raz, List<swap_type>& dva);
     public:
-        using Iterator = ListIterator;
+        
+		using Iterator = ListIterator;
 
         List() {
             head = new Node();
@@ -44,7 +47,7 @@ class  List {
         }
 
 
-        void push_back(type value) {
+        void push_back(const type& value) {
             insert(end(), value);
         }
         
@@ -52,7 +55,7 @@ class  List {
         	erase(--end());	
 		}
 
-        void push_front(type value) {
+        void push_front(const type& value) {
             insert(begin(), value);
         }
         
@@ -60,11 +63,7 @@ class  List {
         	erase(begin());
 		}
 
-        /**
-         * @brief insert - 	Вставляет элементы
-         * @return Iterator на вставленный элемент
-         */
-        Iterator insert (Iterator input, type value, uint size = 1) {
+        Iterator insert (Iterator input, const type& value, uint size = 1) {
             Node* node = input.node;
             for (uint i = 0; i < size; i++) {
                 node->back->next = new Node(value, node->back ,node->back->next);
@@ -118,7 +117,7 @@ class  List {
             return distance(begin(), end());
         }
         
-        bool is_empty() const {
+        bool empty() const {
 			return head->next == head || head->back == head;
 		}
 		
@@ -137,7 +136,7 @@ class  List {
 		}
 
         void clear() {
-            while(!is_empty()) {
+            while(!empty()) {
                 erase(begin());
             }
         }
@@ -232,7 +231,7 @@ struct List<type>::Node {
         Node* next;
         Node* back;
 
-        Node(type value, Node* back, Node* next) {
+        Node(const type& value, Node* back, Node* next) {
             this->value = value;
             this->next = next;
             this->back = back;
@@ -306,6 +305,11 @@ class List<type>::ListIterator {
         }
 
 };
+
+	template <class type>
+	void swap(List<type>& raz, List<type>& dva) {
+		swap(raz.head, dva.head);
+	}
 
 }
 

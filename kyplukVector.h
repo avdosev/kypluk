@@ -72,6 +72,10 @@ class Vector {
         Size_t size() const {
 	        return this->_size;
 	    }
+	    
+	    bool empty() const {
+			return size() == 0;
+		}
 	
 	    void push_back(const type& val) {
 	    	while (check_reborn(1)) reborn();
