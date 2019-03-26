@@ -25,7 +25,7 @@ class Decimal {
 		//static function
 		//-----------
 		
-		static Vector<char> to_vstring(const Decimal& number, char point = ',') {
+		static Vector<char> to_vstring(const Decimal& number, char point = '.') {
 			Vector<char> temp = unlimInt::to_vstring(number.dec);
 			Size_t charsAfterPoint = accuracy;
 		    if (temp.size()-1 < charsAfterPoint)  {

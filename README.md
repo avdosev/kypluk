@@ -5,17 +5,19 @@ missing
 # Installing
 * git clone this repositorie
 * add to your ide
-## QtCreator
+
+**Adding to IDE:**
+### QtCreator
 Add a line to the .pro file: 
 INCLUDEPATH += directory to library location
 illustration: 
 INCLUDEPATH += C:/kypluk/ 
-## DEV-C++
+### DEV-C++
 Tools >> Compiler Options >> Directories >> C ++ Include Files
 and just add the location directory
-## Any IDE
+### Any IDE
 sorry, i don't know
-## Adding in compilers file
+### Adding in compilers file
 find the include folder and paste all the files there
 # P.S.
 I'll be happy any feedback
