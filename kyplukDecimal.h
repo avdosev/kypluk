@@ -5,7 +5,7 @@
 
 namespace kypluk {
 	
-template <unsigned accuracy>
+template <Size_t accuracy>
 class Decimal {
 	private:
 		unlimInt dec;
@@ -25,12 +25,11 @@ class Decimal {
 		//static function
 		//-----------
 		
-		static Vector<char> to_vstring(const Decimal& number) {
+		static Vector<char> to_vstring(const Decimal& number, char point = ',') {
 			Vector<char> temp = unlimInt::to_vstring(number.dec);
-			unsigned charsAfterPoint = accuracy;
-		    if (temp.size()-2 < charsAfterPoint)  {
-		        //temp = (charsAfterPoint-temp.Length+1)*'0'+temp;
-		        Vector<char> tttempo(charsAfterPoint-(temp.size()-2), '0');
+			Size_t charsAfterPoint = accuracy;
+		    if (temp.size()-1 < charsAfterPoint)  {
+		        Vector<char> tttempo(charsAfterPoint-temp.size()+2, '0');
 		        for (auto item : temp) {
 		            tttempo.push_back(item);
 		        }
@@ -38,10 +37,10 @@ class Decimal {
 		    }
 		
 		    temp.push_back('\0');
-		    for (uint i = 0; i < charsAfterPoint; i++) {
-		        temp[temp.size()-2-i] = temp[temp.size()-2-(i+1)];
+		    for (Size_t i = 1; i <= charsAfterPoint; i++) {
+		        temp[temp.size()-1-i] = temp[temp.size()-1-(i+1)];
 		    }
-		    temp[temp.size()-2-charsAfterPoint] = ',';
+		    temp[temp.size()-2-charsAfterPoint] = point;
 
 		    return temp;
 		}
@@ -58,7 +57,7 @@ class Decimal {
                 bf = *value - '0';
 				value++;
 			}
-			unsigned acc = accuracy;
+			Size_t acc = accuracy;
 			bool point_cheked = false;
 			
 			for (; *value; value++) {
@@ -165,7 +164,7 @@ class Decimal {
 		}
 };
 	//Hack
-	template <unsigned accuracy>
+	template <Size_t accuracy>
 	unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(unlimInt(accuracy));
 }
 

@@ -62,10 +62,9 @@ class Vector {
 				if (count > _real_size) {
 					Size_t dinamic_size = (_real_size*3)/2 + 1;
 					reserve(dinamic_size > count ? dinamic_size : count);
-				} else {
-					_size = count;
 				}
 			}
+			_size = count;
         }
         
         void reserve(Size_t count) {
