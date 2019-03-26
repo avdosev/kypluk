@@ -3,118 +3,59 @@
 
 #include <kyplukDefine.h>
 
-template <class type>
+template <class container_t>
 class  Queue {
 	private:
-		struct Node {	
-			Node * back = NULL;
-			type znach;
-		};
-		
-		void copy(const Queue& for_copy) {
-			clear();
-			
-			Node * iter = for_copy.head;
-			while (iter!=NULL)
-			{
-				push(iter -> znach);
-				iter = iter -> back;
-			}
-		}
-		
-		Size_t _size = 0;
-		Node * head = NULL, * end = NULL;
-		
+		container_t container;
 	public:
 		Queue() {
-			_size = 0;
+			
 		}
 		
-		Queue(const Queue& for_copy) {
-			copy(for_copy);
+		Queue(const Queue& other) {
+			container = other;
 		}
 		
 		~Queue() {
-			clear();
+			container.clear()
 		}
 		
-		bool is_empty()
 		//проверка на пустоту
-		{
-			return _size == 0;
+		bool empty() {
+			return container.empty()
 		}
 		
-		Size_t size()
 		//Возвращает количество элементов в контейнере 
-		{
-			return _size;
+		Size_t size() {
+			return container.size();
 		}
 		
-		void push(const type& znach)
 		//добавления в очередь нового элемента
-		{
-			if (_size != 0)
-			{
-				end -> back = new Node;
-				end = end -> back;
-			}
-			else 
-			{
-				head = new Node;
-				end = head;
-			}
-			
-			end -> znach = znach;
-			_size++;
+		void push(const type& value) {
+			cotainer.push_back(value);
 		}
 		
-		const type pop()
 		//Если нам понадобилось удалить первый элемент
-		{
-			Node * tmp = head;
-			if (_size != 0)
-			{
-				head = head -> back;
-				type res = tmp -> znach;
-				delete tmp;
-				_size--;
-				return res;
-			}
+		void pop() {
+			container.pop_back();	
 		}
 		 
-		type& front()
 		//обратиться к первому элементу очереди
-		{
-			return head->znach;
+		type& front() {
+			return container.front();
 		}
 		
-		type& back() 
 		//обратиться к последнему элементу
-		{
-			return end->znach;
+		type& back() {
+			return container.back();
 		}
 		
 		void clear() {
-			Node * iter = head;
-			if (_size != 0)
-			{
-				Node * puk = iter;
-				while (iter -> back != NULL)
-				{
-					puk = puk -> back;
-					delete iter;
-					iter = puk;
-				}
-				delete puk;
-			}
-			
-			_size = 0;
+			container.clear();
 		}
 		
-		Queue & operator = (const Stack <type> &copy)
-		{
-			this->copy(copy);
-			return *this;
+		Queue & operator = (const Queue &other) {
+			this->container = other.container;
 		}
 		
 };

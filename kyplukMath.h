@@ -8,9 +8,9 @@ namespace kypluk {
 const double pi = 3.141592653589;
 const double e  = 2.718281828459;
 
-template <class puk>
-puk fact(puk n) {
-    puk temp = 1;
+template <class type>
+type fact(type n) {
+    type temp = 1;
     while (n > 0) {
         temp*=n;
         n -= 1;
@@ -18,29 +18,29 @@ puk fact(puk n) {
     return temp;
 }
 
-template<class puk>
-puk pow(const puk& base, const puk& power) {
+template<class type>
+type pow(const type& base, const type& power) {
     if (power == 0)
         return 1;
     else if (power.odd()) {
-        return pow<puk>(base, power-1)*base;
+        return pow<type>(base, power-1)*base;
     } else {
-        auto pw = pow<puk>(base, power/2);
+        auto pw = pow<type>(base, power/2);
         return pw * pw;
     }
 }
 
-template <class f>
-f sqr (f chislo) {
+template <class type>
+type sqr (type chislo) {
 	return chislo * chislo;
 }
-template <class f>
-f abs (f chislo) {
+template <class type>
+type abs (type chislo) {
 	return chislo < 0 ? -chislo : chislo;
 }
 
-template <class f>
-int sign(f chislo) {
+template <class type>
+int sign(type chislo) {
 	if (chislo>0)
 		return 1;
 	elif (chislo<0)

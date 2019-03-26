@@ -24,9 +24,9 @@ class unlimInt {
 		container_t arr;
 		
 		void remove_leading_zeros() {
-			while (!arr.is_empty() and arr.back() == 0)
+			while (!arr.empty() and arr.back() == 0)
 				arr.pop_back();
-			if (arr.is_empty()) {
+			if (arr.empty()) {
 				arr.push_back(0);
 				_is_negative = false;
 			}

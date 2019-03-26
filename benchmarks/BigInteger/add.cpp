@@ -30,10 +30,10 @@ int main() {
 		
 		cout << "add time: " << ((stop-start)/1000.0) << " second\n";
 		
-		start = clock();
-		for (auto i = 0; i < 10000000; i++)
-			puk2->add_test(number);
-		
+//		start = clock();
+//		for (auto i = 0; i < 10000000; i++)
+//			puk2->add_test(number);
+//		
 		stop = clock();
 		
 		cout << "add_test time: " << ((stop-start)/1000.0) << " second\n";

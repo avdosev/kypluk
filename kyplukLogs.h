@@ -8,31 +8,21 @@
 
 #include <kyplukDefine.h>
 
+template <class stream_t>
 class Logs {
 	private:
-		std::ofstream f;
+		stream_t stream;
 		char file_name[200] = {};
 		char vremya[6] = {32,32,':',32,32,0};//xuu nikto ze ne bude razbiratsa
 		
 	public:
 		
-		Logs(const char * name = NULL) {
-			setlocale(0, "");
-			
-			strcpy(file_name, "Logs.txt");
-			
-			if (name!=NULL)
-				strcpy(file_name, name);
-			
-			f.open(file_name, ios_base::app);
-			/*
-			if (!f.is_open())
-				f.open(file_name);
-			*/	
+		Logs(stream_t stream) {
+			this->stream = stream;
 		}
 		
 		~Logs() {
-			f.close();
+			stream.close();
 		}
 		
 		void stop () {
