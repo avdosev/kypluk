@@ -1,9 +1,10 @@
 #ifndef _kyplukQueue_H_
 #define _kyplukQueue_H_
 
-#include <kyplukDefine.h>
+#include <kyplukVector.h>
+namespace kypluk {
 
-template <class container_t>
+template <class type, class container_t = Vector<type>>
 class  Queue {
 	private:
 		container_t container;
@@ -59,5 +60,7 @@ class  Queue {
 		}
 		
 };
+
+}
 
 #endif

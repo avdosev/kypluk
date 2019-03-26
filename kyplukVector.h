@@ -11,20 +11,14 @@ class Vector {
 	private:
         type* arr;
         Size_t _size;
-        Size_t real_size;
+        Size_t _real_size;
         class VectorIterator;
         friend class VectorIterator;
         
-		void reborn() {
-			real_size = (real_size*3)/2 +1;
-	        type* temp = new type[real_size];
-	        copy(this->begin(), this->end(), temp);
-	        delete[] arr;
-	        arr = temp;
-		}
-		
-		bool check_reborn(Size_t add_size) {
-			return (_size+add_size > real_size);	
+        void init() {
+        	arr = new type[1];
+        	_size = 0;
+        	_real_size = 1;
 		}
 		
 		template <class swap_type>
@@ -32,24 +26,24 @@ class Vector {
 	public:
 		using Iterator = VectorIterator;
         Vector(Size_t size = 0, const type& value = type()) {
-            _size = real_size = size;
-            if (!real_size) real_size = 1;
-            arr = new type[real_size];
+            _size = _real_size = size;
+            if (!_real_size) _real_size = 1;
+            arr = new type[_real_size];
             for (type& item : *this) {
             	item = value;
 			}
         }
 
         Vector(const Vector& other) {
-            arr = new type[1];
+            init();
             *this = other;
         }
         
         template <class ConstIterator>
         Vector(ConstIterator begin, ConstIterator end) {
-            _size = real_size = distance(begin, end);
-            if (!real_size) real_size = 1;
-            arr = new type[real_size];
+            _size = _real_size = distance(begin, end);
+            if (!_real_size) _real_size = 1;
+            arr = new type[_real_size];
             for (type& item : *this) {
             	item = *begin++;
 			}
@@ -60,14 +54,35 @@ class Vector {
 		}
 
 		void resize(Size_t count) { 
-            if (_size < count) {
-        		_size=count;
-	        } elif (_size > count){
-	        	real_size = count;
-	        	type* temp = new type[real_size];
-	        	copy(this->begin(), this->end(), temp);
-	        }
+        	if (_size > count) {
+        		if (_real_size / (_size+1) > 1) {
+        			reserve(count);
+				}
+			} elif (_size < count) {        	
+				if (count > _real_size) {
+					Size_t dinamic_size = (_real_size*3)/2 + 1;
+					reserve(dinamic_size > count ? dinamic_size : count);
+				} else {
+					_size = count;
+				}
+			}
         }
+        
+        void reserve(Size_t count) {
+        	if (_real_size == count)
+        		return;
+        	
+        	if (count < _real_size) {
+	        	_size = _real_size = count;
+			} elif (count > _real_size) {
+        		_real_size = count;	
+			}
+			 
+        	type* temp = new type[_real_size];
+        	copy(this->begin(), this->end(), temp);
+        	delete[] arr;
+			arr = temp; 
+		}
         
         Size_t size() const {
 	        return this->_size;
@@ -78,13 +93,12 @@ class Vector {
 		}
 	
 	    void push_back(const type& val) {
-	    	while (check_reborn(1)) reborn();
-	        arr[_size++] = val;
+	    	resize(_size+1);
+	        back() = val;
 	    }
 	
 	    void pop_back() {
-	    	if (_size)
-	        	--_size;
+	    	resize(_size-1);
 	    }
 	
 	    type& operator[] (Size_t pos)  {
@@ -161,7 +175,7 @@ class Vector {
         Vector& operator = (const Vector& other) {
             delete[] arr;
             arr = new type[other.size()]();
-            real_size = _size = other.size();
+            _real_size = _size = other.size();
             copy(other.data(), other.data()+other.size(), this->begin());
             return *this;
         }
@@ -256,7 +270,7 @@ class Vector<type> :: VectorIterator {
 	void swap(Vector<type>& raz, Vector<type>& dva) {
 		swap(raz.arr, dva.arr);
 		swap(raz._size, dva._size);
-		swap(raz.real_size, dva.real_size);
+		swap(raz._real_size, dva._real_size);
 	}
 	
 }
