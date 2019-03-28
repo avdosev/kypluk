@@ -28,8 +28,8 @@ class Decimal {
 		static Vector<char> to_vstring(const Decimal& number, char point = '.') {
 			Vector<char> temp = unlimInt::to_vstring(number.dec);
 			Size_t charsAfterPoint = accuracy;
-		    if (temp.size()-1 < charsAfterPoint)  {
-		        Vector<char> tttempo(charsAfterPoint-temp.size()+2, '0');
+            if (temp.size()-2 < charsAfterPoint)  {
+                Vector<char> tttempo(charsAfterPoint-(temp.size()-2), '0');
 		        for (auto item : temp) {
 		            tttempo.push_back(item);
 		        }
@@ -37,9 +37,9 @@ class Decimal {
 		    }
 		
 		    temp.push_back('\0');
-		    for (Size_t i = 1; i <= charsAfterPoint; i++) {
-		        temp[temp.size()-1-i] = temp[temp.size()-1-(i+1)];
-		    }
+            for (uint i = 0; i < charsAfterPoint; i++) {
+                temp[temp.size()-2-i] = temp[temp.size()-2-(i+1)];
+            }
 		    temp[temp.size()-2-charsAfterPoint] = point;
 
 		    return temp;
