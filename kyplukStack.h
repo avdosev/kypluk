@@ -3,112 +3,62 @@
 
 #include <kyplukDefine.h>
 
-template <class type>
+namespace kypluk {
+
+template <class type, class container_t>
 class  Stack {
 	private:
-		
-		struct node {	
-			node *next = NULL;
-			type znach;
-		};
-		
-		node head;
-		Size_t _size;
-		
-		void copy(const Stack <type> &copy)
-		{
-			clear();
-			_size = copy._size;
-			node *nextnode = copy.head.next, *copynode = head.next;
-			
-			while (nextnode!=NULL)
-			{
-				copynode = new node;
-				copynode->znach = nextnode->znach;
-				copynode=copynode->next;
-				nextnode=nextnode->next;
-			}
-		}
-		
+		container_t container;
 	public:
 		Stack() {
-			_size = 0;
+		
 		}
 		
-		/*
-		копируем все элементы в новый стек
-		*/
-		Stack(const Stack <type> &copy) {
-			this->copy(copy);
+		Stack(const Stack &other) {
+			container = other.container;
 		}
 		
 		~Stack() {
-			clear();
+			container.clear();
 		} 
 
-		type& top() 
 		//Доступ к верхнему элементу 
-		{
-			return head.next->znach;
+		type& top() {
+			return container.back();
 		}
 		
-		bool is_empty()
 		//Проверяет отсутствие элементов в контейнере, используемом для реализации 
-		{
-			return _size == 0;
+		bool empty() {
+			return container.empty();
 		}
 		
-		Size_t size()
 		//Возвращает количество элементов в контейнере 
-		{
-			return _size;
+		Size_t size() {
+			return container.size();
 		}
 		
-		void push(type znach) 
 		//вставляет элемент на верх 
-		{
-			node* predhead = head.next;
-			head.next = new node;
-			head.next->znach = znach;
-			head.next->next = predhead;
-			_size++;
+		void push(const type& value) {
+			container.push_back(value);
 		}
 		
-		type pop()
 		//удаляет верхний элемент и при этом его можно увидеть
-		{
-			type temp = head.next->znach;
-			node* predhead = head.next->next;
-			delete head.next;
-			head.next = predhead;
-			_size--;
-			return temp;
+		void pop() {
+			container.pop_back();
 		}
 		
-		void clear()
-		//full clear
-		{
-			if (_size!=0)
-			{
-				node * puk = head.next;
-				if (puk!=NULL) {
-					while (puk->next!=NULL) {
-						node* sled_element = puk;
-						puk = puk->next;				
-						delete sled_element;
-					}
-					delete puk;
-					_size=0;
-				}
-			}
+		void clear() {
+			container.clear();
 		}
 		
-		Stack & operator = (const Stack <type> &copy)
+		Stack & operator = (const Stack &copy)
 		{
-			this->copy(copy);
+			this->container = other.container;
 			return *this;
 		}
 		
 };
+
+}
 
 #endif
