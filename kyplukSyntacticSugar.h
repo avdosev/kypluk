@@ -1,12 +1,11 @@
-#ifndef _kyplukSyntacticSugar_H_
-#define _kyplukSyntacticSugar_H_
+#pragma once
 	
-	#define elif else if
-	#define no !
-	//#define and &&
-	//#define or ||
-	#define unless(bo) if (!(bo))
-	#define until(bo) while(!(bo))
-    //#define loop(bo) while(true)
+#define elif else if
+#define no !
+//#define and &&
+//#define or ||
+#define unless(bo) if (!(bo))
+#define until(bo) while(!(bo))
+//#define loop(bo) while(true)
 	
-#endif
+

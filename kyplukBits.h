@@ -1,5 +1,4 @@
-#ifndef _kyplukBits_H_
-#define _kyplukBits_H_
+#pragma once
 
 #include <kyplukTypedef.h>
 
@@ -74,5 +73,3 @@ class Bits {
 };
 
 }
-
-#endif

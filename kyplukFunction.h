@@ -1,5 +1,4 @@
-#ifndef _kyplukFunction_H_
-#define _kyplukFunction_H_
+#pragma once
 
 #include <kyplukSmartPtr.h>
 
@@ -35,7 +34,3 @@ class function <resType (argsType ...)> {
 		
 		invoker_t func;
 };
-
-
-
-#endif

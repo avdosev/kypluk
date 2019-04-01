@@ -1,5 +1,4 @@
-#ifndef _kyplukAlgorithm_H_
-#define _kyplukAlgorithm_H_
+#pragma once
 
 namespace kypluk {
 
@@ -30,4 +29,4 @@ T reversBit(T number, int size) {
 }
 
 }
-#endif
+

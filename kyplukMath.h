@@ -1,5 +1,4 @@
-#ifndef _kyplukmath_h_
-#define _kyplukmath_h_
+#pragma once
 
 #include <kyplukDefine.h>
 
@@ -49,5 +48,3 @@ int sign(type chislo) {
 }
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _kypluk_Vector_
-#define _kypluk_Vector_
+#pragma once
 
 #include <kyplukDefine.h>
 #include <kyplukAlgorithm.h>
@@ -291,4 +290,4 @@ class Vector<type> :: VectorIterator {
 	}
 	
 }
-#endif
+

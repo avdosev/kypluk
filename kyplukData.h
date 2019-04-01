@@ -1,5 +1,4 @@
-#ifndef _kyplukdata_H_
-#define _kyplukdata_H_
+#pragma once
 
 /*
 ну че, пацаны, документация?
@@ -22,4 +21,3 @@
 //хз просто нужные вещи
 #include <kyplukSmartPtr.h>
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef _kypluklist_H_
-#define _kypluklist_H_
+#pragma once
 
 #include <kyplukAlgorithm.h>
 #include <kyplukDefine.h>
@@ -312,5 +311,3 @@ class List<type>::ListIterator {
 	}
 
 }
-
-#endif

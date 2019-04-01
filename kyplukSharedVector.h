@@ -1,5 +1,4 @@
-#ifndef _kypluk_SharedVector_
-#define _kypluk_SharedVector_
+#pragma once
 
 #include <kyplukVector.h>
 #include <kyplukSmartPtr.h>
@@ -69,4 +68,3 @@ class SharedVector<type>::SharedVectorIterator : Vector<SharedPtr<type>>::Iterat
 };
 
 }
-#endif

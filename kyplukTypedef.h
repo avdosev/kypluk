@@ -1,10 +1,8 @@
-#ifndef _kyplukTypedef_H_
-#define _kyplukTypedef_H_
+#pragma once
 
-	#include <stdint.h>
+#include <stdint.h>
+
+using Size_t = size_t;
+using uint = unsigned;
+using llint = int64_t;
 	
-	using Size_t = size_t;
-	using uint = unsigned;
-    using llint = int64_t;
-	
-#endif

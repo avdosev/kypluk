@@ -1,5 +1,4 @@
-#ifndef _kyplukStack_H_
-#define _kyplukStack_H_
+#pragma once
 
 #include <kyplukDefine.h>
 
@@ -60,5 +59,3 @@ class  Stack {
 };
 
 }
-
-#endif

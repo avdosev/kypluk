@@ -1,5 +1,4 @@
-#ifndef _kyplukAlgorithm_H_
-#define _kyplukAlgorithm_H_
+#pragma once
 
 #include <kyplukDefine.h>
 
@@ -75,4 +74,3 @@ namespace kypluk {
     }
 
 }
-#endif

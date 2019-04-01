@@ -1,5 +1,4 @@
-#ifndef _kypluk_SmartPtr_
-#define _kypluk_SmartPtr_
+#pragma once
 
 #include <kyplukDefine.h>
 
@@ -149,5 +148,3 @@ class SharedPtr {
 };
 
 }
-
-#endif

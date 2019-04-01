@@ -1,5 +1,4 @@
-#ifndef _kypluk_Exception_
-#define _kypluk_Exception_
+#pragma once
 
 #include <kyplukVector.h>
 
@@ -45,5 +44,3 @@ class overflow_error : public runtime_error {};
 class underflow_error : public runtime_error {}; 
 
 }
-
-#endif

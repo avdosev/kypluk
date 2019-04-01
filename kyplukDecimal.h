@@ -1,5 +1,4 @@
-#ifndef _kypluk_Decimal_
-#define _kypluk_Decimal_
+#pragma once
 
 #include <kyplukBigInteger.h>
 
@@ -167,5 +166,3 @@ class Decimal {
 	template <Size_t accuracy>
 	unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(unlimInt(accuracy));
 }
-
-#endif

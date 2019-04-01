@@ -1,5 +1,4 @@
-#ifndef _kypluk_Pair_
-#define _kypluk_Pair_
+#pragma once
 
 //лул тут ничего нет
 namespace kypluk {
@@ -11,5 +10,3 @@ struct Pair {
 };
 
 }
-
-#endif

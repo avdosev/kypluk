@@ -1,5 +1,4 @@
-#ifndef _kypluk_Array_
-#define _kypluk_Array_
+#pragma once
 
 #include <kyplukDefine.h>
 
@@ -58,6 +57,3 @@ class Array {
 			return *(arr+pt);
 		} 
 };
-
-
-#endif

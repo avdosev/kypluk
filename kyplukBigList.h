@@ -1,5 +1,4 @@
-#ifndef _kypluk_BigList_h_
-#define _kypluk_BigList_h_
+#pragma once
 
 #include <kyplukDefine.h>
 
@@ -233,5 +232,3 @@ class BigList {
             return *this;
         }
 };
-
-#endif

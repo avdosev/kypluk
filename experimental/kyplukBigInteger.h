@@ -8,12 +8,12 @@
 #include <kyplukUtility.h>
 
 namespace kypluk {
-
+namespace experience {
 //ebanuy rot ska
 class unlimInt {
 	private:
     	using base_t = uint8_t;
-    	using container_t = List<base_t>;
+    	using container_t = Vector<base_t>;
 		
 		static const base_t base = 10;
     	//знак + или - 
@@ -110,9 +110,22 @@ class unlimInt {
 		}
 		
 		unlimInt& mult10(unlimInt other = 1) {
-			if ((*this) != 0)
-				for (unlimInt i = 0; i != other; ++i) 
-					arr.push_front(0);
+			if ((*this) != 0) {
+				//container_t temp()
+				/*for (unlimInt i = 0; i != other; ++i) 
+					arr.push_front(0);*/
+			}
+			return *this;
+		}
+		
+		unlimInt& mult10(Size_t other = 1) {
+			if ((*this) != 0) {
+				container_t temp(other, 0);
+				swap(temp, arr);
+				arr.push_back(temp);
+				/*for (unlimInt i = 0; i != other; ++i) 
+					arr.push_front(0);*/
+			}
 			return *this;
 		}
 		
@@ -384,5 +397,5 @@ using BigInteger = unlimInt;
 fast factor
 http://www.luschny.de/math/factorial/binarysplitfact.html
 */ 
-
+} 
 } // end namespace kypluk

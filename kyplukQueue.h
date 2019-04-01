@@ -1,5 +1,4 @@
-#ifndef _kyplukQueue_H_
-#define _kyplukQueue_H_
+#pragma once
 
 #include <kyplukVector.h>
 namespace kypluk {
@@ -62,5 +61,3 @@ class  Queue {
 };
 
 }
-
-#endif
