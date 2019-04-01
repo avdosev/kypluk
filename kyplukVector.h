@@ -82,6 +82,11 @@ class Vector {
         	delete[] arr;
 			arr = temp; 
 		}
+		
+		void clear() {
+			delete[] arr;
+			init();
+		}
         
         Size_t size() const {
 	        return this->_size;
@@ -95,6 +100,13 @@ class Vector {
 	    	resize(_size+1);
 	        back() = val;
 	    }
+	    
+	    void push_back(const Vector& vals) {
+	    	reserve(_size+vals.size());
+	    	for (const auto& value : vals) {
+	    		this->push_back(value);
+			}
+		}
 	
 	    void pop_back() {
 	    	resize(_size-1);
@@ -104,7 +116,7 @@ class Vector {
 	        return arr[pos];
 	    }
 	
-	    type& at(Size_t pos) {
+	    type& at(Size_t pos) const {
 	        if (pos >= this -> _size) {
 				throw 0;
 	        }
@@ -147,19 +159,19 @@ class Vector {
 			}
 		}
 	    
-	    type& front() {
+	    type& front() const {
 	        return *begin();
 	    }
 	    
-	    type& back() {
+	    type& back() const {
 	    	return *(end()-1);
 		}
 		
-		Iterator begin() {
+		Iterator begin() const {
 			return Iterator(0, this);
 		}
 		
-		Iterator end() {
+		Iterator end() const {
 			return Iterator(_size, this);
 		}
 		
@@ -194,6 +206,12 @@ class Vector<type> :: VectorIterator {
 			vc = myVector;
 		}
 		
+		VectorIterator(Size_t index, const Vector<type> *myVector) {
+			this->index = index;
+			//חא ועמ ÿ בû גתובאכ
+			vc = const_cast<Vector<type>*>(myVector);
+		}
+		
 		VectorIterator(const VectorIterator& other) {
 			index = other.index;
 			vc = other.vc;
@@ -214,7 +232,7 @@ class Vector<type> :: VectorIterator {
 			return VectorIterator(index++, vc);
 		}
 		
-		type & operator * () {
+		type & operator * () const {
 			return vc->at(index);
 		}
 		
