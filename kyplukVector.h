@@ -186,7 +186,7 @@ class Vector {
             delete[] arr;
             arr = new type[other.size()]();
             _real_size = _size = other.size();
-            copy(other.data(), other.data()+other.size(), this->begin());
+            copy(other.begin(), other.end(), this->begin());
             return *this;
         }
 };
@@ -196,8 +196,10 @@ class Vector<type> :: VectorIterator {
 	private:
 		Size_t index;
 		Vector* vc;
-		static int compare( const VectorIterator& first,  const VectorIterator& second ) {
-			return first.index - second.index;
+		static int compare( const VectorIterator& first, const VectorIterator& second ) {
+			if (first.index != second.index)
+				return first.index > second.index ? 1 : -1;
+			return 0;
 		}
 	public:
 		VectorIterator(Size_t index, Vector<type> *myVector) {

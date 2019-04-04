@@ -173,7 +173,7 @@ class unlimInt {
 	        //q.arr.resize(arr.arr.size());
 	        q.arr = container_t(a.arr.size());
 	
-	        for (auto i = --a.arr.end(), j = --q.arr.end(); i != a.arr.end(); --i, --j) {
+	        for (auto i = --a.arr.end(), j = --q.arr.end(); i < a.arr.end(); --i, --j) {
 	            r *= base;
 	            r += *i;
 	            base_t s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
@@ -203,7 +203,7 @@ class unlimInt {
 				v = -v;
             }
             base_t rem = 0;
-	        for (auto i = --copy.arr.end(); i != copy.arr.end(); --i) {
+	        for (auto i = --copy.arr.end(); i < copy.arr.end(); --i) {
 	            base_t cur = *i + rem * base;
                 *i = cur / v;
                 rem = cur % v;
@@ -291,7 +291,7 @@ class unlimInt {
 			if (raz.length() != dva.length())
 				return raz.length() > dva.length() ? 1 : -1;
 			
-			for (auto i = --raz.arr.end(), j = --dva.arr.end(); i != raz.arr.end() and j != dva.arr.end(); --i, --j)
+			for (auto i = --raz.arr.end(), j = --dva.arr.end(); i < raz.arr.end() and j < dva.arr.end(); --i, --j)
 			{
 				if (*i != *j)
 					return (*i - *j) * (raz._is_negative ? -1 : 1);
