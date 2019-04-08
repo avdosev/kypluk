@@ -71,7 +71,9 @@ class Vector {
         		return;
         	
         	if (count < _real_size) {
-	        	_size = _real_size = count;
+	        	_real_size = count;
+	        	if (_size > _real_size)
+	        		_size = _real_size;
 			} elif (count > _real_size) {
         		_real_size = count;	
 			}

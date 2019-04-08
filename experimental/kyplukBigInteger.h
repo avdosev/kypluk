@@ -8,7 +8,7 @@
 #include <kyplukUtility.h>
 
 namespace kypluk {
-namespace experience {
+namespace experimental {
 //ebanuy rot ska
 class unlimInt {
 	private:
@@ -65,8 +65,9 @@ class unlimInt {
 	        else if (other.negative()) return this->sub(-other);
 	        
 			if (arr.size() < other.arr.size()) {
-				Size_t buf = other.arr.size()-arr.size();
-				for (Size_t i = 0; i < buf; i++)
+				Size_t bufSize = other.arr.size()-arr.size();
+				//arr.reserve(arr.size()+bufSize+1);				
+				for (Size_t i = 0; i < bufSize; i++)
 					arr.push_back(0);
 			}
 		    
@@ -149,11 +150,20 @@ class unlimInt {
 			bool thisNegative = this->_is_negative;
 			xraniliche._is_negative = false;
 			(*this) = 0;
+			//пред расчеты
+			Vector<unlimInt> mult_temp(base, xraniliche);
+			for (base_t i = 0; i < base; i++) {
+				mult_temp[i].mult0to9(i);
+			}
+			Vector<Size_t> first_size(base, 0);
+			for (base_t i = 0; i < base; i++) {
+				first_size[i] = mult_temp[i].arr.size();
+			}
+			
 			Size_t j = 0;
 			for (auto i = other.arr.begin(); i != other.arr.end(); ++i, ++j)
 			{
-				unlimInt xraniliche_tmp = xraniliche; 
-				(*this) += xraniliche_tmp.mult0to9(*i).mult10(j);
+				(*this) += mult_temp[*i].mult10(j-(mult_temp[*i].arr.size()-first_size[*i]));
 			}
 			
 			//boolean xor

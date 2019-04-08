@@ -8,12 +8,12 @@
 #include <kyplukUtility.h>
 
 namespace kypluk {
-
+namespace old {
 //ebanuy rot ska
 class unlimInt {
 	private:
     	using base_t = uint8_t;
-    	using container_t = Vector<base_t>;
+    	using container_t = List<base_t>;
 		
 		static const base_t base = 10;
     	//знак + или - 
@@ -65,9 +65,8 @@ class unlimInt {
 	        else if (other.negative()) return this->sub(-other);
 	        
 			if (arr.size() < other.arr.size()) {
-				Size_t bufSize = other.arr.size()-arr.size();
-				//arr.reserve(arr.size()+bufSize+1);				
-				for (Size_t i = 0; i < bufSize; i++)
+				Size_t buf = other.arr.size()-arr.size();
+				for (Size_t i = 0; i < buf; i++)
 					arr.push_back(0);
 			}
 		    
@@ -111,22 +110,9 @@ class unlimInt {
 		}
 		
 		unlimInt& mult10(unlimInt other = 1) {
-			if ((*this) != 0) {
-				//container_t temp()
-				/*for (unlimInt i = 0; i != other; ++i) 
-					arr.push_front(0);*/
-			}
-			return *this;
-		}
-		
-		unlimInt& mult10(Size_t other = 1) {
-			if ((*this) != 0) {
-				container_t temp(other, 0);
-				swap(temp, arr);
-				arr.push_back(temp);
-				/*for (unlimInt i = 0; i != other; ++i) 
-					arr.push_front(0);*/
-			}
+			if ((*this) != 0)
+				for (unlimInt i = 0; i != other; ++i) 
+					arr.push_front(0);
 			return *this;
 		}
 		
@@ -150,20 +136,11 @@ class unlimInt {
 			bool thisNegative = this->_is_negative;
 			xraniliche._is_negative = false;
 			(*this) = 0;
-			//пред расчеты
-			Vector<unlimInt> mult_temp(base, xraniliche);
-			for (base_t i = 0; i < base; i++) {
-				mult_temp[i].mult0to9(i);
-			}
-			Vector<Size_t> first_size(base, 0);
-			for (base_t i = 0; i < base; i++) {
-				first_size[i] = mult_temp[i].arr.size();
-			}
-			
 			Size_t j = 0;
 			for (auto i = other.arr.begin(); i != other.arr.end(); ++i, ++j)
 			{
-				(*this) += mult_temp[*i].mult10(j-(mult_temp[*i].arr.size()-first_size[*i]));
+				unlimInt xraniliche_tmp = xraniliche; 
+				(*this) += xraniliche_tmp.mult0to9(*i).mult10(j);
 			}
 			
 			//boolean xor
@@ -183,7 +160,7 @@ class unlimInt {
 	        //q.arr.resize(arr.arr.size());
 	        q.arr = container_t(a.arr.size());
 	
-	        for (auto i = --a.arr.end(), j = --q.arr.end(); i < a.arr.end(); --i, --j) {
+	        for (auto i = --a.arr.end(), j = --q.arr.end(); i != a.arr.end(); --i, --j) {
 	            r *= base;
 	            r += *i;
 	            base_t s1 = r.arr.size() <= b.arr.size() ? 0 : r.arr.at(b.arr.size());
@@ -213,7 +190,7 @@ class unlimInt {
 				v = -v;
             }
             base_t rem = 0;
-	        for (auto i = --copy.arr.end(); i < copy.arr.end(); --i) {
+	        for (auto i = --copy.arr.end(); i != copy.arr.end(); --i) {
 	            base_t cur = *i + rem * base;
                 *i = cur / v;
                 rem = cur % v;
@@ -301,7 +278,7 @@ class unlimInt {
 			if (raz.length() != dva.length())
 				return raz.length() > dva.length() ? 1 : -1;
 			
-			for (auto i = --raz.arr.end(), j = --dva.arr.end(); i < raz.arr.end() and j < dva.arr.end(); --i, --j)
+			for (auto i = --raz.arr.end(), j = --dva.arr.end(); i != raz.arr.end() and j != dva.arr.end(); --i, --j)
 			{
 				if (*i != *j)
 					return (*i - *j) * (raz._is_negative ? -1 : 1);
@@ -407,5 +384,5 @@ using BigInteger = unlimInt;
 fast factor
 http://www.luschny.de/math/factorial/binarysplitfact.html
 */ 
-
+} // end namespace old
 } // end namespace kypluk
