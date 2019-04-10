@@ -164,5 +164,5 @@ class Decimal {
 };
 	//Hack
 	template <Size_t accuracy>
-	unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(unlimInt(accuracy));
+	unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(accuracy);
 }

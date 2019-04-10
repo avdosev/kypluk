@@ -55,7 +55,7 @@ class unlimInt {
 			return arr.size();
 		}
 		
-		unlimInt& add (const unlimInt& other) {
+		unlimInt& add (unlimInt other) {
 			// мы напишем лишь сложение двух положительных чисел
         	// остальное мы выведем, используя смену знака и вычитание
 			if (this->negative()) {
@@ -91,7 +91,7 @@ class unlimInt {
 		    return *this;
 		}
 		
-		unlimInt& sub (const unlimInt& other) {
+		unlimInt& sub (unlimInt other) {
 			
 			if (other.negative()) return this->add(-other);
 	        else if (this->negative()) return this->neg().add(other).neg();
@@ -110,14 +110,14 @@ class unlimInt {
 		    return *this;
 		}
 		
-		unlimInt& mult10(unlimInt other = 1) {
+		/*unlimInt& mult10(unlimInt other = 1) {
 			if ((*this) != 0) {
 				//container_t temp()
-				/*for (unlimInt i = 0; i != other; ++i) 
-					arr.push_front(0);*/
+				for (unlimInt i = 0; i != other; ++i) 
+					arr.push_front(0);
 			}
 			return *this;
-		}
+		}*/
 		
 		unlimInt& mult10(Size_t other = 1) {
 			if ((*this) != 0) {
@@ -145,7 +145,7 @@ class unlimInt {
 			return *this;
 		}
 		
-		unlimInt& mult (const unlimInt& other) {
+		unlimInt& mult (unlimInt other) {
 			unlimInt xraniliche = *this;
 			bool thisNegative = this->_is_negative;
 			xraniliche._is_negative = false;
