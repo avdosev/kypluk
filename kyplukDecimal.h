@@ -8,12 +8,12 @@ template <Size_t accuracy>
 class Decimal {
 	private:
 		unlimInt dec;
-		static unlimInt base;
-	public:
+		static const unlimInt base;
+	public:	
 		Decimal() {}
 		
 		Decimal(unlimInt puk) {
-			dec = puk.mult10(accuracy);
+			swap(dec, puk.mult10(accuracy));
 		}
 
         Decimal(llint value) {
@@ -163,13 +163,13 @@ class Decimal {
 		 
 		const Decimal operator -() const {
 			Decimal temp = *this;
-			temp.dec = -temp.dec;
+			temp.dec.neg();
 		    return temp;
 		}
 };
 	//Hack
 	template <Size_t accuracy>
-	unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(accuracy);
+	const unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(accuracy);
 
     using decimal = Decimal<12>;
 }
