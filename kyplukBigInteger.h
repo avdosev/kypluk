@@ -55,7 +55,7 @@ class unlimInt {
 			return arr.size();
 		}
 		
-		unlimInt& add (unlimInt other) {
+		unlimInt& add (const unlimInt& other) {
 			// мы напишем лишь сложение двух положительных чисел
         	// остальное мы выведем, используя смену знака и вычитание
 			if (this->negative()) {
@@ -91,7 +91,7 @@ class unlimInt {
 		    return *this;
 		}
 		
-		unlimInt& sub (unlimInt other) {
+		unlimInt& sub (const unlimInt& other) {
 			
 			if (other.negative()) return this->add(-other);
 	        else if (this->negative()) return this->neg().add(other).neg();

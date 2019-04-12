@@ -4,5 +4,5 @@
 
 using Size_t = size_t;
 using uint = unsigned;
-using llint = int64_t;
+using llint = long long int;
 	

@@ -15,6 +15,11 @@ class Decimal {
 		Decimal(unlimInt puk) {
 			dec = puk.mult10(accuracy);
 		}
+
+        Decimal(llint value) {
+            dec = value;
+            dec.mult10(accuracy);
+        }
 		
 		Decimal(const Decimal& other) {
 			*this = other;
@@ -165,4 +170,6 @@ class Decimal {
 	//Hack
 	template <Size_t accuracy>
 	unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(accuracy);
+
+    using decimal = Decimal<12>;
 }
