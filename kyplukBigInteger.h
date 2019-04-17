@@ -122,8 +122,13 @@ class unlimInt {
 		unlimInt& mult10(Size_t other = 1) {
 			if ((*this) != 0) {
 				container_t temp(other, 0);
-				swap(temp, arr);
 				arr.push_back(temp);
+				for (Size_t i = arr.size()-other; i > 0; i--) {
+					arr[i-1+other] = arr[i-1];
+				}
+				for (Size_t i = 0; i < other; i++) {
+					arr[i] = 0;
+				}
 				/*for (unlimInt i = 0; i != other; ++i) 
 					arr.push_front(0);*/
 			}

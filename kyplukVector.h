@@ -103,8 +103,7 @@ class Vector {
 	    }
 	    
 	    void push_back(const Vector& vals) {
-	    	reserve(_size+vals.size());
-	    	for (const auto& value : vals) {
+	    	for (auto value : vals) {
 	    		this->push_back(value);
 			}
 		}
