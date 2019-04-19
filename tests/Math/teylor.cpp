@@ -6,6 +6,12 @@ USE(kypluk);
 USE(std);
 
 int main() {
-	decimal x = 4, eps = decimal::from_string("0.0000001");
-	cout << decimal::to_vstring(exp(x, eps)).data();
+	decimal eps = decimal::from_string("0.0001");
+	decimal x = 13;
+	cout << "exp\n";
+	cout << decimal::to_vstring(exp(x, eps)).data() << "\n";
+	cout << "sin\n";
+	cout << decimal::to_vstring(sin(x, eps)).data() << "\n";
+	cout << "cos\n";
+	cout << decimal::to_vstring(cos(x, eps)).data() << "\n";
 }

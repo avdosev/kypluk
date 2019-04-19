@@ -5,9 +5,6 @@
 
 namespace kypluk {
 
-const double pi = 3.141592653589;
-const double e  = 2.718281828459;
-
 template <class type>
 type fact(type n) {
     type temp = 1;
@@ -72,9 +69,11 @@ type sqrt (type number, type eps)
 	}
 }
 
-template <class num_result_t, class num_t>
-num_result_t exp(num_t x, num_result_t eps) {
-	num_result_t pred_value = 1, next_value = 1+x;
+// teylor, darova
+
+template <class num_t>
+num_t exp(num_t x, num_t eps) {
+	num_t pred_value = 1, next_value = 1+x;
 	num_t power = x;
 	num_t iterable = 1;
 	num_t fact = 1;
@@ -88,27 +87,40 @@ num_result_t exp(num_t x, num_result_t eps) {
 	return next_value;
 }
 
-
-/*double sin (double alpha) {
-	double betha = (alpha*pi)/180.0;
-	double predtoch = betha, result = 0.0;
-	for (int i = 1, j = 0; abs(predtoch) > 0.000001; i+=2, j++) {
-		predtoch = (pow(betha, i)/factorial(i));
-		result += ((pow(-1, j)) * predtoch);
+template <class num_t>
+num_t sin (num_t alpha, num_t eps) {
+	num_t power = alpha*alpha*alpha;
+	num_t fact = 3*2;
+	num_t pred_value = alpha, next_value = alpha - power/fact;
+	num_t iterable = 2;
+	num_t minus = 1;
+	while (abs(next_value-pred_value) > eps) {
+		pred_value = next_value;
+		power *= alpha * alpha;
+		iterable += 2;
+		fact *= iterable * (iterable+1);
+		next_value += minus*power/fact;
+		minus = -minus;
 	}
-	return result;
+	return next_value;
 }
 
-double cos (double alpha) {
-	double betha = (alpha*pi)/180.0;
-	double predtoch = betha, result = 0.0;
-	for (int i = 0, j = 0; abs(predtoch) > 0.000001; i+=2, j++) {
-		predtoch = (pow(betha, i)/factorial(i));
-		result += ((pow(-1, j)) * predtoch);
+template <class num_t>
+num_t cos (num_t alpha, num_t eps) {
+	num_t power = alpha*alpha;
+	num_t fact = 2;
+	num_t pred_value = 1, next_value = 1 - power/fact;
+	num_t iterable = 1;
+	num_t minus = 1;
+	while (abs(next_value-pred_value) > eps) {
+		pred_value = next_value;
+		power *= alpha * alpha;
+		iterable += 2;
+		fact *= iterable * (iterable+1);
+		next_value += minus*power/fact;
+		minus = -minus;
 	}
-	return result;
-}*/
-
+	return next_value;
 }
 
-#include <kyplukMathFunction.h>
+}
