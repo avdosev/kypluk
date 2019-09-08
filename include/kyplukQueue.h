@@ -20,32 +20,26 @@ class  Queue {
 			container.clear()
 		}
 		
-		//проверка на пустоту
 		bool empty() {
 			return container.empty()
 		}
-		
-		//Возвращает количество элементов в контейнере 
+		 
 		Size_t size() {
 			return container.size();
 		}
 		
-		//добавления в очередь нового элемента
 		void push(const type& value) {
 			cotainer.push_back(value);
 		}
 		
-		//Если нам понадобилось удалить первый элемент
 		void pop() {
 			container.pop_back();	
 		}
 		 
-		//обратиться к первому элементу очереди
 		type& front() {
 			return container.front();
 		}
 		
-		//обратиться к последнему элементу
 		type& back() {
 			return container.back();
 		}

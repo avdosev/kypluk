@@ -1,6 +1,7 @@
 #pragma once
 
-//лул тут ничего нет
+// С‚СѓС‚ РЅРёС‡РµРіРѕ РЅРµС‚
+
 namespace kypluk {
 
 template <class frst, class scnd>
