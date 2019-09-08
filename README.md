@@ -11,7 +11,7 @@ missing
 Add a line to the .pro file: 
 INCLUDEPATH += directory to library location
 illustration: 
-INCLUDEPATH += C:/kypluk/ 
+INCLUDEPATH += C:/kypluk/include
 ### DEV-C++
 Tools >> Compiler Options >> Directories >> C ++ Include Files
 and just add the location directory
