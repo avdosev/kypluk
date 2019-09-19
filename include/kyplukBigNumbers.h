@@ -1,4 +1,4 @@
 #pragma once
 
-#include <kyplukDecimal.h>
-#include <kyplukBigInteger.h>
+#include "kyplukDecimal.h"
+#include "kyplukBigInteger.h"

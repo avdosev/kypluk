@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kyplukDefine.h>
-#include <kyplukAlgorithm.h>
+#include "kyplukDefine.h"
+#include "kyplukAlgorithm.h"
 
 namespace kypluk {
 

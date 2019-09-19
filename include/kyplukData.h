@@ -1,23 +1,23 @@
 #pragma once
 
 /*
-ну че, пацаны, документация?
+пїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
 */
 
-//структуры данных
-#include <kyplukArray.h>
-#include <kyplukVector.h>
-#include <kyplukList.h>
-//#include <kyplukBigList.h>
-#include <kyplukStack.h>
-#include <kyplukQueue.h>
-#include <kyplukBits.h>
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+#include "kyplukArray.h"
+#include "kyplukVector.h"
+#include "kyplukList.h"
+//#include "kyplukBigList.h"
+#include "kyplukStack.h"
+#include "kyplukQueue.h"
+#include "kyplukBits.h"
 
 
-//представление основных классов оберток
-//#include <kyplukString.h>
-#include <kyplukBigNumbers.h>
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//#include "kyplukString.h"
+#include "kyplukBigNumbers.h"
 
-//хз просто нужные вещи
-#include <kyplukSmartPtr.h>
+//пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+#include "kyplukSmartPtr.h"
 

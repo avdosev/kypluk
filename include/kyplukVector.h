@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kyplukDefine.h>
-#include <kyplukAlgorithm.h>
+#include "kyplukDefine.h"
+#include "kyplukAlgorithm.h"
 
 namespace kypluk {
 
@@ -210,7 +210,7 @@ class Vector<type> :: VectorIterator {
 		
 		VectorIterator(Size_t index, const Vector<type> *myVector) {
 			this->index = index;
-			//за ето я бы въебал
+			//пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			vc = const_cast<Vector<type>*>(myVector);
 		}
 		

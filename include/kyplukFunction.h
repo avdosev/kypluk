@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kyplukSmartPtr.h>
+#include "kyplukSmartPtr.h"
 
 namespace kypluk
 {

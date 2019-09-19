@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kyplukDefine.h>
+#include "kyplukDefine.h"
 
 template <class type, Size_t _size>
 class Array {

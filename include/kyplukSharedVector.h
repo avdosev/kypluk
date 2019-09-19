@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kyplukVector.h>
-#include <kyplukSmartPtr.h>
+#include "kyplukVector.h"
+#include "kyplukSmartPtr.h"
 
 namespace kypluk {
 
