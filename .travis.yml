@@ -1,0 +1,16 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+branches:
+  only:
+    - master
+    - develop
+
+install:
+  - DEPS_DIR="${HOME}/include"
+
+script:
+   - sources=($(find include test -name "*.hpp" -or -name "*.cpp" -or -name ".h"))
