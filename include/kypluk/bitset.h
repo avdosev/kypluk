@@ -1,6 +1,6 @@
 #pragma once
 
-#include "kyplukTypedef.h"
+#include "typedef.h"
 
 namespace kypluk {
 
@@ -14,7 +14,7 @@ class Bits {
                 int index;
                 Bits * parent;
             public:
-                Bit(int i, Bits * p) { //����������� ����������� ����������� ����� ��������� �������� ��� ��� ����� � ��� ����
+                Bit(int i, Bits * p) {
                     index = i;
                     parent = p;
                 }
@@ -25,7 +25,7 @@ class Bits {
                 }
 
                 Bit& operator = (const Bit& copy) {
-                    parent->set(index, copy); //����� ���������� �������������� bit to bool
+                    parent->set(index, copy);
                     return *this;
                 }
 
@@ -39,23 +39,25 @@ class Bits {
             byte = bits;
         }
 
-        //_size-1 - ������ ���� ����� ������������� ��� � ������������
+
         bool at (Size_t i) const {
             if (i > _size) throw 0;
-            int index = 1 << i; //��������� ��������� �� ���
+            int index = 1 << i;
             return (byte & index) != 0;
         }
-        //#
+
+
         void flip(Size_t i) {
             if (i >= _size) throw 0;
 
             byte ^= 1 << i;
         }
-        //#
+
+
         void set(Size_t i, bool value) {
             if (i >= _size) throw 0;
-            int index = 1 << i; //��������� ��������� �� ���
-            int val = value ? (~0) : 0; //�� ���� ��� ������ ��������� 1 ���, �� ���� ��� ��� ��������
+            int index = 1 << i;
+            int val = value ? (~0) : 0;
             byte = (index & val) | (byte & ~index);
         }
 

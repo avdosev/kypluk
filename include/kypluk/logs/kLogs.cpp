@@ -1,6 +1,6 @@
 #include "kLogs.h"
 
-using namespace kyplyk;
+using namespace kypluk;
 
 Logger::Logger(handler_t msgHandler) : messageHandler(msgHandler),
     Debug(*this), Info(*this), Warning(*this), Critical(*this), Fatal(*this) 

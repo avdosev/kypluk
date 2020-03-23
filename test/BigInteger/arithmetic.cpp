@@ -1,4 +1,4 @@
-#include <kyplukBigInteger.h>
+#include <kypluk/BigInteger.h>
 #include <iostream>
 using namespace kypluk;
 

@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace kyplyk {
+namespace kypluk {
 
     class Logger {
     public:

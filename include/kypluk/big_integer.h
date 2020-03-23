@@ -1,10 +1,12 @@
 #pragma once
 
-#include "kyplukDefine.h"
-#include "kyplukVector.h"
-#include "kyplukList.h"
+#include <stdexcept>
 
-#include "kyplukUtility.h"
+#include "define.h"
+#include "vector.h"
+#include "list.h"
+
+#include "utility.h"
 
 namespace kypluk {
 
@@ -29,7 +31,7 @@ class unlimInt {
 		}
 		
 	public:
-		class division_by_zero : public logic_error {};
+        class division_by_zero : public std::runtime_error{};
 		
 		unlimInt(llint other = 0) {
 			_is_negative = other < 0;
@@ -53,8 +55,6 @@ class unlimInt {
 		}
 		
 		unlimInt& add (const unlimInt& other) {
-			// �� ������� ���� �������� ���� ������������� �����
-        	// ��������� �� �������, ��������� ����� ����� � ���������
 			if (this->negative()) {
                 if (other.negative()) return this->neg().add(-other).neg();
                 else return *this = other - this->neg();
@@ -107,16 +107,7 @@ class unlimInt {
 		    return *this;
 		}
 		
-		/*unlimInt& mult10(unlimInt other = 1) {
-			if ((*this) != 0) {
-				//container_t temp()
-				for (unlimInt i = 0; i != other; ++i) 
-					arr.push_front(0);
-			}
-			return *this;
-		}*/
-		
-		unlimInt& mult10(Size_t other = 1) {
+		unlimInt& mult10(size_t other = 1) {
 			if ((*this) != 0) {
 				container_t temp(other, 0);
 				arr.push_back(temp);

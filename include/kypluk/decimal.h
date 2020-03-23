@@ -1,6 +1,6 @@
 #pragma once
 
-#include "kyplukBigInteger.h"
+#include "big_integer.h"
 
 namespace kypluk {
 	
