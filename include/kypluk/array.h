@@ -2,7 +2,7 @@
 
 #include "define.h"
 
-template <class type, Size_t _size>
+template <class type, size_t _size>
 class Array {
 	private:
 		type arr[_size];
@@ -18,9 +18,7 @@ class Array {
 				arr[i] = other[arr];
 			}
 		}
-		
-		/* FIX ME */
-		/* needing special class RandomIterator for this class */
+
 		type* begin() {
 			return arr;
 		}
@@ -45,15 +43,15 @@ class Array {
 			return arr;
 		}
 		
-		Size_t size() {
+		size_t size() const {
 			return _size;
 		}
 		
-		type& operator [] (Size_t pt) {
+		type& operator [] (size_t pt) {
 			return *(arr+pt);
 		} 
 		
-		const type& operator [] (Size_t pt) const {
+		const type& operator [] (size_t pt) const {
 			return *(arr+pt);
 		} 
 };

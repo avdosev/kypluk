@@ -24,7 +24,7 @@ class  Queue {
 			return container.empty()
 		}
 		 
-		Size_t size() {
+		size_t size() {
 			return container.size();
 		}
 		

@@ -1,6 +1,6 @@
 #pragma once
 
-//потом разберусь со всеми инклудами
+//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 #include <kyplukDefine.h>
 #include <kyplukVector.h>
 #include <kyplukList.h>
@@ -16,7 +16,7 @@ class unlimInt {
     	using container_t = Vector<base_t>;
 		
 		static const base_t base = 10;
-    	//знак + или - 
+    	//пїЅпїЅпїЅпїЅ + пїЅпїЅпїЅ - 
     	//true - is_negative
     	//false - is_not_negative
     	bool _is_negative;
@@ -56,8 +56,8 @@ class unlimInt {
 		}
 		
 		unlimInt& add (const unlimInt& other) {
-			// мы напишем лишь сложение двух положительных чисел
-        	// остальное мы выведем, используя смену знака и вычитание
+			// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if (this->negative()) {
                 if (other.negative()) return this->neg().add(-other).neg();
                 else return *this = other - this->neg();
@@ -113,7 +113,7 @@ class unlimInt {
 		unlimInt& mult10(unlimInt other = 1) {
 			if ((*this) != 0) {
 				//container_t temp()
-				/*for (unlimInt i = 0; i != other; ++i) 
+				/*for (BigInt i = 0; i != other; ++i)
 					arr.push_front(0);*/
 			}
 			return *this;
@@ -124,13 +124,13 @@ class unlimInt {
 				container_t temp(other, 0);
 				swap(temp, arr);
 				arr.push_back(temp);
-				/*for (unlimInt i = 0; i != other; ++i) 
+				/*for (BigInt i = 0; i != other; ++i)
 					arr.push_front(0);*/
 			}
 			return *this;
 		}
 		
-		//fix ускорь множеие
+		//fix пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		unlimInt& mult0to9 (base_t other) {
 			if (other == 0) (*this) = 0;
 			else {
@@ -150,7 +150,7 @@ class unlimInt {
 			bool thisNegative = this->_is_negative;
 			xraniliche._is_negative = false;
 			(*this) = 0;
-			//пред расчеты
+			//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			Vector<unlimInt> mult_temp(base, xraniliche);
 			for (base_t i = 0; i < base; i++) {
 				mult_temp[i].mult0to9(i);

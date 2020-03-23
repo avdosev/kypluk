@@ -5,10 +5,10 @@
 template <class type>
 class BigList {
     private:
-        Size_t _size = 0;
+        size_t _size = 0;
         class Node {
             public:
-                static const Size_t size_block = (3*sizeof(void*))/((1.5-1)*sizeof(type)) + 1;
+                static const size_t size_block = (3 * sizeof(void*)) / ((1.5 - 1) * sizeof(type)) + 1;
                 type znach[size_block];
                 Node * next;
 
@@ -17,10 +17,10 @@ class BigList {
                     next = finaly;
                 }
 
-                Node * node_create(Size_t otr = 1, Node * finaly = NULL) {
+                Node * node_create(size_t otr = 1, Node * finaly = NULL) {
                     Node * otrnext = this;
                     if (this.next != NULL) throw 0;//xmm
-                    for (Size_t i = 0; i < otr; i++)
+                    for (size_t i = 0; i < otr; i++)
                     {
                         otrnext->next = new Node;
                         otrnext = otrnext->next;
@@ -39,7 +39,7 @@ class BigList {
                     }
                 }
 
-                type & at(Size_t H) {
+                type & at(size_t H) {
                     if (H > size_block) throw 0;
                     return znach[H];
                 }
@@ -52,7 +52,7 @@ class BigList {
                 friend class Node;
                 const BigList * list;
                 Node * iter;
-                Size_t i = 0;//fix this
+                size_t i = 0;//fix this
             public:
                 BigListIterator(Node * startiter, const BigList * uk) {
                     iter = startiter;
@@ -96,7 +96,7 @@ class BigList {
                 }
         };
 
-        struct { struct { union { Size_t insert = 0, fullness;} ; Node * node = NULL; } end, head; } list;
+        struct { struct { union { size_t insert = 0, fullness;} ; Node * node = NULL; } end, head; } list;
 
         void create_end_node() {
             list.end.insert = 0;
@@ -113,7 +113,7 @@ class BigList {
         }
     public:
 
-        BigList(Size_t size = 0) {
+        BigList(size_t size = 0) {
             add_neskolko_to_the_end_or_start(size, true);
         }
 
@@ -136,7 +136,7 @@ class BigList {
             if (list.head.node->next == NULL)
                 list.end.insert++;
 
-            for (Size_t i = list.head.fullness; i > 0; i--) {
+            for (size_t i = list.head.fullness; i > 0; i--) {
                 list.head.node->znach[i] = list.head.node->znach[i-1];
             }
             list.head.node->at(0) = znach;
@@ -158,14 +158,14 @@ class BigList {
             _size++;
         }
 
-        void add_neskolko_to_the_end_or_start(Size_t size, bool switch_adding) {
+        void add_neskolko_to_the_end_or_start(size_t size, bool switch_adding) {
             if (switch_adding) {//end
                 if (list.head.node != NULL and list.end.fullness < Node::size_block) {
                     size -= (Node::size_block - list.end.fullness);
                     if (list.head.node->next == NULL) list.head.fullness = Node::size_block;
                 }
 
-                for (Size_t i = 0; i < size/Node::size_block; i++)
+                for (size_t i = 0; i < size / Node::size_block; i++)
                     create_end_node();
 
                 list.end.fullness = size % Node::size_block;
@@ -176,7 +176,7 @@ class BigList {
                     size -= (Node::size_block - list.head.fullness);
                     if (list.head.node->next == NULL) list.end.fullness = Node::size_block;
                 }
-                for (Size_t i = 0; i < size/Node::size_block; i++)
+                for (size_t i = 0; i < size / Node::size_block; i++)
                     create_start_node();
 
                 list.head.fullness = size % Node::size_block;
@@ -203,7 +203,7 @@ class BigList {
             }
         }
 
-        Size_t size() const {
+        size_t size() const {
             return _size;
         }
 

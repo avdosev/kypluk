@@ -4,15 +4,15 @@
 
 namespace kypluk {
 	
-template <Size_t accuracy>
+template <size_t accuracy>
 class Decimal {
 	private:
-		unlimInt dec;
-		static const unlimInt base;
+		BigInt dec;
+		static const BigInt base;
 	public:	
 		Decimal() {}
 		
-		Decimal(unlimInt puk) {
+		Decimal(BigInt puk) {
 			swap(dec, puk.mult10(accuracy));
 		}
 
@@ -30,8 +30,8 @@ class Decimal {
 		//-----------
 		
 		static Vector<char> to_vstring(const Decimal& number, char point = '.') {
-			Vector<char> temp = unlimInt::to_vstring(number.dec);
-			Size_t charsAfterPoint = accuracy;
+			Vector<char> temp = BigInt::to_vstring(number.dec);
+			size_t charsAfterPoint = accuracy;
             if (temp.size()-2 < charsAfterPoint)  {
                 Vector<char> tttempo(charsAfterPoint-(temp.size()-2), '0');
 		        for (auto item : temp) {
@@ -51,7 +51,7 @@ class Decimal {
 		
 		static Decimal from_string(const char * value) {
 			Decimal res;
-			unlimInt& bf = res.dec;
+			BigInt& bf = res.dec;
 			bool is_ngt = false;
 			if (*value) {
 				if (*value == '-') {
@@ -61,7 +61,7 @@ class Decimal {
                 bf = *value - '0';
 				value++;
 			}
-			Size_t acc = accuracy;
+			size_t acc = accuracy;
 			bool point_cheked = false;
 			
 			for (; *value; value++) {
@@ -134,27 +134,27 @@ class Decimal {
 		}
 		
 		bool operator != (const Decimal& puk) const{
-			return unlimInt::compare(this->dec, puk.dec) != 0;
+			return BigInt::compare(this->dec, puk.dec) != 0;
 		}
 		
 		bool operator >= (const Decimal& puk) const {
-			return unlimInt::compare(this->dec, puk.dec) >= 0;
+			return BigInt::compare(this->dec, puk.dec) >= 0;
 		}
 		
 		bool operator <= (const Decimal& puk) const {
-			return unlimInt::compare(this->dec, puk.dec) <= 0;
+			return BigInt::compare(this->dec, puk.dec) <= 0;
 		}
 		
 		bool operator > (const Decimal& puk) const {
-			return unlimInt::compare(this->dec, puk.dec) > 0;
+			return BigInt::compare(this->dec, puk.dec) > 0;
 		}
 		
 		bool operator < (const Decimal& puk) const {
-			return unlimInt::compare(this->dec, puk.dec) < 0;
+			return BigInt::compare(this->dec, puk.dec) < 0;
 		}
 		
 		bool operator == (const Decimal& puk) const{
-			return unlimInt::compare(this->dec, puk.dec) == 0;
+			return BigInt::compare(this->dec, puk.dec) == 0;
 		}
 		
 		const Decimal operator +() const {
@@ -168,8 +168,8 @@ class Decimal {
 		}
 };
 	//Hack
-	template <Size_t accuracy>
-	const unlimInt Decimal<accuracy>::base = unlimInt(1).mult10(accuracy);
+	template <size_t accuracy>
+	const BigInt Decimal<accuracy>::base = BigInt(1).mult10(accuracy);
 
     using decimal = Decimal<12>;
 }

@@ -32,7 +32,7 @@ class  Stack {
 		}
 		
 		//���������� ���������� ��������� � ���������� 
-		Size_t size() {
+		size_t size() {
 			return container.size();
 		}
 		

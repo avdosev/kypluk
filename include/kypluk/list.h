@@ -120,14 +120,14 @@ class  List {
 			return head->next == head || head->back == head;
 		}
 		
-		type& at(Size_t index) {
+		type& at(size_t index) {
 			auto it = begin();
 			while (index--) 
 				++it;
 			return *it;
 		}
 		
-		const type& at(Size_t index) const {
+		const type& at(size_t index) const {
 			auto it = begin();
 			while (index--) 
 				++it;

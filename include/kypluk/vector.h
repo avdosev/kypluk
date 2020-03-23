@@ -9,8 +9,8 @@ template <class type>
 class Vector {
 	private:
         type* arr;
-        Size_t _size;
-        Size_t _real_size;
+        size_t _size;
+        size_t _real_size;
         class VectorIterator;
         friend class VectorIterator;
         
@@ -24,7 +24,7 @@ class Vector {
 		friend void swap(Vector<swap_type>& raz, Vector<swap_type>& dva);
 	public:
 		using Iterator = VectorIterator;
-        Vector(Size_t size = 0, const type& value = type()) {
+        Vector(size_t size = 0, const type& value = type()) {
             _size = _real_size = size;
             if (!_real_size) _real_size = 1;
             arr = new type[_real_size];
@@ -52,21 +52,21 @@ class Vector {
         	delete[] arr;
 		}
 
-		void resize(Size_t count) { 
+		void resize(size_t count) {
         	if (_size > count) {
         		if (_real_size / (_size+1) > 1) {
         			reserve(count);
 				}
 			} elif (_size < count) {        	
 				if (count > _real_size) {
-					Size_t dinamic_size = (_real_size*3)/2 + 1;
+					size_t dinamic_size = (_real_size * 3) / 2 + 1;
 					reserve(dinamic_size > count ? dinamic_size : count);
 				}
 			}
 			_size = count;
         }
         
-        void reserve(Size_t count) {
+        void reserve(size_t count) {
         	if (_real_size == count)
         		return;
         	
@@ -89,7 +89,7 @@ class Vector {
 			init();
 		}
         
-        Size_t size() const {
+        size_t size() const {
 	        return this->_size;
 	    }
 	    
@@ -112,11 +112,11 @@ class Vector {
 	    	resize(_size-1);
 	    }
 	
-	    type& operator[] (Size_t pos)  {
+	    type& operator[] (size_t pos)  {
 	        return arr[pos];
 	    }
 	
-	    type& at(Size_t pos) const {
+	    type& at(size_t pos) const {
 	        if (pos >= this -> _size) {
 				throw 0;
 	        }
@@ -125,8 +125,8 @@ class Vector {
 	        }
 	    }
   
-	    Vector slice(Size_t first, Size_t last) {
-	    	return this->filter([&first, &last](const type& itm, Size_t current_index){
+	    Vector slice(size_t first, size_t last) {
+	    	return this->filter([&first, &last](const type& itm, size_t current_index){
 	    		return first >= current_index and current_index < last;
 			});
 		}
@@ -135,7 +135,7 @@ class Vector {
 		template <class Func>
 		Vector filter(Func check) {
 			Vector res;
-			for (Size_t index = 0; index < size(); index++) {
+			for (size_t index = 0; index < size(); index++) {
 				if (check(*this[index], index)) res.push_back();
 			}
 			return res;
@@ -145,7 +145,7 @@ class Vector {
 		template <class Func>
 		Vector& map(Func query) {
 			Vector res;
-			for (Size_t index = 0; index < size(); index++) {
+			for (size_t index = 0; index < size(); index++) {
 				res.push_back(query(*this[index], index));
 			}
 			return res;
@@ -154,7 +154,7 @@ class Vector {
 		//callback(item, i)
 		template <class Func>
 		void for_each(Func query) {
-			for (Size_t index = 0; index < size(); index++) {
+			for (size_t index = 0; index < size(); index++) {
                 query((*this)[index], index);
 			}
 		}
@@ -195,7 +195,7 @@ class Vector {
 template <class type>
 class Vector<type> :: VectorIterator {
 	private:
-		Size_t index;
+		size_t index;
 		Vector* vc;
 		static int compare( const VectorIterator& first, const VectorIterator& second ) {
 			if (first.index != second.index)
@@ -203,12 +203,12 @@ class Vector<type> :: VectorIterator {
 			return 0;
 		}
 	public:
-		VectorIterator(Size_t index, Vector<type> *myVector) {
+		VectorIterator(size_t index, Vector<type> *myVector) {
 			this->index = index;
 			vc = myVector;
 		}
 		
-		VectorIterator(Size_t index, const Vector<type> *myVector) {
+		VectorIterator(size_t index, const Vector<type> *myVector) {
 			this->index = index;
 			//�� ��� � �� ������
 			vc = const_cast<Vector<type>*>(myVector);
@@ -247,17 +247,17 @@ class Vector<type> :: VectorIterator {
 			return VectorIterator(index--, vc);
 		}
 		
-		VectorIterator & operator += (Size_t shift) {
+		VectorIterator & operator += (size_t shift) {
 			index += shift;
 		}
-		VectorIterator & operator -= (Size_t shift) {
+		VectorIterator & operator -= (size_t shift) {
 			index -= shift;
 		}
 		
-		VectorIterator operator + (Size_t shift) {
+		VectorIterator operator + (size_t shift) {
 			return VectorIterator(index + shift, vc);
 		}
-		VectorIterator operator - (Size_t shift) {
+		VectorIterator operator - (size_t shift) {
 			return VectorIterator(index - shift, vc);
 		}
 		

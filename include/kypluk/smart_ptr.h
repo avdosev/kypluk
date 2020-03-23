@@ -70,7 +70,7 @@ class SharedPtr {
 	private:
 		using pointer = type*;
 		struct Node {
-			mutable Size_t size;
+			mutable size_t size;
 			type* value;
 			Node(type *value = NULL) {
 				this->value = value;

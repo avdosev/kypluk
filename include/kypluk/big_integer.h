@@ -10,7 +10,7 @@
 
 namespace kypluk {
 
-class unlimInt {
+class BigInt {
 	private:
     	using base_t = uint8_t;
     	using container_t = Vector<base_t>;
@@ -31,9 +31,12 @@ class unlimInt {
 		}
 		
 	public:
-        class division_by_zero : public std::runtime_error{};
+        class division_by_zero : public std::runtime_error{
+		public:
+			division_by_zero(const char* string) : runtime_error(string) {}
+		};
 		
-		unlimInt(llint other = 0) {
+		BigInt(llint other = 0) {
 			_is_negative = other < 0;
 			if (_is_negative) other = -other;
 			arr.push_back(other%10);
@@ -42,19 +45,19 @@ class unlimInt {
 		    }
 		}
 		
-		unlimInt(const unlimInt & other) {
+		BigInt(const BigInt & other) {
 			*this = other;
 		}
 		
-		~unlimInt() {
+		~BigInt() {
 			arr.clear();
 		}
 		
-		Size_t length() const {
+		size_t length() const {
 			return arr.size();
 		}
 		
-		unlimInt& add (const unlimInt& other) {
+		BigInt& add (const BigInt& other) {
 			if (this->negative()) {
                 if (other.negative()) return this->neg().add(-other).neg();
                 else return *this = other - this->neg();
@@ -62,9 +65,9 @@ class unlimInt {
 	        else if (other.negative()) return this->sub(-other);
 	        
 			if (arr.size() < other.arr.size()) {
-				Size_t bufSize = other.arr.size()-arr.size();
+				size_t bufSize = other.arr.size() - arr.size();
 				//arr.reserve(arr.size()+bufSize+1);				
-				for (Size_t i = 0; i < bufSize; i++)
+				for (size_t i = 0; i < bufSize; i++)
 					arr.push_back(0);
 			}
 		    
@@ -88,7 +91,7 @@ class unlimInt {
 		    return *this;
 		}
 		
-		unlimInt& sub (const unlimInt& other) {
+		BigInt& sub (const BigInt& other) {
 			
 			if (other.negative()) return this->add(-other);
 	        else if (this->negative()) return this->neg().add(other).neg();
@@ -107,24 +110,24 @@ class unlimInt {
 		    return *this;
 		}
 		
-		unlimInt& mult10(size_t other = 1) {
+		BigInt& mult10(size_t other = 1) {
 			if ((*this) != 0) {
 				container_t temp(other, 0);
 				arr.push_back(temp);
-				for (Size_t i = arr.size()-other; i > 0; i--) {
+				for (size_t i = arr.size() - other; i > 0; i--) {
 					arr[i-1+other] = arr[i-1];
 				}
-				for (Size_t i = 0; i < other; i++) {
+				for (size_t i = 0; i < other; i++) {
 					arr[i] = 0;
 				}
-				/*for (unlimInt i = 0; i != other; ++i) 
+				/*for (BigInt i = 0; i != other; ++i)
 					arr.push_front(0);*/
 			}
 			return *this;
 		}
 		
 		//fix ������ �������
-		unlimInt& mult0to9 (base_t other) {
+		BigInt& mult0to9 (base_t other) {
 			if (other == 0) (*this) = 0;
 			else {
 				base_t carry = 0;
@@ -138,22 +141,22 @@ class unlimInt {
 			return *this;
 		}
 		
-		unlimInt& mult (unlimInt other) {
-			unlimInt xraniliche = *this;
+		BigInt& mult (BigInt other) {
+			BigInt xraniliche = *this;
 			bool thisNegative = this->_is_negative;
 			xraniliche._is_negative = false;
 			(*this) = 0;
 			//���� �������
-			Vector<unlimInt> mult_temp(base, xraniliche);
+			Vector<BigInt> mult_temp(base, xraniliche);
 			for (base_t i = 0; i < base; i++) {
 				mult_temp[i].mult0to9(i);
 			}
-			Vector<Size_t> first_size(base, 0);
+			Vector<size_t> first_size(base, 0);
 			for (base_t i = 0; i < base; i++) {
 				first_size[i] = mult_temp[i].arr.size();
 			}
 			
-			Size_t j = 0;
+			size_t j = 0;
 			for (auto i = other.arr.begin(); i != other.arr.end(); ++i, ++j)
 			{
 				(*this) += mult_temp[*i].mult10(j-(mult_temp[*i].arr.size()-first_size[*i]));
@@ -166,13 +169,13 @@ class unlimInt {
 		}
 		
 		
-		Pair<unlimInt, unlimInt> divmod(const unlimInt &b1) const {
-            if (b1 == 0) throw division_by_zero();
+		Pair<BigInt, BigInt> divmod(const BigInt &b1) const {
+            if (b1 == 0) throw division_by_zero("division by zero");
 	        
 			base_t norm = base / (b1.arr.back() + 1);
-	        unlimInt a = this->abs() * norm;
-	        unlimInt b = b1.abs() * norm;
-	        unlimInt q, r;
+	        BigInt a = this->abs() * norm;
+	        BigInt b = b1.abs() * norm;
+	        BigInt q, r;
 	        //q.arr.resize(arr.arr.size());
 	        q.arr = container_t(a.arr.size());
 	
@@ -196,11 +199,11 @@ class unlimInt {
 	        q.remove_leading_zeros();
         	r.remove_leading_zeros();
 
-	        return Pair<unlimInt, unlimInt>({q, r.divbase(norm)});
+	        return Pair<BigInt, BigInt>({q, r.divbase(norm)});
 	    }
 	    
-        unlimInt divbase(int8_t v) const {
-	    	unlimInt copy = *this;
+        BigInt divbase(int8_t v) const {
+	    	BigInt copy = *this;
 	    	if (v < 0) {
             	copy._is_negative = true;
 				v = -v;
@@ -225,8 +228,8 @@ class unlimInt {
 			return (*this) == 0 ? 0 : 1; 
 		}
 		
-		unlimInt abs() const {
-			unlimInt other(*this);
+		BigInt abs() const {
+			BigInt other(*this);
 			other._is_negative = false;
 			return other;
 		}
@@ -243,7 +246,7 @@ class unlimInt {
 			return this->_is_negative;
 		}
 		
-		unlimInt& neg() {
+		BigInt& neg() {
 			this->_is_negative = !(this->_is_negative);
 			return *this;
 		}
@@ -256,8 +259,8 @@ class unlimInt {
 		//static function
 		//---------
 		
-		static Vector<char> to_vstring(const unlimInt& number) {
-			Size_t j = number.length()-1+number._is_negative;
+		static Vector<char> to_vstring(const BigInt& number) {
+			size_t j = number.length() - 1 + number._is_negative;
 			Vector<char> buf(number.length()+1+number._is_negative);
 			if (number._is_negative) buf.front() = '-';
 			for (auto i = number.arr.begin(); j >= 0+number._is_negative and i != number.arr.end(); --j, ++i) {
@@ -268,8 +271,8 @@ class unlimInt {
 			return buf;
 		}
 		
-		static unlimInt from_string(const char * value) {
-			unlimInt res;
+		static BigInt from_string(const char * value) {
+			BigInt res;
 			bool is_ngt = false;
 			if (*value) {
 				if (*value == '-') {
@@ -287,7 +290,7 @@ class unlimInt {
 			return res;
 		}
 		
-		static int compare(const unlimInt& raz, const unlimInt& dva) {
+		static int compare(const BigInt& raz, const BigInt& dva) {
 			if (raz._is_negative != dva._is_negative) 
 				return dva._is_negative - raz._is_negative;
 			
@@ -307,95 +310,95 @@ class unlimInt {
 		//operators
 		//---------
 		
-		unlimInt& operator ++ () {
+		BigInt& operator ++ () {
 			if (++(*arr.begin()) > 9) {
 				*arr.begin() -= 10;
-				add(unlimInt(10));
+				add(BigInt(10));
 			}
 			
 			return *this;
 		}
 		
-		unlimInt& operator = (const unlimInt& other) {
+		BigInt& operator = (const BigInt& other) {
 			arr = other.arr;
 			_is_negative = other._is_negative;
 			return *this;
 		}
 		
-		unlimInt& operator += (const unlimInt &other) {
+		BigInt& operator += (const BigInt &other) {
 			return add(other);
 		}
 
-		unlimInt& operator -= (const unlimInt &other) {
+		BigInt& operator -= (const BigInt &other) {
 			return sub(other);
 		}
 		
-		unlimInt& operator *= (const unlimInt& other) {
+		BigInt& operator *= (const BigInt& other) {
 			return mult(other);
 		}
 		
-		unlimInt& operator /= (const unlimInt& other) {
+		BigInt& operator /= (const BigInt& other) {
 			return *this = this->divmod(other).first;
 		}
 		
-		friend const unlimInt operator + (const unlimInt& raz, const unlimInt& dvas) {
-			unlimInt other = raz;
+		friend const BigInt operator + (const BigInt& raz, const BigInt& dvas) {
+			BigInt other = raz;
 			return other.add(dvas);
 		}
 		
-		friend const unlimInt operator - (const unlimInt& raz, const unlimInt& dvas) {
-			unlimInt other = raz;
+		friend const BigInt operator - (const BigInt& raz, const BigInt& dvas) {
+			BigInt other = raz;
 			return other.sub(dvas);
 		}
 
-		friend const unlimInt operator * (const unlimInt& raz, const unlimInt& dvas) {
-			unlimInt other = raz;
+		friend const BigInt operator * (const BigInt& raz, const BigInt& dvas) {
+			BigInt other = raz;
 			return other.mult(dvas);
 		}
 		
-		friend const unlimInt operator / (const unlimInt& raz, const unlimInt& dvas) {
+		friend const BigInt operator / (const BigInt& raz, const BigInt& dvas) {
 			return raz.divmod(dvas).first;
 		}
 		
-		friend const unlimInt operator % (const unlimInt& raz, const unlimInt& dvas) {
+		friend const BigInt operator % (const BigInt& raz, const BigInt& dvas) {
 			return raz.divmod(dvas).second;
 		}
 		
-		const unlimInt operator +() const {
-		    return unlimInt(*this);
+		BigInt operator +() const {
+		    return BigInt(*this);
 		}
 		 
-		const unlimInt operator -() const {
-			unlimInt temp(*this);
+		BigInt operator -() const {
+			BigInt temp(*this);
 			temp.neg();
 		    return temp;
 		}
 		
-		bool operator != (const unlimInt& other) const{
+		bool operator != (const BigInt& other) const{
 			return compare(*this, other) != 0;
 		}
 		
-		bool operator >= (const unlimInt& other) const {
+		bool operator >= (const BigInt& other) const {
 			return compare(*this, other) >= 0;
 		}
 		
-		bool operator <= (const unlimInt& other) const {
+		bool operator <= (const BigInt& other) const {
 			return compare(*this, other) <= 0;
 		}
 		
-		bool operator > (const unlimInt& other) const {
+		bool operator > (const BigInt& other) const {
 			return compare(*this, other) > 0;
 		}
 		
-		bool operator < (const unlimInt& other) const {
+		bool operator < (const BigInt& other) const {
 			return compare(*this, other) < 0;
 		}
 		
-		bool operator == (const unlimInt& other) const{
+		bool operator == (const BigInt& other) const{
 			return compare(*this, other) == 0;
 		}
 };
-using BigInteger = unlimInt;
+
 /*
 fast factor
 http://www.luschny.de/math/factorial/binarysplitfact.html

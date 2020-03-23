@@ -6,8 +6,8 @@ namespace kypluk {
 
 class Bits {
     private:
-        Size_t byte;
-        static const Size_t _size = sizeof(Size_t) * 8;
+        size_t byte;
+        static const size_t _size = sizeof(size_t) * 8;
 
         class Bit {
             private:
@@ -35,26 +35,26 @@ class Bits {
 
         };
     public:
-        Bits (Size_t bits) {
+        Bits (size_t bits) {
             byte = bits;
         }
 
 
-        bool at (Size_t i) const {
+        bool at (size_t i) const {
             if (i > _size) throw 0;
             int index = 1 << i;
             return (byte & index) != 0;
         }
 
 
-        void flip(Size_t i) {
+        void flip(size_t i) {
             if (i >= _size) throw 0;
 
             byte ^= 1 << i;
         }
 
 
-        void set(Size_t i, bool value) {
+        void set(size_t i, bool value) {
             if (i >= _size) throw 0;
             int index = 1 << i;
             int val = value ? (~0) : 0;
@@ -65,7 +65,7 @@ class Bits {
             byte = ~byte ;
         }
 
-        static Size_t size() {
+        static size_t size() {
             return _size;
         }
 

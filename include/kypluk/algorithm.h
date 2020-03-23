@@ -16,7 +16,7 @@ namespace kypluk {
     {
         if (raz > dva)
             return 1;
-        elif (raz < dva)
+        else if (raz < dva)
             return -1;
 
         return 0;
@@ -30,8 +30,8 @@ namespace kypluk {
     }
 
     template <class Iterator>
-    Size_t distance(Iterator begin, Iterator end) {
-        Size_t res = 0;
+    size_t distance(Iterator begin, Iterator end) {
+        size_t res = 0;
         while (begin != end) {
             ++begin;
             res++;
