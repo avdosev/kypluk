@@ -15,7 +15,7 @@ class BigInt {
     	using base_t = uint8_t;
     	using container_t = Vector<base_t>;
 		
-		static const base_t base = 10;
+		static constexpr base_t base = 10;
     	// true - is_negative
     	// false - is_not_negative
     	bool _is_negative;
@@ -33,10 +33,15 @@ class BigInt {
 	public:
         class division_by_zero : public std::runtime_error{
 		public:
-			division_by_zero(const char* string) : runtime_error(string) {}
+			explicit division_by_zero(const char* string) : runtime_error(string) {}
 		};
+
+		BigInt() {
+		    _is_negative = false;
+		    arr.push_back(0);
+		}
 		
-		BigInt(llint other = 0) {
+		BigInt(llint other) {
 			_is_negative = other < 0;
 			if (_is_negative) other = -other;
 			arr.push_back(other%10);
@@ -71,21 +76,21 @@ class BigInt {
 					arr.push_back(0);
 			}
 		    
-            base_t desyatok = 0;
+            base_t carry = 0;
 			for (auto i = this->arr.begin(), j = other.arr.begin(); i != this->arr.end(); ++i) {
-		        *i = *i + desyatok + ( j == other.arr.end() ? 0 : *j );
+		        *i = *i + carry + (j == other.arr.end() ? 0 : *j );
 		        
 		        if (*i >= base) {
-		            desyatok = 1;//i / 10
-		            *i -= base;//i % 10
+                    carry = 1; // i / 10
+		            *i -= base;   // i % 10
 		        } else {
-		        	desyatok = 0;
+                    carry = 0;
 				}
 				
 		        if (j != other.arr.end()) ++j;
 		    }
 		    
-		    if (desyatok)
+		    if (carry)
 				arr.push_back(1);
 			
 		    return *this;
@@ -111,7 +116,7 @@ class BigInt {
 		}
 		
 		BigInt& mult10(size_t other = 1) {
-			if ((*this) != 0) {
+			if (!this->zero()) {
 				container_t temp(other, 0);
 				arr.push_back(temp);
 				for (size_t i = arr.size() - other; i > 0; i--) {
@@ -120,13 +125,11 @@ class BigInt {
 				for (size_t i = 0; i < other; i++) {
 					arr[i] = 0;
 				}
-				/*for (BigInt i = 0; i != other; ++i)
-					arr.push_front(0);*/
 			}
 			return *this;
 		}
-		
-		//fix ������ �������
+
+
 		BigInt& mult0to9 (base_t other) {
 			if (other == 0) (*this) = 0;
 			else {
@@ -146,7 +149,7 @@ class BigInt {
 			bool thisNegative = this->_is_negative;
 			xraniliche._is_negative = false;
 			(*this) = 0;
-			//���� �������
+			
 			Vector<BigInt> mult_temp(base, xraniliche);
 			for (base_t i = 0; i < base; i++) {
 				mult_temp[i].mult0to9(i);
@@ -242,7 +245,7 @@ class BigInt {
 		    return !this->odd();
 		}
 		
-		inline bool negative() const {
+		bool negative() const {
 			return this->_is_negative;
 		}
 		
@@ -251,8 +254,8 @@ class BigInt {
 			return *this;
 		}
 		
-		bool zero() {
-			return *this == 0;
+		bool zero() const {
+			return arr.size() == 1 && arr.back() == 0;
 		}
 		
 		//---------

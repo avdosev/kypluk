@@ -2,8 +2,12 @@
 
 #include "define.h"
 #include "algorithm.h"
+#include <iterator>
 
 namespace kypluk {
+
+    template <class type>
+    class VectorIterator;
 
 template <class type>
 class Vector {
@@ -11,8 +15,6 @@ class Vector {
         type* arr;
         size_t _size;
         size_t _real_size;
-        class VectorIterator;
-        friend class VectorIterator;
         
         void init() {
         	arr = new type[1];
@@ -23,7 +25,11 @@ class Vector {
 		template <class swap_type>
 		friend void swap(Vector<swap_type>& raz, Vector<swap_type>& dva);
 	public:
-		using Iterator = VectorIterator;
+        using value_type = type;
+
+		using Iterator = VectorIterator<value_type>;
+		using ConstIterator = VectorIterator<const value_type>;
+
         Vector(size_t size = 0, const type& value = type()) {
             _size = _real_size = size;
             if (!_real_size) _real_size = 1;
@@ -36,6 +42,11 @@ class Vector {
         Vector(const Vector& other) {
             init();
             *this = other;
+        }
+
+        Vector(Vector&& other) noexcept {
+            init();
+            swap(*this, other);
         }
         
         template <class ConstIterator>
@@ -57,7 +68,7 @@ class Vector {
         		if (_real_size / (_size+1) > 1) {
         			reserve(count);
 				}
-			} elif (_size < count) {        	
+			} else if (_size < count) {
 				if (count > _real_size) {
 					size_t dinamic_size = (_real_size * 3) / 2 + 1;
 					reserve(dinamic_size > count ? dinamic_size : count);
@@ -74,7 +85,7 @@ class Vector {
 	        	_real_size = count;
 	        	if (_size > _real_size)
 	        		_size = _real_size;
-			} elif (count > _real_size) {
+			} else if (count > _real_size) {
         		_real_size = count;	
 			}
 			 
@@ -112,7 +123,7 @@ class Vector {
 	    	resize(_size-1);
 	    }
 	
-	    type& operator[] (size_t pos)  {
+	    type& operator[] (size_t pos) noexcept {
 	        return arr[pos];
 	    }
 	
@@ -124,40 +135,6 @@ class Vector {
 	            return arr[pos];
 	        }
 	    }
-  
-	    Vector slice(size_t first, size_t last) {
-	    	return this->filter([&first, &last](const type& itm, size_t current_index){
-	    		return first >= current_index and current_index < last;
-			});
-		}
-		
-		//callback(item, i)
-		template <class Func>
-		Vector filter(Func check) {
-			Vector res;
-			for (size_t index = 0; index < size(); index++) {
-				if (check(*this[index], index)) res.push_back();
-			}
-			return res;
-		}
-		
-		//callback(item, i)
-		template <class Func>
-		Vector& map(Func query) {
-			Vector res;
-			for (size_t index = 0; index < size(); index++) {
-				res.push_back(query(*this[index], index));
-			}
-			return res;
-		}
-		
-		//callback(item, i)
-		template <class Func>
-		void for_each(Func query) {
-			for (size_t index = 0; index < size(); index++) {
-                query((*this)[index], index);
-			}
-		}
 	    
 	    type& front() const {
 	        return *begin();
@@ -167,21 +144,25 @@ class Vector {
 	    	return *(end()-1);
 		}
 		
-		Iterator begin() const {
+		Iterator begin() {
 			return Iterator(0, this);
 		}
 		
-		Iterator end() const {
+		Iterator end() {
 			return Iterator(_size, this);
 		}
+
+        ConstIterator begin() const {
+            return ConstIterator(0, this);
+        }
+
+        ConstIterator end() const {
+            return ConstIterator(_size, this);
+        }
 		
 		const type* data () const {
 			return arr;
 		}
-		
-		void reverse() {
-			reverse(begin(), end());
-        }
 
         Vector& operator = (const Vector& other) {
             delete[] arr;
@@ -190,29 +171,28 @@ class Vector {
             copy(other.begin(), other.end(), this->begin());
             return *this;
         }
+
+        Vector& operator = (Vector&& other) noexcept {
+            swap(*this, other);
+        }
 };
 
 template <class type>
-class Vector<type> :: VectorIterator {
+class VectorIterator {
+    public:
+        using iterator_category = std::random_access_iterator_tag;
+        using value_type = type;
+        using difference_type = ptrdiff_t;
+        using reference = type&;
+        using pointer = type*;
+
 	private:
 		size_t index;
-		Vector* vc;
-		static int compare( const VectorIterator& first, const VectorIterator& second ) {
-			if (first.index != second.index)
-				return first.index > second.index ? 1 : -1;
-			return 0;
-		}
+		pointer& vc;
+
 	public:
-		VectorIterator(size_t index, Vector<type> *myVector) {
-			this->index = index;
-			vc = myVector;
-		}
-		
-		VectorIterator(size_t index, const Vector<type> *myVector) {
-			this->index = index;
-			//�� ��� � �� ������
-			vc = const_cast<Vector<type>*>(myVector);
-		}
+
+		VectorIterator(size_t index, pointer& myVector) : vc(myVector), index(index) {}
 		
 		VectorIterator(const VectorIterator& other) {
 			index = other.index;
@@ -225,17 +205,21 @@ class Vector<type> :: VectorIterator {
 			return *this;
 		}
 		
-		VectorIterator & operator ++ () {
+		VectorIterator& operator ++ () {
 			index++;
 			return *this;
 		}
 		
-		VectorIterator operator ++ (int) {
+		const VectorIterator operator ++ (int) {
 			return VectorIterator(index++, vc);
 		}
 		
-		type & operator * () const {
-			return vc->at(index);
+		reference operator *() const {
+			return *(vc+index);
+		}
+
+		pointer operator ->() const {
+		    return vc+index;
 		}
 		
 		VectorIterator& operator -- () {
@@ -243,7 +227,7 @@ class Vector<type> :: VectorIterator {
 			return *this;
 		}
 		
-		VectorIterator operator -- (int) {
+		const VectorIterator operator -- (int) {
 			return VectorIterator(index--, vc);
 		}
 		
@@ -261,7 +245,7 @@ class Vector<type> :: VectorIterator {
 			return VectorIterator(index - shift, vc);
 		}
 		
-		llint operator - (const VectorIterator& other) {
+		difference_type operator - (const VectorIterator& other) {
 			return index - other.index;
 		}
 		
@@ -283,6 +267,12 @@ class Vector<type> :: VectorIterator {
 		bool operator != (const VectorIterator& other) const {
 		    return VectorIterator::compare(*this, other) != 0;
 		}
+
+        static int compare( const VectorIterator& first, const VectorIterator& second ) {
+            if (first.index != second.index)
+                return first.index > second.index ? 1 : -1;
+            return 0;
+        }
 };
 	
 	template <class type>
