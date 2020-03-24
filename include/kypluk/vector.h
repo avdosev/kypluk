@@ -136,28 +136,37 @@ class Vector {
 	        }
 	    }
 	    
-	    type& front() const {
+	    const type& front() const {
 	        return *begin();
 	    }
 	    
-	    type& back() const {
+	    const type& back() const {
 	    	return *(end()-1);
 		}
+
+		type& front() {
+            return const_cast<type&>(front());
+        }
+
+        type& back() {
+            return const_cast<type&>(back());
+        }
+
 		
 		Iterator begin() {
-			return Iterator(0, this);
+			return Iterator(0, &this->arr);
 		}
 		
 		Iterator end() {
-			return Iterator(_size, this);
+			return Iterator(_size, &this->arr);
 		}
 
         ConstIterator begin() const {
-            return ConstIterator(0, this);
+            return ConstIterator(0, &this->arr);
         }
 
         ConstIterator end() const {
-            return ConstIterator(_size, this);
+            return ConstIterator(_size, &this->arr);
         }
 		
 		const type* data () const {
@@ -174,6 +183,7 @@ class Vector {
 
         Vector& operator = (Vector&& other) noexcept {
             swap(*this, other);
+            return *this;
         }
 };
 
@@ -188,16 +198,13 @@ class VectorIterator {
 
 	private:
 		size_t index;
-		pointer& vc;
+		pointer const* vc;
 
 	public:
 
-		VectorIterator(size_t index, pointer& myVector) : vc(myVector), index(index) {}
+		VectorIterator(size_t index, pointer const* myVector) : vc(myVector), index(index) {}
 		
-		VectorIterator(const VectorIterator& other) {
-			index = other.index;
-			vc = other.vc;
-		}
+		VectorIterator(const VectorIterator& other) : vc(other.vc), index(other.index) {}
 		
 		VectorIterator& operator = (const VectorIterator& other) {
 			index = other.index;
@@ -215,11 +222,11 @@ class VectorIterator {
 		}
 		
 		reference operator *() const {
-			return *(vc+index);
+			return *(*vc+index);
 		}
 
 		pointer operator ->() const {
-		    return vc+index;
+		    return *vc+index;
 		}
 		
 		VectorIterator& operator -- () {

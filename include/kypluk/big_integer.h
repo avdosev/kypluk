@@ -77,12 +77,13 @@ class BigInt {
 			}
 		    
             base_t carry = 0;
-			for (auto i = this->arr.begin(), j = other.arr.begin(); i != this->arr.end(); ++i) {
-		        *i = *i + carry + (j == other.arr.end() ? 0 : *j );
+			auto j = other.arr.begin();
+			for (auto& item : this->arr) {
+		        item = item + carry + (j == other.arr.end() ? 0 : *j );
 		        
-		        if (*i >= base) {
-                    carry = 1; // i / 10
-		            *i -= base;   // i % 10
+		        if (item >= base) {
+                    carry = 1;    // i / 10
+		            item -= base; // i % 10
 		        } else {
                     carry = 0;
 				}
@@ -103,7 +104,9 @@ class BigInt {
 	        else if (*this < other) return *this = -(other - *this);
 	        
 			bool carry = false;
-	        for (auto i = this->arr.begin(), j = other.arr.begin(); j != other.arr.end() || carry != 0; ++i) {
+
+			auto i = this->arr.begin();
+            for (auto j = other.arr.begin(); j != other.arr.end() || carry != 0; ++i) {
                 *i -= carry + (j != other.arr.end() ? *j : 0);
                 carry = *i > base;
                 if (carry) *i += base;
@@ -149,7 +152,7 @@ class BigInt {
 			bool thisNegative = this->_is_negative;
 			xraniliche._is_negative = false;
 			(*this) = 0;
-			
+
 			Vector<BigInt> mult_temp(base, xraniliche);
 			for (base_t i = 0; i < base; i++) {
 				mult_temp[i].mult0to9(i);
@@ -212,7 +215,7 @@ class BigInt {
 				v = -v;
             }
             base_t rem = 0;
-	        for (auto i = --copy.arr.end(); i < copy.arr.end(); --i) {
+	        for (auto i = copy.arr.end()-1; i < copy.arr.end(); --i) {
 	            base_t cur = *i + rem * base;
                 *i = cur / v;
                 rem = cur % v;

@@ -40,7 +40,7 @@ template <class type>
 int sign(type chislo) {
 	if (chislo>0)
 		return 1;
-	elif (chislo<0)
+	else if (chislo<0)
 		return -1;
 	return 0;
 }
@@ -59,7 +59,7 @@ type sqrt (type number, type eps)
 		{
 			right = mid;
 		}
-		elif ((sqr(mid) - number) < 0)
+		else if ((sqr(mid) - number) < 0)
 		{
 			left = mid;
 		}

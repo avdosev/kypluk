@@ -1,25 +1,25 @@
 #include <iostream>
 #include <ctime>
-#include <kyplukBigInteger.h>
-#include <kyplukSmartPtr.h>
-
+#include <kypluk/big_integer.h>
+#include <kypluk/smart_ptr.h>
+#include <kypluk/list.h>
 
 using namespace kypluk;
 using namespace std;
 
 int main() {
-	List<unlimInt> numbers; 
-	numbers.push_back(unlimInt::from_string("9"));
-	numbers.push_back(unlimInt::from_string("9999"));
-	numbers.push_back(unlimInt::from_string("999999999"));
-	numbers.push_back(unlimInt::from_string("9999999999999999"));
-	numbers.push_back(unlimInt::from_string("9999999999999999999999999"));
+	List<BigInt> numbers;
+	numbers.push_back(BigInt::from_string("9"));
+	numbers.push_back(BigInt::from_string("9999"));
+	numbers.push_back(BigInt::from_string("999999999"));
+	numbers.push_back(BigInt::from_string("9999999999999999"));
+	numbers.push_back(BigInt::from_string("9999999999999999999999999"));
 
 	time_t start,stop;
 	for (auto number : numbers) {
-		UniquePtr<unlimInt> puk1(new unlimInt), puk2(new unlimInt);
+		UniquePtr<BigInt> puk1(new BigInt), puk2(new BigInt);
 		
-		cout << unlimInt::to_vstring(number).data() << ":\n";
+		cout << BigInt::to_vstring(number).data() << ":\n";
 		
 		start = clock();
 		

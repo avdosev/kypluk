@@ -174,7 +174,7 @@ class  List {
             for (auto it = begin(), in = other.begin(); in != other.end();) {
                 if (*in < *it || it == end()) {
                     splice(it, other, in++);
-                } elif (it != end()) {
+                } else if (it != end()) {
                     ++it;
                 }
             }

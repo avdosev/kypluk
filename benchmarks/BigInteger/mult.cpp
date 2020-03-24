@@ -1,8 +1,8 @@
 #include <iostream>
 #include <ctime>
 #include <functional>
-#include <kyplukBigInteger.h>
-#include <kyplukMath.h>
+#include <kypluk/big_integer.h>
+#include <kypluk/math.h>
 
 
 using namespace kypluk;
@@ -46,18 +46,18 @@ type fact_tree(const type& n)
 }
 
 int main() {
-	Vector<unlimInt> number; 
-	number.push_back(unlimInt::from_string("500") ); 
-	number.push_back(unlimInt::from_string("1000"));
-	number.push_back(unlimInt::from_string("1235"));  
-	number.push_back(unlimInt::from_string("2000"));
-	number.push_back(unlimInt::from_string("3000"));
-	number.push_back(unlimInt::from_string("4000"));
+	Vector<BigInt> number;
+	number.push_back(BigInt::from_string("500") );
+	number.push_back(BigInt::from_string("1000"));
+	number.push_back(BigInt::from_string("1235"));
+	number.push_back(BigInt::from_string("2000"));
+	number.push_back(BigInt::from_string("3000"));
+	number.push_back(BigInt::from_string("4000"));
 
-	unlimInt puk1, puk2, puk3;
+	BigInt puk1, puk2, puk3;
 	time_t start,stop;
 	for (int i = 0; i < number.size(); i++) {
-		cout << unlimInt::to_vstring(number[i]).data() << ":\n";
+		cout << BigInt::to_vstring(number[i]).data() << ":\n";
 		
 		start = clock();
 		
@@ -80,12 +80,12 @@ int main() {
 
 		cout << "\n\n";
 	}
-	unlimInt t1 = 12352, t2 = 1000;
+	BigInt t1 = 12352, t2 = 1000;
 	start = clock();
 		
-	puk1 = pow<unlimInt>(t1, t2);
+	puk1 = pow<BigInt>(t1, t2);
 		
 	stop = clock();
-	cout << "numbers: " << unlimInt::to_vstring(t1).data() << " ^ " << unlimInt::to_vstring(t2).data() << kypluk::endl;
+	cout << "numbers: " << BigInt::to_vstring(t1).data() << " ^ " << BigInt::to_vstring(t2).data() << kypluk::endl;
 	cout << "pow time: " << ((stop-start)/1000.0) << " second\n";
 }

@@ -7,9 +7,8 @@ include_directories(include)
 
 add_executable(kypluk
         benchmarks/BigInteger/add.cpp
-        benchmarks/BigInteger/experimental.cpp
-        benchmarks/BigInteger/mult.cpp
-        experimental/kyplukBigInteger.h
+        # benchmarks/BigInteger/experimental.cpp
+        # benchmarks/BigInteger/mult.cpp
         include/kypluk/fast_math/fast_math.h
         include/kypluk/logs/kLogs.cpp
         include/kypluk/logs/kLogs.h
@@ -33,15 +32,4 @@ add_executable(kypluk
         include/kypluk/unrolled_linked_list.h
         include/kypluk/utility.h
         include/kypluk/vector.h
-        test/BigInteger/arithmetic.cpp
-        test/BigInteger/ONVECTOR.cpp
-        test/Decimal/ara_test.cpp
-        test/Decimal/base.cpp
-        test/Decimal/miller_test.cpp
-        test/List/mid.cpp
-        test/List/splice.cpp
-        test/List/swap.cpp
-        test/Math/sqrt.cpp
-        test/Math/teylor.cpp
-        test/NumArray/base.cpp
-        test/Vector/base.cpp)
+        )

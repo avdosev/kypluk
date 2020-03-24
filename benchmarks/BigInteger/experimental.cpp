@@ -1,9 +1,7 @@
 #include <iostream>
 #include <ctime>
-#include <kyplukBigInteger.h>
-#include <experimental/kyplukBigInteger.h>
-#include <kyplukMath.h>
-
+#include <kypluk/big_integer.h>
+#include <kypluk/math.h>
 
 using namespace kypluk;
 using namespace std;
@@ -91,20 +89,11 @@ void test_pow() {
 int main() {
 	cout << "add:\n";
 	cout << "on list:\n";
-	test_add<unlimInt>();
-	cout << "\n\n\n";
-	cout << "on vector:\n";
-	test_add<kypluk::experience::unlimInt>();
+	test_add<BigInt>();
 	cout << "\n\n\nmuliply:\n";
 	cout << "on list:\n";
-	test_mult<unlimInt>();
-	cout << "\n\n\n";
-	cout << "on vector:\n";
-	test_mult<kypluk::experience::unlimInt>();
+	test_mult<BigInt>();
 	cout << "\n\n\npower:\n";
 	cout << "on list:\n";
-	test_pow<unlimInt>();
-	cout << "\n\n\n";
-	cout << "on vector:\n";
-	test_pow<kypluk::experience::unlimInt>();
+	test_pow<BigInt>();
 }
