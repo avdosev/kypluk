@@ -57,7 +57,7 @@ int main() {
 	BigInt puk1, puk2, puk3;
 	time_t start,stop;
 	for (int i = 0; i < number.size(); i++) {
-		cout << BigInt::to_vstring(number[i]).data() << ":\n";
+		cout << kypluk::to_string(number[i]) << ":\n";
 		
 		start = clock();
 		
@@ -80,12 +80,13 @@ int main() {
 
 		cout << "\n\n";
 	}
-	BigInt t1 = 12352, t2 = 1000;
+	BigInt t1 = 12352, t2 = 10000;
 	start = clock();
 		
 	puk1 = pow<BigInt>(t1, t2);
 		
 	stop = clock();
-	cout << "numbers: " << BigInt::to_vstring(t1).data() << " ^ " << BigInt::to_vstring(t2).data() << kypluk::endl;
+	cout << "numbers: " << kypluk::to_string(t1) << " ^ " << kypluk::to_string(t2) << std::endl;
+	cout << kypluk::to_string(puk1) << std::endl;
 	cout << "pow time: " << ((stop-start)/1000.0) << " second\n";
 }

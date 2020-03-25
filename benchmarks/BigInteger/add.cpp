@@ -1,7 +1,6 @@
 #include <iostream>
-#include <ctime>
+#include <chrono>
 #include <kypluk/big_integer.h>
-#include <kypluk/smart_ptr.h>
 #include <kypluk/list.h>
 
 using namespace kypluk;
@@ -15,34 +14,20 @@ int main() {
 	numbers.push_back(BigInt::from_string("9999999999999999"));
 	numbers.push_back(BigInt::from_string("9999999999999999999999999"));
 
-	time_t start,stop;
 	for (auto number : numbers) {
-		UniquePtr<BigInt> puk1(new BigInt), puk2(new BigInt);
+		BigInt num;
 		
-		cout << BigInt::to_vstring(number).data() << ":\n";
+		cout << kypluk::to_string(number) << ":\n";
 		
-		start = clock();
+		auto start = chrono::steady_clock::now();
 		
 		for (auto i = 0; i < 10000000; i++) 
-			puk1->add(number);
+			num += number;
 		
-		stop = clock();
+		auto elapsed = chrono::steady_clock::now() - start;
 		
-		cout << "add time: " << ((stop-start)/1000.0) << " second\n";
-		
-//		start = clock();
-//		for (auto i = 0; i < 10000000; i++)
-//			puk2->add_test(number);
-//		
-		stop = clock();
-		
-		cout << "add_test time: " << ((stop-start)/1000.0) << " second\n";
-		
-		if (*puk1 != *puk2) {
-			cout << "failed\n";
-		}
-
+		cout << "add time: " << std::chrono::duration_cast<chrono::milliseconds>(elapsed).count() / 1000. << " second\n";
+        cout << kypluk::to_string(num) << std::endl;
 		cout << "\n\n";
-		puk1.reset(); puk2.reset();
 	}
 }

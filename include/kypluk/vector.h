@@ -3,23 +3,24 @@
 #include "define.h"
 #include "algorithm.h"
 #include <iterator>
+#include <exception>
 
 namespace kypluk {
 
-    template <class type>
-    class VectorIterator;
+template <class type>
+class VectorIterator;
 
 template <class type>
 class Vector {
 	private:
-        type* arr;
-        size_t _size;
-        size_t _real_size;
+        type* arr = nullptr;
+        size_t _size = 0;
+        size_t _real_size = 0;
         
-        void init() {
-        	arr = new type[1];
+        void reset() noexcept {
+        	arr = nullptr;
         	_size = 0;
-        	_real_size = 1;
+        	_real_size = 0;
 		}
 		
 		template <class swap_type>
@@ -30,9 +31,8 @@ class Vector {
 		using Iterator = VectorIterator<value_type>;
 		using ConstIterator = VectorIterator<const value_type>;
 
-        Vector(size_t size = 0, const type& value = type()) {
-            _size = _real_size = size;
-            if (!_real_size) _real_size = 1;
+        Vector(size_t size = 0, const type& value = type()) : _size(size), _real_size(size) {
+            if (_real_size == 0) return;
             arr = new type[_real_size];
             for (type& item : *this) {
             	item = value;
@@ -40,12 +40,11 @@ class Vector {
         }
 
         Vector(const Vector& other) {
-            init();
             *this = other;
         }
 
         Vector(Vector&& other) noexcept {
-            init();
+            reset();
             swap(*this, other);
         }
         
@@ -60,7 +59,7 @@ class Vector {
         }
         
         ~Vector() {
-        	delete[] arr;
+        	clear();
 		}
 
 		void resize(size_t count) {
@@ -90,14 +89,16 @@ class Vector {
 			}
 			 
         	type* temp = new type[_real_size];
-        	copy(this->begin(), this->end(), temp);
-        	delete[] arr;
-			arr = temp; 
+        	if (arr != nullptr) {
+        	    copy(this->begin(), this->end(), temp);
+        	    delete[] arr;
+        	}
+			arr = temp;
 		}
 		
 		void clear() {
 			delete[] arr;
-			init();
+            reset();
 		}
         
         size_t size() const {
@@ -129,7 +130,7 @@ class Vector {
 	
 	    type& at(size_t pos) const {
 	        if (pos >= this -> _size) {
-				throw 0;
+				throw std::out_of_range("index out of range");
 	        }
 	        else {
 	            return arr[pos];
@@ -144,15 +145,14 @@ class Vector {
 	    	return *(end()-1);
 		}
 
-		type& front() {
-            return const_cast<type&>(front());
-        }
+	    type& front() {
+	        return *begin();
+	    }
 
-        type& back() {
-            return const_cast<type&>(back());
-        }
+	    type& back() {
+	    	return *(end()-1);
+		}
 
-		
 		Iterator begin() {
 			return Iterator(0, &this->arr);
 		}
@@ -197,8 +197,8 @@ class VectorIterator {
         using pointer = type*;
 
 	private:
-		size_t index;
-		pointer const* vc;
+		pointer const* vc = nullptr;
+		size_t index = 0;
 
 	public:
 
