@@ -45,7 +45,7 @@ class NumArray {
 		num_t max() {
 			num_t max = array[0];
 			for (auto i = 1; i < array.size(); i++) {
-				if (array[i] > min)
+				if (array[i] > max)
 					max = array[i];
 			}
 			return max;

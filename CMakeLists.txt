@@ -15,7 +15,6 @@ add_executable(kypluk
         include/kypluk/logs/kLogs.h
         include/kypluk/num_array/num_array.h
         include/kypluk/algorithm.h
-        include/kypluk/array.h
         include/kypluk/big_integer.h
         include/kypluk/bitset.h
         include/kypluk/decimal.h

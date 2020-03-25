@@ -80,7 +80,7 @@ int main() {
 
 		cout << "\n\n";
 	}
-	BigInt t1 = 12352, t2 = 10000;
+	BigInt t1 = 12352, t2 = 100000;
 	start = clock();
 		
 	puk1 = pow<BigInt>(t1, t2);

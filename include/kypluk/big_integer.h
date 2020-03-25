@@ -145,12 +145,12 @@ namespace kypluk {
             }
 
             BigInt& mult (BigInt other) {
-                BigInt xraniliche = *this;
+                BigInt buffer = std::move(*this);
                 bool thisNegative = this->_is_negative;
-                xraniliche._is_negative = false;
+                buffer._is_negative = false;
                 (*this) = 0;
 
-                Vector<BigInt> mult_temp(base, xraniliche);
+                Vector<BigInt> mult_temp(base, buffer);
                 for (base_t i = 0; i < base; i++) {
                     mult_temp[i].mult0to9(i);
                 }
