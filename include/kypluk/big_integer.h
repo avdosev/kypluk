@@ -82,7 +82,7 @@ namespace kypluk {
 
                     carry = static_cast<base_t>(item >= base);
                     if (carry) {
-                        item -= base; // i % 10
+                        item -= base; // i % base
                     }
 
                     if (j != other.arr.end()) ++j;
@@ -118,7 +118,7 @@ namespace kypluk {
             BigInt& mult10(size_t other = 1) {
                 if (!this->zero()) {
                     container_t temp(other, 0);
-                    arr.push_back(temp);
+                    arr.resize(arr.size()+other);
                     for (size_t i = arr.size() - other; i > 0; i--) {
                         arr[i-1+other] = arr[i-1];
                     }
@@ -150,13 +150,14 @@ namespace kypluk {
                 buffer._is_negative = false;
                 (*this) = 0;
 
-                Vector<BigInt> mult_temp(base, buffer);
+                Vector<BigInt> mult_temp;
                 for (base_t i = 0; i < base; i++) {
-                    mult_temp[i].mult0to9(i);
+                    mult_temp.emplace_back(BigInt(buffer).mult0to9(i));
                 }
-                Vector<size_t> first_size(base, 0);
+
+                std::array<size_t, base> first_size{};
                 for (base_t i = 0; i < base; i++) {
-                    first_size[i] = mult_temp[i].arr.size();
+                    first_size[i] = mult_temp[i].length();
                 }
 
                 size_t j = 0;

@@ -35,7 +35,7 @@ type fact_tree(const type& n)
 			}
 			#pragma omp section
 			{
-				two =  prod_tree(m + 1, r);
+				two = prod_tree(m + 1, r);
 			}
 		}
 		one *= two;		
@@ -56,7 +56,7 @@ int main() {
 
 	BigInt puk1, puk2, puk3;
 	time_t start,stop;
-	for (int i = 0; i < number.size(); i++) {
+	for (size_t i = 0; i < number.size(); i++) {
 		cout << kypluk::to_string(number[i]) << ":\n";
 		
 		start = clock();
@@ -80,7 +80,7 @@ int main() {
 
 		cout << "\n\n";
 	}
-	BigInt t1 = 12352, t2 = 100000;
+	BigInt t1 = 12352, t2 = 10000;
 	start = clock();
 		
 	puk1 = pow<BigInt>(t1, t2);

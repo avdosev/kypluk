@@ -62,12 +62,14 @@ class Vector {
         	clear();
 		}
 
+		void shrink_to_fit() {
+            if (_real_size / (_size+1) > 1) {
+                reserve(_size);
+            }
+        }
+
 		void resize(size_t count) {
-        	if (_size > count) {
-        		if (_real_size / (_size+1) > 1) {
-        			reserve(count);
-				}
-			} else if (_size < count) {
+        	if (_size < count) {
 				if (count > _real_size) {
 					size_t dinamic_size = (_real_size * 3) / 2 + 1;
 					reserve(dinamic_size > count ? dinamic_size : count);
@@ -90,7 +92,7 @@ class Vector {
 			 
         	type* temp = new type[_real_size];
         	if (arr != nullptr) {
-        	    copy(this->begin(), this->end(), temp);
+        	   std::move(this->begin(), this->end(), temp);
         	    delete[] arr;
         	}
 			arr = temp;
@@ -108,17 +110,16 @@ class Vector {
 	    bool empty() const {
 			return size() == 0;
 		}
+
+		template <typename ...args_t>
+		void emplace_back(args_t&&... args) {
+            resize(_size+1);
+            back() = std::move(type(args...));
+        }
 	
 	    void push_back(const type& val) {
-	    	resize(_size+1);
-	        back() = val;
+	    	emplace_back(val);
 	    }
-	    
-	    void push_back(const Vector& vals) {
-	    	for (auto value : vals) {
-	    		this->push_back(value);
-			}
-		}
 	
 	    void pop_back() {
 	    	resize(_size-1);
@@ -131,8 +132,7 @@ class Vector {
 	    type& at(size_t pos) const {
 	        if (pos >= this -> _size) {
 				throw std::out_of_range("index out of range");
-	        }
-	        else {
+	        } else {
 	            return arr[pos];
 	        }
 	    }
@@ -169,15 +169,17 @@ class Vector {
             return ConstIterator(_size, &this->arr);
         }
 		
-		const type* data () const {
+		const type* data() const {
 			return arr;
 		}
 
         Vector& operator = (const Vector& other) {
-            delete[] arr;
-            arr = new type[other.size()]();
-            _real_size = _size = other.size();
-            copy(other.begin(), other.end(), this->begin());
+            if (&other != this) {
+                delete[] arr;
+                arr = new type[other.size()]();
+                _real_size = _size = other.size();
+                copy(other.begin(), other.end(), this->begin());
+            }
             return *this;
         }
 
