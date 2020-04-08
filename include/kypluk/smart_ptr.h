@@ -1,94 +1,97 @@
 #pragma once
 
 #include "define.h"
+#include <utility>
 
 namespace kypluk {
 
 template <class type>
-class UniquePtr {
-	private:
-		using pointer = type*;
-		pointer ptr;
-        UniquePtr(const UniquePtr&) {}
-        void operator = (const UniquePtr&) {}
+class unique_ptr {
 	public:
-		UniquePtr(pointer ptr = NULL) {
-			this->ptr = ptr;
+		using pointer_t = type*;
+		using reference_t = type&;
+        unique_ptr(const unique_ptr&) = delete;
+        void operator = (const unique_ptr&) = delete;
+
+		unique_ptr() = default;
+        explicit unique_ptr(pointer_t ptr) {
+			this->pointer = ptr;
 		}
-		~UniquePtr() {
-			if (ptr) delete ptr;
+
+		unique_ptr(unique_ptr&& ptr) noexcept {
+            this->move(ptr);
+        }
+
+        unique_ptr& operator = (unique_ptr&& ptr) noexcept {
+            this->move(ptr);
+        }
+
+		~unique_ptr() noexcept {
+			if (pointer) delete pointer;
 		}
 		
-		pointer release() {
-			pointer temp = ptr;
-			ptr = NULL;
+		pointer_t release() {
+			pointer_t temp = pointer;
+            pointer = nullptr;
 			return temp;
-		} 
-		void reset(pointer ptr = NULL) {
-			if (this->ptr) delete this->ptr;
-			this->ptr = ptr;
+		}
+
+		void reset(pointer_t ptr = nullptr) {
+			if (this->pointer) delete this->pointer;
+			this->pointer = ptr;
 		}
 		
-		void swap(UniquePtr &other) {
-			this->ptr = other.ptr;
-			other.ptr = NULL;
+		void move(unique_ptr &other) noexcept {
+            std::swap(this->pointer, other.pointer);
 		}
 		
-		pointer get() {
-			return ptr;
+		pointer_t get() {
+			return pointer;
 		}
 		
-		UniquePtr& operator = (UniquePtr &other) {
-			this->swap(other);
-			return *this;
+		operator bool () noexcept {
+			return pointer != nullptr;
 		}
 		
-		UniquePtr& operator = (pointer other) {
-			this->reset(other);
-			return *this;
+		reference_t operator * () noexcept {
+			return *pointer;
 		}
 		
-		operator bool () {
-			return ptr != NULL;
-		}
-		
-		type& operator * () {
-			return *ptr;
-		}
-		
-        pointer operator -> () {
+        pointer_t operator -> () noexcept {
 			return get();
 		}
 		
-        operator pointer () {
-			return ptr;
+        explicit operator pointer_t () {
+			return pointer;
 		}
+    private:
+        pointer_t pointer = nullptr;
 };
 
 template <class type>
-class SharedPtr {
+class reference_counter {
+    public:
+		using pointer_t = type*;
+		using reference_t = type&;
 	private:
-		using pointer = type*;
 		struct Node {
-			mutable size_t size;
-			type* value;
-			Node(type *value = NULL) {
-				this->value = value;
-				size = 1; 
-			}
+			mutable size_t size = 0;
+			pointer_t value = nullptr;
+
+			Node() = default;
+			Node(pointer_t ptr) : value(ptr), size(1) {}
 		};
-		Node * node;
 	public:
-		SharedPtr(type *value = NULL) {
+		reference_counter(type *value = nullptr) {
 			node = new Node(value);
 		}
 		
-		SharedPtr(const SharedPtr & other) {
+		reference_counter(const reference_counter & other) {
 			node = other.node;
 			other.node->size++;
 		}
 		
-		~SharedPtr() {
+		~reference_counter() {
 			node->size--;
 			if (node->size == 0) {
 				if (node->value) delete node->value;
@@ -96,7 +99,7 @@ class SharedPtr {
 			}
 		}
 		 
-		void reset(pointer ptr = NULL) {	
+		void reset(pointer_t ptr = nullptr) {
 			if (node->size == 1) {
 				if (node->value) delete node->value;
 				node->value = ptr;
@@ -107,18 +110,18 @@ class SharedPtr {
 		}
 		
 		bool unique() {
-			return node->value;
+			return node->value >= 1;
 		}
 		
-		void swap(SharedPtr &other) {
+		void swap(reference_counter &other) {
 			swap(this->node, other->node);
 		}
 		
-		pointer get() {
+		pointer_t get() {
 			return node->value;
 		}
 		
-		SharedPtr& operator = (const SharedPtr &other) {
+		reference_counter& operator = (const reference_counter &other) {
 			node->size--;
 			if (node->size == 0) {
 				if (node->value) delete node->value;
@@ -129,22 +132,25 @@ class SharedPtr {
 			return *this;
 		}
 		
-		SharedPtr& operator = (pointer other) {
+		reference_counter& operator = (pointer_t other) {
 			this->reset(other);
 			return *this;
 		}
 		
 		operator bool () {
-			return node->value != NULL;
+			return node->value != nullptr;
 		}
 		
-		type& operator * () {
+		reference_t operator * () {
 			return *get();
 		}
 		
-		pointer operator -> () {
+		pointer_t operator -> () {
 			return get();
 		}
+
+    private:
+        Node * node;
 };
 
 }

@@ -54,14 +54,14 @@ namespace kypluk
 
                     virtual ReturnType invoke(ArgumentTypes ... args) = 0;
 
-                    virtual SharedPtr<function_holder_base> clone() = 0;
+                    virtual reference_counter<function_holder_base> clone() = 0;
 
                 private:
                     function_holder_base(const function_holder_base & );
                     void operator = (const function_holder_base &);
             };
 
-            using invoker_t = SharedPtr<function_holder_base>;
+            using invoker_t = reference_counter<function_holder_base>;
 
             template <typename functionT>
             class free_function_holder : public function_holder_base {
