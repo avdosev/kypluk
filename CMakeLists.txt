@@ -20,7 +20,7 @@ add_executable(kypluk
         include/kypluk/decimal.h
         include/kypluk/define.h
         include/kypluk/function.h
-        include/kypluk/kTrit.h
+        include/kypluk/trit.h
         include/kypluk/list.h
         include/kypluk/math.h
         include/kypluk/number_algorithm.h
