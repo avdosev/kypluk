@@ -6,7 +6,8 @@ namespace kypluk {
 
     class trit {
         public:
-            enum class logical : uint8_t {
+            using value_t = uint8_t;
+            enum class logical : value_t {
                 True  = 0b10,
                 False = 0b01,
                 None  = 0b00
@@ -14,12 +15,12 @@ namespace kypluk {
 
             constexpr trit() = default;
             constexpr trit(const trit&) = default;
-            constexpr trit(logical val) : value(uint8_t(val)) {}
+            constexpr trit(logical val) : value(value_t(val)) {}
             constexpr trit(bool val) : trit(from_bool(val)) {}
 
 
             constexpr bool is(logical logic) const {
-                return value == uint8_t(logic);
+                return value == value_t(logic);
             }
 
             constexpr static trit from_bool(bool val) {
@@ -27,7 +28,7 @@ namespace kypluk {
             }
 
             constexpr bool to_bool() const {
-                return static_cast<bool>(value >> 1);
+                return static_cast<bool>(value >> 1u);
             }
 
             constexpr logical to_logical() const {
@@ -48,8 +49,24 @@ namespace kypluk {
 
             constexpr trit& operator = (const trit& val) = default;
 
+            friend constexpr trit operator ! (trit orig) {
+                return trit((orig.value ^ 3u) / 3u);
+            }
+
+            friend constexpr trit operator && (trit lft, trit rgh) {
+                value_t A = lft.value, B = rgh.value;
+                return trit(((A | B) & 1u) | (A&B));
+            }
+
+            friend constexpr trit operator || (trit lft, trit rgh) {
+                value_t A = lft.value, B = rgh.value;
+                return trit(((A | B) & 2u) | (A & B));
+            }
+
         private:
-            uint8_t value = uint8_t(logical::None);
+            constexpr trit(uint val) : value(val) {}
+
+            value_t value = value_t(logical::None);
     };
 
 }
