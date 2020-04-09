@@ -91,6 +91,9 @@ namespace kypluk {
         constexpr static const trit none = trit::logical::None;
         constexpr static const trit _true = trit::logical::True;
         constexpr static const trit _false = trit::logical::False;
+        constexpr static const trit None = trit::logical::None;
+        constexpr static const trit True = trit::logical::True;
+        constexpr static const trit False = trit::logical::False;
     }
 
 }

@@ -7,9 +7,6 @@ set(CMAKE_CXX_FLAGS "-Wall -O3" )
 include_directories(include)
 
 add_executable(kypluk
-#        benchmarks/BigInteger/add.cpp
-#        benchmarks/BigInteger/experimental.cpp
-        benchmarks/BigInteger/mult.cpp
         include/kypluk/fast_math/fast_math.h
         include/kypluk/logs/kLogs.cpp
         include/kypluk/logs/kLogs.h
@@ -32,4 +29,4 @@ add_executable(kypluk
         include/kypluk/unrolled_linked_list.h
         include/kypluk/utility.h
         include/kypluk/vector.h
-        )
+        test/main.cpp test/trit.h test/test.h)
