@@ -1,23 +1,15 @@
-# kypluk
-This is my small (or not) C ++ template library with containers, algorithms and iterators, as well as some interesting things, useful for executing and developing tools on different platforms. This is not an extensive and reliable implementation of such a library that does not rely on high performance.
-# Documentation
-missing
-# Installing
+# kypluk &middot; [![Build Status](https://travis-ci.org/avdosev/kypluk.svg?branch=master)](https://travis-ci.org/avdosev/kypluk)
+Это моя маленькая (или не очень) библиотека шаблонов C++ с контейнерами, алгоритмами и итераторами, а также некоторые интересные вещи, полезные для выполнения и разработки инструментов на разных платформах. Это не обширная и не надежная реализация такой библиотеки, которая не зависит от высокой производительности.
+
+
+## Installing
 * git clone this repositorie
 * add to your ide
 
-**Adding to IDE:**
-### QtCreator
-Add a line to the .pro file: 
-INCLUDEPATH += directory to library location
-illustration: 
-INCLUDEPATH += C:/kypluk/include
-### DEV-C++
-Tools >> Compiler Options >> Directories >> C ++ Include Files
-and just add the location directory
-### Any IDE
-sorry, i don't know
-### Adding in compilers file
-find the include folder and paste all the files there
-# P.S.
-I'll be happy any feedback
+## Directories
+
+* **doc** - Documentation
+* **include** - Interface headers
+* **src** - Compilable source files
+* **test** - unit tests
+
