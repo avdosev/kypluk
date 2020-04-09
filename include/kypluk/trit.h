@@ -7,17 +7,18 @@ namespace kypluk {
     class trit {
         public:
             using value_t = uint8_t;
-            enum class logical : value_t {
+            enum class logical {
                 True  = 0b10,
                 False = 0b01,
                 None  = 0b00
             };
 
-            constexpr trit() = default;
-            constexpr trit(const trit&) = default;
-            constexpr trit(logical val) : value(value_t(val)) {}
-            constexpr trit(bool val) : trit(from_bool(val)) {}
 
+            constexpr trit() noexcept = default;
+            constexpr trit(const trit&) noexcept = default;
+            constexpr trit(logical val) noexcept : value(static_cast<value_t>(val))  {}
+            constexpr trit(bool val) noexcept : trit(from_bool(val)) {}
+            ~trit() = default;
 
             constexpr bool is(logical logic) const {
                 return value == value_t(logic);
@@ -50,12 +51,12 @@ namespace kypluk {
             constexpr trit& operator = (const trit& val) = default;
 
             friend constexpr trit operator ! (trit orig) {
-                return trit((orig.value ^ 3u) / 3u);
+                return trit((orig.value ^ 3u) % 3u);
             }
 
             friend constexpr trit operator && (trit lft, trit rgh) {
                 value_t A = lft.value, B = rgh.value;
-                return trit(((A | B) & 1u) | (A&B));
+                return trit(((A | B) & 1u) | (A & B));
             }
 
             friend constexpr trit operator || (trit lft, trit rgh) {
@@ -63,10 +64,33 @@ namespace kypluk {
                 return trit(((A | B) & 2u) | (A & B));
             }
 
+            static const trit none;
         private:
             constexpr trit(uint val) : value(val) {}
 
             value_t value = value_t(logical::None);
     };
+
+    constexpr trit operator && (bool left, trit right) {
+        return right && trit::from_bool(left);
+    }
+
+    constexpr trit operator && (trit left, bool right) {
+        return left && trit::from_bool(right);
+    }
+
+    constexpr trit operator || (bool left, trit right) {
+        return right || trit::from_bool(left);
+    }
+
+    constexpr trit operator || (trit left, bool right) {
+        return left || trit::from_bool(right);
+    }
+
+    namespace trit_const {
+        constexpr static const trit none = trit::logical::None;
+        constexpr static const trit _true = trit::logical::True;
+        constexpr static const trit _false = trit::logical::False;
+    }
 
 }
