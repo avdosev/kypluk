@@ -1,3 +1,5 @@
+sudo: required  # используем Virtual Machine (а не Docker container)
+
 language: cpp
 
 os:
@@ -25,6 +27,6 @@ script:
     # скрипт сборки и тестирования проекта:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION
     - cmake --build .
     - ctest --output-on-failure
