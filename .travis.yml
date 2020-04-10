@@ -1,8 +1,16 @@
 language: cpp
 
+os:
+  - linux
+
 compiler:
   - clang
   - gcc
+
+env:
+    # список переменных окружения, влияющих на матрицу сборки:
+    - BUILD_CONFIGURATION=Debug
+    - BUILD_CONFIGURATION=Release
 
 branches:
   only:
@@ -10,7 +18,13 @@ branches:
     - develop
 
 install:
-  - DEPS_DIR="${HOME}/include"
+    # скрипт настройки среды и установки зависимостей:
+    - source ci/travis/install-$TRAVIS_OS_NAME.sh
 
 script:
-   - sources=($(find include test -name "*.hpp" -or -name "*.cpp" -or -name ".h"))
+    # скрипт сборки и тестирования проекта:
+    - mkdir build
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
+    - cmake --build .
+    - ctest --output-on-failure

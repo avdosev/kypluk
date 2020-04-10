@@ -1,6 +1,6 @@
 #pragma once
 
-#include "test.h"
+#include "../test.h"
 
 #include <kypluk/trit.h>
 #include <iostream>

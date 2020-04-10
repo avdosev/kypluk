@@ -1,5 +1,5 @@
 project(kypluk_test)
 
-set(test_all main.cpp)
-add_executable(test_all ${test_all})
-add_test(NAME All_test COMMAND test_all)
+set(test_trit Trit/trit.cpp)
+add_executable(test_trit ${test_trit})
+add_test(NAME Trit_test COMMAND test_trit)
