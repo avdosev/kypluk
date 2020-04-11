@@ -1,3 +1,4 @@
+dist: trusty    # используем Ubuntu 14.04 Trusty
 sudo: required  # используем Virtual Machine (а не Docker container)
 
 language: cpp
