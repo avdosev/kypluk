@@ -1,10 +1,12 @@
 project(kypluk_test)
 
-set(test_trit Trit/test.cpp)
-add_executable(test_trit ${test_trit})
-add_test(NAME Trit_test COMMAND test_trit)
+function(make_test TestFolder)
+    string(TOLOWER ${TestFolder} test_folder)
+    string(CONCAT exec_test test_ ${test_folder})
+    set(exe ${TestFolder}/test.cpp)
+    add_executable(${exec_test} ${exe})
+    add_test(NAME ${TestFolder}_test COMMAND ${exec_test})
+endfunction()
 
-
-set(test_biginteger BigInteger/test.cpp)
-add_executable(test_biginteger ${test_biginteger})
-add_test(NAME BigInteger_test COMMAND test_biginteger)
+make_test(Trit)
+make_test(BigInteger)
