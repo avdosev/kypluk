@@ -1,7 +1,6 @@
-#include "kypluk/test.h"
-
+#include <kypluk/test.h>
 #include <kypluk/trit.h>
-#include <iostream>
+
 
 class test_trit final : public test  {
     public:
