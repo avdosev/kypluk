@@ -20,7 +20,7 @@ int main() {
 	test_cases.push_back(decimal(1596));
 	test_cases.push_back(decimal::from_string("156.365"));
 	
-	decimal eps = decimal::from_string("0.0000000001");//нулл ебатъ
+	decimal eps = decimal::from_string("0.0000000001");
 	
 	for (decimal test_case : test_cases) { 
 		decimal res = sqrt<decimal>(test_case, eps);

@@ -1,11 +1,13 @@
 #pragma once
 
 #include <stdexcept>
+#include <array>
 
 #include "define.h"
 #include "vector.h"
 
 #include "utility.h"
+
 
 namespace kypluk {
 

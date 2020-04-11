@@ -5,8 +5,6 @@
 #include <array>
 #include <iterator>
 
-USE(kypluk);
-USE(std);
 
 int main() {
 	using arr_t = array<int, 5>;

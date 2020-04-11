@@ -1,6 +1,4 @@
-#pragma once
-
-#include "../test.h"
+#include "kypluk/test.h"
 
 #include <kypluk/trit.h>
 #include <iostream>
@@ -54,3 +52,7 @@ class test_trit final : public test  {
             check_or();
         }
 };
+
+int main() {
+    test_trit().run();
+}
