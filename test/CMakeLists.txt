@@ -10,3 +10,4 @@ endfunction()
 
 make_test(Trit)
 make_test(BigInteger)
+make_test(List)

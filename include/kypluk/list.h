@@ -3,15 +3,17 @@
 #include "algorithm.h"
 #include "define.h"
 namespace kypluk {
-	
+
+    template <class type>
+    struct ListNode;
+
 template <class type>
 class  List {
+    public:
+		using Node = struct ListNode<type>;
     private:
-		struct Node;
         class ListIterator;
 
-        friend struct Node;
-        friend class ListIterator;
         
 		Node * head;
         
@@ -225,25 +227,25 @@ class  List {
 };
 
 template <class type>
-struct List<type>::Node {
+struct ListNode {
     type value;
-    Node* next;
-    Node* back;
+    ListNode* next;
+    ListNode* back;
 
-    Node(const type& value, Node* back, Node* next) {
+    ListNode(const type& value, ListNode* back, ListNode* next) {
         this->value = value;
         this->next = next;
         this->back = back;
     }
 
-    Node() {
+    ListNode() {
 
         next = this;
         back = this;
 
     }
 
-    ~Node() {
+    ~ListNode() {
         next = NULL;
         back = NULL;
     }
@@ -252,6 +254,7 @@ struct List<type>::Node {
 template <class type>
 class List<type>::ListIterator {
     private:
+        friend class List<type>;
         using Node = List<type>::Node;
         Node * node;
 
