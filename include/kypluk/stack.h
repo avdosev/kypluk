@@ -5,56 +5,49 @@
 namespace kypluk {
 
 template <class type, class container_t>
-class  Stack {
-	private:
-		container_t container;
-	public:
-		Stack() {
-		
-		}
-		
-		Stack(const Stack &other) {
-			container = other.container;
-		}
-		
-		~Stack() {
-			container.clear();
-		} 
+class Stack {
+    private:
+        container_t container;
+    public:
+        Stack() = default;
+        Stack(const Stack &other) = default;
+        Stack(Stack&& other) = default;
 
-		//������ � �������� �������� 
-		type& top() {
-			return container.back();
-		}
-		
-		//��������� ���������� ��������� � ����������, ������������ ��� ���������� 
-		bool empty() {
-			return container.empty();
-		}
-		
-		//���������� ���������� ��������� � ���������� 
-		size_t size() {
-			return container.size();
-		}
-		
-		//��������� ������� �� ���� 
-		void push(const type& value) {
-			container.push_back(value);
-		}
-		
-		//������� ������� ������� � ��� ���� ��� ����� �������
-		void pop() {
-			container.pop_back();
-		}
-		
-		void clear() {
-			container.clear();
-		}
-		
-		Stack & operator = (const Stack &copy)
-		{
-			this->container = other.container;
-			return *this;
-		}
+        ~Stack() = default;
+
+
+        type& top() {
+            return container.back();
+        }
+
+
+        bool empty() {
+            return container.empty();
+        }
+
+
+        auto size() {
+            return container.size();
+        }
+
+
+        void push(const type& value) {
+            container.push_back(value);
+        }
+
+
+        void pop() {
+            container.pop_back();
+        }
+
+
+        void clear() {
+            container.clear();
+        }
+
+
+        Stack& operator = (const Stack &copy) = default;
+        Stack& operator = (Stack&& copy) = default;
 		
 };
 
