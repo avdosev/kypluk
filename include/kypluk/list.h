@@ -180,7 +180,7 @@ class  List {
             }
         }
 
-		//FIX MEE PLEASE
+		// TODO: make sort
         void sort() {
             /*if (_size <= 1) return;
             elif (_size == 2) {
@@ -226,33 +226,32 @@ class  List {
 
 template <class type>
 struct List<type>::Node {
-        type value;
-        Node* next;
-        Node* back;
+    type value;
+    Node* next;
+    Node* back;
 
-        Node(const type& value, Node* back, Node* next) {
-            this->value = value;
-            this->next = next;
-            this->back = back;
-        }
+    Node(const type& value, Node* back, Node* next) {
+        this->value = value;
+        this->next = next;
+        this->back = back;
+    }
 
-        Node() {
+    Node() {
 
-            next = this;
-            back = this;
+        next = this;
+        back = this;
 
-        }
+    }
 
-        ~Node() {
-            next = NULL;
-            back = NULL;
-        }
+    ~Node() {
+        next = NULL;
+        back = NULL;
+    }
 };
 
 template <class type>
 class List<type>::ListIterator {
     private:
-        friend class List;
         using Node = List<type>::Node;
         Node * node;
 
