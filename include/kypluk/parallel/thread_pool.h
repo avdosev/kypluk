@@ -36,7 +36,7 @@ class worker {
 
         ~worker() {
             *stop = true;
-            thread.deteach();
+            thread.detach();
         }
     private:
         static void run(std::shared_ptr<std::atomic<bool>> stop_flag, thread_pool& pool);
@@ -103,3 +103,5 @@ inline thread_pool _thread_pool{20};
 } /* namespace parallel */
 
 } /* namespace kypluk */
+
+#endif

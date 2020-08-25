@@ -14,4 +14,4 @@ class test {
 };
 
 #define EQUAL(l, r) assert((l) == (r), "Not equal", __FILE__, __LINE__);
-#define NOT_EQUAL(l, r) assert((l) != (r), "Not equal", __FILE__, __LINE__);
+#define NOT_EQUAL(l, r) assert((l) != (r), "Equal", __FILE__, __LINE__);
