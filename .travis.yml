@@ -1,5 +1,4 @@
-dist: trusty    # используем Ubuntu 14.04 Trusty
-sudo: required  # используем Virtual Machine (а не Docker container)
+dist: bionic    # используем Ubuntu Bionic
 
 language: cpp
 
@@ -18,14 +17,12 @@ env:
 branches:
   only:
     - master
-    - develop
 
-install:
-    # скрипт настройки среды и установки зависимостей:
-    - source ci/travis/install-$TRAVIS_OS_NAME.sh
+addons:
+  apt:
+    packages: lcov
 
-script:
-    # скрипт сборки и тестирования проекта:
+script: # скрипт сборки и тестирования проекта:
     - mkdir build
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION

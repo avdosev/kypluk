@@ -6,6 +6,10 @@ function(make_test TestFolder)
     set(exe ${TestFolder}/test.cpp)
     add_executable(${exec_test} ${exe})
     add_test(NAME ${TestFolder}_test COMMAND ${exec_test})
+    
+    if(UNIX)
+        target_link_libraries(${exec_test} pthread)
+    endif(UNIX)
 endfunction()
 
 make_test(Trit)
