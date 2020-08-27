@@ -2,6 +2,7 @@
 #define KYPLUK_FUTURE_H
 
 #include <future>
+#include <type_traits>
 #include <kypluk/parallel/thread_pool.h>
 
 namespace kypluk {
@@ -17,7 +18,12 @@ async( Function f, Args... args ) {
     auto promise_ptr = std::make_shared<std::promise<return_type>>();
     auto future = promise_ptr->get_future();
     kypluk::parallel::detail::_thread_pool.add_task([f, args..., promise_ptr]() {
-        promise_ptr->set_value(f(args...));
+        if constexpr (std::is_void_v<return_type>) {
+            f(args...);
+            promise_ptr->set_value();
+        } else {
+            promise_ptr->set_value(f(args...));
+        }
     });
     return future;
 }

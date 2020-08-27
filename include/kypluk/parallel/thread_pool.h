@@ -75,6 +75,10 @@ class thread_pool {
             }
             return maybe_task;
         }
+
+        size_t concurrency() {
+            return workers.size();
+        }
     private:
         std::mutex tasks_queue_mutex;
         std::queue<task_type> tasks;
