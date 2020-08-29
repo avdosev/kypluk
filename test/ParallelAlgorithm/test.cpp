@@ -10,6 +10,10 @@ public:
         std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         auto res = kypluk::parallel::reduce(vec, std::plus<>(), 0);
         EQUAL(res, 45);
+        res = kypluk::parallel::reduce(vec, [](auto acc, auto val){
+            return std::min(acc, val);
+        }, std::numeric_limits<decltype(vec)::value_type>::max());
+        EQUAL(res, 1);
     }
 
     void check_massive_reduce() {
