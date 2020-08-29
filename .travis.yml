@@ -26,7 +26,7 @@ addons:
 script: # скрипт сборки и тестирования проекта:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DCHECK_TEST_COVERAGE=1
     - cmake --build .
     - ctest --output-on-failure
 
