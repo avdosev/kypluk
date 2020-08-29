@@ -19,7 +19,7 @@ type fact_tree(const type& n)
 		return n;
 	function <type(type, type)> prod_tree = [&prod_tree](const type& l, const type& r) -> type{
 		if (l > r)
-		return 1;
+		    return 1;
 		if (l == r)
 			return l;
 		if (r - l == 1)
